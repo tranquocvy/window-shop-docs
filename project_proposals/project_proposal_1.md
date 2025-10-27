@@ -361,9 +361,218 @@ public decimal CalculateFinalPrice(Product product) => product.Price * 0.9m;
 
 ```
 
+#### d. Nguồn tham khảo Coding Convention:
+1. Common C# code conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
+2. C# identifier naming rules and conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names?utm_source=chatgpt.com
+3. .NET code-style rule options: https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options?utm_source=chatgpt.com
+4. Get started with Windows development using WinUI: https://learn.microsoft.com/en-us/windows/apps/get-started/start-here?utm_source=chatgpt.com&tabs=vs-2022-17-10
+5. Style Coding có trong Slides Windows Programming của ThS. Trần Duy Quang
+
 ### 6.2 Testing
 
+#### a. Triết lý Kiểm thử (Testing Philosophy)
 
+Chúng ta áp dụng mô hình **Kim tự tháp kiểm thử (Test Pyramid)** – nhấn mạnh rằng:
+
+* **Unit Test**: Nhiều nhất, nhanh, rẻ, kiểm thử logic cốt lõi.
+* **Integration / UI Test**: Trung bình, kiểm thử sự phối hợp giữa các module.
+* **Manual Test**: Ít hơn, tập trung vào trải nghiệm và kiểm thử giao diện người dùng.
+---
+
+#### b. **Unit Testing – Kiểm thử đơn vị (Cốt lõi của chất lượng)**
+
+##### 1. Mục tiêu
+
+* Xác minh từng thành phần hoạt động **độc lập, đúng logic**.
+* Phát hiện lỗi sớm và hỗ trợ **refactor an toàn**.
+* Tạo documentation cho logic nghiệp vụ thông qua test cases rõ ràng.
+
+##### **2. Phạm vi & Công cụ**
+
+| Thành phần            | Có kiểm thử | Ghi chú                                        |
+| --------------------- | ----------- | ---------------------------------------------- |
+| **ViewModels**        | ✅           | Kiểm tra Command, Validation, Property Binding |
+| **Business Services** | ✅           | Tính toán, điều kiện nghiệp vụ                 |
+| **Models / Entities** | ❌           | Chỉ là POCO chứa dữ liệu                       |
+| **Repositories (EF)** | ❌           | Tin cậy vào EF Core                            |
+
+**Công cụ sử dụng:**
+
+* **xUnit** – framework kiểm thử hiện đại, mạnh mẽ.
+* **Moq** – dùng để tạo mock cho các dependency (service, repository).
+
+##### **3. Quy ước & Cấu trúc**
+
+* Mỗi project logic có project test tương ứng:
+
+  ```
+  MyShop.Application  →  MyShop.Application.Tests
+  MyShop.Presentation →  MyShop.Presentation.Tests
+  ```
+* **Tên test:** `[MethodName]_[Scenario]_[ExpectedResult]`
+  Ví dụ: `CalculateTotal_WithValidDiscount_ReturnsCorrectDiscountedPrice`
+* **Cấu trúc một bài test - Pattern AAA:**
+
+  * **Arrange:** Chuẩn bị dữ liệu & mock.
+  * **Act:** Thực thi hành động.
+  * **Assert:** Kiểm tra kết quả.
+
+##### **4. Ví dụ minh họa**
+
+```csharp
+// Trong project MyShop.UI.Tests
+
+public class DashboardViewModelTests
+{
+    private readonly Mock<IOrderService> _mockOrderService;
+    private readonly Mock<IProductService> _mockProductService;
+    private readonly DashboardViewModel _viewModel;
+
+    // Constructor này sẽ chạy trước mỗi bài test, thực hiện phần Arrange chung
+    public DashboardViewModelTests()
+    {
+        _mockOrderService = new Mock<IOrderService>();
+        _mockProductService = new Mock<IProductService>();
+        _viewModel = new DashboardViewModel(_mockOrderService.Object, _mockProductService.Object);
+    }
+
+    [Fact] // Đánh dấu đây là một bài test của xUnit
+    public async Task LoadDashboardData_WhenOrdersExist_CalculatesDailyRevenueCorrectly()
+    {
+        // Arrange - Sắp đặt kịch bản
+        var todayOrders = new List<Order>
+        {
+            new Order { Id = 1, TotalAmount = 150000 },
+            new Order { Id = 2, TotalAmount = 250000 }
+        };
+        _mockOrderService.Setup(s => s.GetOrdersForTodayAsync()).ReturnsAsync(todayOrders);
+        _mockProductService.Setup(s => s.GetProductsLowOnStockAsync(5)).ReturnsAsync(new List<Product>()); // Giả lập trả về ds rỗng
+
+        // Act - Thực thi hành động
+        await _viewModel.LoadDashboardDataCommand.ExecuteAsync(null);
+
+        // Assert - Xác nhận kết quả
+        Assert.Equal(400000, _viewModel.DailyRevenue);
+        Assert.Equal(2, _viewModel.DailyOrderCount);
+    }
+
+    [Fact]
+    public async Task LoadDashboardData_WhenNoOrdersExist_RevenueAndOrderCountShouldBeZero()
+    {
+        // Arrange
+        var emptyOrderList = new List<Order>();
+        _mockOrderService.Setup(s => s.GetOrdersForTodayAsync()).ReturnsAsync(emptyOrderList);
+        _mockProductService.Setup(s => s.GetProductsLowOnStockAsync(5)).ReturnsAsync(new List<Product>());
+
+        // Act
+        await _viewModel.LoadDashboardDataCommand.ExecuteAsync(null);
+
+        // Assert
+        Assert.Equal(0, _viewModel.DailyRevenue);
+        Assert.Equal(0, _viewModel.DailyOrderCount);
+    }
+}
+
+```
+
+---
+
+#### c. Manual Testing – Kiểm thử thủ công
+
+##### **1. Mục tiêu**
+
+* Đảm bảo giao diện, bố cục, luồng nghiệp vụ hoạt động đúng mong đợi.
+* Kiểm tra **trải nghiệm người dùng (UX)** và **tính hoàn chỉnh của chức năng**.
+* Phát hiện lỗi hiển thị, tương tác, hành vi không logic.
+
+##### **2. Phương pháp thực hiện**
+
+**a. Viết Test Case có cấu trúc rõ ràng:**
+
+| ID         | Mô tả                    | Điều kiện tiên quyết                      | Bước thực hiện                                | Kết quả mong đợi                                                | Kết quả thực tế | Trạng thái |
+| ---------- | ------------------------ | ----------------------------------------- | --------------------------------------------- | --------------------------------------------------------------- | --------------- | ---------- |
+| TC-PROD-01 | Thêm sản phẩm hợp lệ     | Đăng nhập admin, ở màn "Quản lý sản phẩm" | Nhấn “Thêm mới” → nhập dữ liệu hợp lệ → “Lưu” | Thông báo “Thêm thành công”, sản phẩm xuất hiện trong danh sách |                 | Pass/Fail  |
+| TC-PROD-02 | Thêm sản phẩm với giá âm | Như trên                                  | Nhập giá “-1000” → “Lưu”                      | Hiện cảnh báo “Giá phải là số dương”                            |                 | Pass/Fail  |
+
+**b. Quy trình làm việc:**
+
+1. Thành viên phát triển **viết Test Case** cho chức năng mình phụ trách.
+2. Người khác trong nhóm **thực thi Test Case** (nguyên tắc 4-mắt).
+3. Ghi lại kết quả và lỗi (bug) vào hệ thống quản lý (Excel, Notion, Jira…).
+4. Chạy lại toàn bộ trước mỗi bản release (**Regression Test**).
+
+---
+
+#### d. UI Automation Testing – Kiểm thử giao diện tự động
+
+##### **1. Mục tiêu**
+
+* Tự động hóa **các luồng nghiệp vụ quan trọng, ổn định**.
+* Giảm thời gian regression test thủ công.
+* Đảm bảo các **"happy path"** chính luôn hoạt động ổn định qua mỗi lần build.
+
+##### **2. Phạm vi**
+
+Tự động hóa các luồng:
+  1. Đăng nhập hệ thống.
+  2. Tìm kiếm sản phẩm.
+  3. Tạo đơn hàng hoàn chỉnh.
+  4. Thêm khách hàng mới.
+
+##### **3. Công cụ**
+
+* **WinAppDriver** (Windows Application Driver)
+* **Appium / xUnit** – chạy test script bằng C#.
+* **CI/CD Integration:** Có thể tích hợp chạy test tự động trên GitHub Actions hoặc Azure Pipeline.
+
+##### **4. Cấu trúc Test Automation Project**
+
+```
+MyShop.UI.Automation/
+│
+├── Tests/
+│   ├── LoginTests.cs
+│   ├── OrderTests.cs
+│   └── CustomerTests.cs
+│
+├── Pages/            # Page Object Model
+│   ├── LoginPage.cs
+│   ├── OrderPage.cs
+│   └── CustomerPage.cs
+│
+└── Utils/
+    └── AppSessionHelper.cs
+```
+
+##### **5. Mô hình hoạt động**
+
+```mermaid
+sequenceDiagram
+    participant Tester as UI Test Script
+    participant WinAppDriver as WinAppDriver
+    participant App as MyShop.exe
+    Tester->>WinAppDriver: Gửi lệnh (click, input, navigate)
+    WinAppDriver->>App: Thao tác thật trên giao diện
+    App-->>WinAppDriver: Trả về kết quả hiển thị
+    WinAppDriver-->>Tester: So sánh với giá trị mong đợi
+    Tester-->>Tester: Ghi log & kết quả (Pass/Fail)
+```
+
+##### **6. Ví dụ Kịch bản Tự động**
+
+```csharp
+[Fact]
+public void CreateNewOrder_HappyPath()
+{
+    var session = LaunchAppAndLogin("admin", "123456");
+    session.ClickButton("New Order");
+    session.SelectItem("Laptop ABC");
+    session.ClickButton("Add To Cart");
+    session.SelectCustomer("Nguyen Van A");
+    session.ClickButton("Save Order");
+    Assert.True(session.FindElement("Success Message").Displayed);
+}
+```
 
 ---
 
