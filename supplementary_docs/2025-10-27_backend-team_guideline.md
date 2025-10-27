@@ -32,6 +32,11 @@
 
 - 🔄 Quy trình: Tuân thủ mô hình push → pull request → review → merge để bảo đảm chất lượng nhánh `main`.
 
+### Trả lời feedback:
+1. Nên tách nội dung thành nhiều file nhỏ -> Này nó chỉ là docs về định hướng tổng quan (bao gồm mục tiêu, quy trình và demo của từng giai đoạn) chứ ko phải là một tài liệu hoàn chỉnh cho từng giai đoạn nên việc tách file nhỏ và mỗi file chứa 1 chủ đề tui thấy hong cần thiết lắm. Còn về nội dung dài thì tui thấy là nó đủ để đọc và hiểu rõ về quy trình (này là bản thân tui soạn và anh BDuong cũng review thấy là đủ)
+2. Một số phần của tài liệu hiện đang mang văn phong “tự sự”... -> Thì đa phần là tui quăng những nội dung mà thầy dậy lơn ròi cho AI nó định hướng cho tại cũng hong biếc gì nên là đa phần nội dung là AI á :>>>, còn về việc "chuyển sang văn phong kỹ thuật / trung lập" thì theo tui thấy ko cần lắm ở tài liệu này do đây ko phải tài liệu gửi thầy mà là tài liệu để team đọc lại và hiểu, nếu mà lead thực sự cần thì tui cũng có thể chỉnh hehe, nma như đã nói là này nó chỉ là tài liệu để đọc hiểu nên là tui mún copy paste AI cho ae đọc dí tui cũng đọc thui.
+3. Trong giai đoạn “Đang feedback”, không nên push trực tiếp lên nhánh main -> Sory tại tui cũng chưa có biếc được git flow của team như nào á với lại đây là tài liệu độc lập -> khả năng conflict = 0% nên tui thấy có thể push thẳng lên main lun và kêu ae pull về check lun cho lẹ => nếu lead mún review pull request thì oke lần sau tui sẽ nhảy qua nhánh hoang để làm
+
 ---
 
 # 🧩 Task: Tài liệu định hướng Backend – MyShop
