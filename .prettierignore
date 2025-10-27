@@ -1,0 +1,2 @@
+# Ignore all Markdown docs (avoid unwanted indent formatting)
+*.md
