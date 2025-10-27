@@ -1,3 +1,39 @@
+### 💬 Feedback từ Lead
+
+**Nhận xét chung:**
+
+- Tài liệu được đầu tư công phu và trình bày rất chi tiết.
+
+  - Tuy nhiên, độ dài hiện tại hơn **1800 dòng** khiến việc đọc, review và cập nhật trở nên khó khăn.
+
+- Nên tuân thủ mô hình push → pull request → review → merge để bảo đảm chất lượng nhánh `main`.
+
+**Đề xuất cải thiện:**
+
+- Nên **tách nội dung thành nhiều file nhỏ** (ví dụ: `01_Overview.md`, `02_API_Guideline.md`, `03_Architecture.md`, …) và đặt chung trong một thư mục `backend_guideline/`.
+
+- Mỗi file nên tập trung vào **một chủ đề cụ thể**, giúp việc tra cứu và chỉnh sửa dễ dàng hơn.
+
+- Một số phần của tài liệu hiện đang mang văn phong **“tự sự”** (ví dụ: “Bạn đã hoàn thành…”, “Hãy cùng nhìn lại…”). giống như nội dung được **AI sinh ra từ prompt hướng dẫn cá nhân** hơn là một tài liệu kỹ thuật.
+
+  - Nên chuyển sang **văn phong kỹ thuật / trung lập** (ví dụ: “Backend Lead chịu trách nhiệm…”, “Module này đảm nhiệm…”), để tài liệu có tính **chuyên nghiệp, nhất quán và phù hợp làm guideline cho nhóm**.
+
+- Trong giai đoạn “Đang feedback”, **không nên push trực tiếp lên nhánh `main`**, mà chỉ push lên nhánh cá nhân (ví dụ `duong/backend-guideline`) để review trước khi merge chính thức.
+
+  - Việc này giúp tài liệu mang tính **chuyên nghiệp, dễ đọc, và phù hợp với chuẩn nhóm hơn**.
+
+**Đánh giá tổng quan:**
+
+- ✅ Nội dung: Rõ ràng, chi tiết, có định hướng cụ thể.
+
+- ⚙️ Cấu trúc: Nên chia nhỏ để dễ quản lý và duy trì.
+
+- 🧭 Văn phong: Cần thống nhất theo hướng hướng dẫn kỹ thuật, **không “tự sự” hoặc mang tính cá nhân hóa.**
+
+- 🔄 Quy trình: Tuân thủ mô hình push → pull request → review → merge để bảo đảm chất lượng nhánh `main`.
+
+---
+
 # 🧩 Task: Tài liệu định hướng Backend – MyShop
 
 **Người thực hiện:** Nguyễn Phúc Hoàng, Nguyễn Văn Bình Duơng
@@ -24,48 +60,48 @@ Tài liệu CHI TIẾT Định hướng các công việc của Backend được
 **Giai đoạn 1: Thiết kế & Nền tảng (Architecture & Foundation)**
 
 1. **Thiết kế Sơ đồ Cơ sở dữ liệu (Database Schema Design):**
-    - Xác định các thực thể (Entities), thuộc tính và mối quan hệ giữa chúng.
-    - Thiết kế các bảng, khóa chính (Primary Keys), khóa ngoại (Foreign Keys), và các ràng buộc (Constraints).
-    - Quyết định chiến lược về chỉ mục (Indexing) để tối ưu hóa truy vấn.
+   - Xác định các thực thể (Entities), thuộc tính và mối quan hệ giữa chúng.
+   - Thiết kế các bảng, khóa chính (Primary Keys), khóa ngoại (Foreign Keys), và các ràng buộc (Constraints).
+   - Quyết định chiến lược về chỉ mục (Indexing) để tối ưu hóa truy vấn.
 2. **Thiết lập Kiến trúc Backend (Backend Architecture Setup):**
-    - Hiện thực hóa cấu trúc project đã thảo luận: Clean Architecture + 3-Layer.
-    - Tạo các project Class Library cho `Core/Application` và `Infrastructure`.
-    - Định nghĩa các `Interfaces` cốt lõi (Repositories, Services) làm "hợp đồng" cho toàn bộ hệ thống.
+   - Hiện thực hóa cấu trúc project đã thảo luận: Clean Architecture + 3-Layer.
+   - Tạo các project Class Library cho `Core/Application` và `Infrastructure`.
+   - Định nghĩa các `Interfaces` cốt lõi (Repositories, Services) làm "hợp đồng" cho toàn bộ hệ thống.
 3. **Cấu hình Lớp Truy cập Dữ liệu (Data Access Layer - DAL):**
-    - Tích hợp Entity Framework Core vào project `Infrastructure`.
-    - Cấu hình `DbContext`, chuỗi kết nối (Connection String).
-    - Sử dụng EF Core Migrations để quản lý và phiên bản hóa sự thay đổi của schema CSDL.
+   - Tích hợp Entity Framework Core vào project `Infrastructure`.
+   - Cấu hình `DbContext`, chuỗi kết nối (Connection String).
+   - Sử dụng EF Core Migrations để quản lý và phiên bản hóa sự thay đổi của schema CSDL.
 
 **Giai đoạn 2: Xây dựng & Hiện thực hóa (Building & Implementation)**
 
 1. **Hiện thực hóa các Repository (Repository Implementation):**
-    - Viết các lớp `Repository` cụ thể (ví dụ: `ProductRepository`, `OrderRepository`) implement các interface đã định nghĩa ở Giai đoạn 1.
-    - Xây dựng các phương thức truy vấn dữ liệu cơ bản (CRUD) và các phương thức truy vấn phức tạp hơn.
+   - Viết các lớp `Repository` cụ thể (ví dụ: `ProductRepository`, `OrderRepository`) implement các interface đã định nghĩa ở Giai đoạn 1.
+   - Xây dựng các phương thức truy vấn dữ liệu cơ bản (CRUD) và các phương thức truy vấn phức tạp hơn.
 2. **Xây dựng Lớp Nghiệp vụ (Business Logic Layer - BLL):**
-    - Viết các lớp `Service` (ví dụ: `ProductService`, `OrderService`) chứa toàn bộ logic nghiệp vụ của ứng dụng.
-    - Đây là nơi xử lý validation, tính toán, và điều phối các hoạt động của Repository.
+   - Viết các lớp `Service` (ví dụ: `ProductService`, `OrderService`) chứa toàn bộ logic nghiệp vụ của ứng dụng.
+   - Đây là nơi xử lý validation, tính toán, và điều phối các hoạt động của Repository.
 3. **Thiết kế và Hiện thực hóa API nội bộ (Internal API Design):**
-    - Định nghĩa các DTOs (Data Transfer Objects) làm đầu vào và đầu ra cho các `Service`.
-    - Xây dựng một "mặt tiền" (Facade) nhất quán mà lớp Presentation (ViewModels) sẽ tương tác, đảm bảo ViewModel không cần biết về sự phức tạp bên trong BLL hay DAL.
+   - Định nghĩa các DTOs (Data Transfer Objects) làm đầu vào và đầu ra cho các `Service`.
+   - Xây dựng một "mặt tiền" (Facade) nhất quán mà lớp Presentation (ViewModels) sẽ tương tác, đảm bảo ViewModel không cần biết về sự phức tạp bên trong BLL hay DAL.
 
 **Giai đoạn 3: Đảm bảo Chất lượng & Tối ưu hóa (QA & Optimization)**
 
 1. **Viết Unit Test cho Backend:**
-    - Viết Unit Test cho tất cả các logic quan trọng trong các lớp `Service`.
-    - Sử dụng Mocking (với Moq) để cô lập `Service` khỏi `Repository` trong quá trình test.
+   - Viết Unit Test cho tất cả các logic quan trọng trong các lớp `Service`.
+   - Sử dụng Mocking (với Moq) để cô lập `Service` khỏi `Repository` trong quá trình test.
 2. **Tối ưu hóa Hiệu năng Truy vấn (Query Performance Tuning):**
-    - Phân tích các câu truy vấn "nặng" (ví dụ: báo cáo, thống kê).
-    - Sử dụng các kỹ thuật của EF Core như `AsNoTracking()`, `Include()`, `ThenInclude()`, và `Projection` (sử dụng `Select`) để tối ưu hóa.
-    - Xem xét việc sử dụng SQL thô hoặc Dapper cho các truy vấn cực kỳ phức tạp.
+   - Phân tích các câu truy vấn "nặng" (ví dụ: báo cáo, thống kê).
+   - Sử dụng các kỹ thuật của EF Core như `AsNoTracking()`, `Include()`, `ThenInclude()`, và `Projection` (sử dụng `Select`) để tối ưu hóa.
+   - Xem xét việc sử dụng SQL thô hoặc Dapper cho các truy vấn cực kỳ phức tạp.
 3. **Quản lý Dữ liệu và Di chuyển (Data Seeding & Migration):**
-    - Viết code để "gieo" (seed) dữ liệu mẫu vào CSDL, giúp cho việc test và demo trở nên dễ dàng.
-    - Quản lý quy trình `migration` khi có sự thay đổi về CSDL để đảm bảo tất cả thành viên trong nhóm và người dùng cuối đều có schema CSDL nhất quán.
+   - Viết code để "gieo" (seed) dữ liệu mẫu vào CSDL, giúp cho việc test và demo trở nên dễ dàng.
+   - Quản lý quy trình `migration` khi có sự thay đổi về CSDL để đảm bảo tất cả thành viên trong nhóm và người dùng cuối đều có schema CSDL nhất quán.
 
 **Giai đoạn 4: Triển khai & Bảo trì (Deployment & Maintenance)**
 
 1. **Xây dựng Kịch bản Backup và Restore:**
-    - Hiện thực hóa chức năng sao lưu và phục hồi CSDL.
-    - Viết tài liệu hướng dẫn cách thực hiện cho người dùng cuối.
+   - Hiện thực hóa chức năng sao lưu và phục hồi CSDL.
+   - Viết tài liệu hướng dẫn cách thực hiện cho người dùng cuối.
 
 ---
 
@@ -185,19 +221,19 @@ erDiagram
 ### **Giải thích chi tiết các quyết định thiết kế (The "Why" behind the "What")**
 
 - **Bảng `Products` và `Categories` (Quan hệ Một-Nhiều):**
-    - Thay vì lưu tên danh mục ("Laptop", "Điện thoại") trực tiếp trong bảng `Products`, chúng ta tách nó ra bảng `Categories` và tham chiếu qua `CategoryId`.
-    - **Lý do (Normalization):** Điều này tránh lặp lại dữ liệu và ngăn ngừa sai sót khi nhập liệu (ví dụ: "Laptop" vs "Loptop"). Khi muốn đổi tên một danh mục, bạn chỉ cần sửa ở một nơi duy nhất.
-    - `IsDeleted (bool)`: Đây là kỹ thuật **Soft Delete**. Thay vì xóa vĩnh viễn một sản phẩm (`DELETE FROM ...`), chúng ta chỉ đánh dấu là nó đã bị xóa. Điều này giúp bảo toàn dữ liệu lịch sử cho các báo cáo sau này.
+  - Thay vì lưu tên danh mục ("Laptop", "Điện thoại") trực tiếp trong bảng `Products`, chúng ta tách nó ra bảng `Categories` và tham chiếu qua `CategoryId`.
+  - **Lý do (Normalization):** Điều này tránh lặp lại dữ liệu và ngăn ngừa sai sót khi nhập liệu (ví dụ: "Laptop" vs "Loptop"). Khi muốn đổi tên một danh mục, bạn chỉ cần sửa ở một nơi duy nhất.
+  - `IsDeleted (bool)`: Đây là kỹ thuật **Soft Delete**. Thay vì xóa vĩnh viễn một sản phẩm (`DELETE FROM ...`), chúng ta chỉ đánh dấu là nó đã bị xóa. Điều này giúp bảo toàn dữ liệu lịch sử cho các báo cáo sau này.
 - **Bảng `Orders`, `Products` và `Order_Details` (Quan hệ Nhiều-Nhiều):**
-    - Một đơn hàng có thể có nhiều sản phẩm, và một sản phẩm có thể nằm trong nhiều đơn hàng. Đây là mối quan hệ Nhiều-Nhiều.
-    - **Nguyên tắc:** Mối quan hệ Nhiều-Nhiều luôn được hiện thực hóa bằng một **bảng trung gian** (junction table), ở đây là `Order_Details`.
-    - **Cột `UnitPrice` trong `Order_Details`:** Đây là một chi tiết **cực kỳ quan trọng**. Chúng ta không thể chỉ lưu `ProductId` và `Quantity`. Tại sao? Vì giá của sản phẩm (`Price` trong bảng `Products`) có thể thay đổi trong tương lai. Chúng ta cần lưu lại **giá của sản phẩm tại thời điểm mua hàng** để đảm bảo hóa đơn trong quá khứ luôn chính xác.
+  - Một đơn hàng có thể có nhiều sản phẩm, và một sản phẩm có thể nằm trong nhiều đơn hàng. Đây là mối quan hệ Nhiều-Nhiều.
+  - **Nguyên tắc:** Mối quan hệ Nhiều-Nhiều luôn được hiện thực hóa bằng một **bảng trung gian** (junction table), ở đây là `Order_Details`.
+  - **Cột `UnitPrice` trong `Order_Details`:** Đây là một chi tiết **cực kỳ quan trọng**. Chúng ta không thể chỉ lưu `ProductId` và `Quantity`. Tại sao? Vì giá của sản phẩm (`Price` trong bảng `Products`) có thể thay đổi trong tương lai. Chúng ta cần lưu lại **giá của sản phẩm tại thời điểm mua hàng** để đảm bảo hóa đơn trong quá khứ luôn chính xác.
 - **Bảng `Users`, `Roles`, `Permissions` (Phân quyền động):**
-    - Cấu trúc này cho phép bạn hiện thực hóa chức năng phân quyền một cách linh hoạt. Bạn có thể tạo ra các quyền rất chi tiết (ví dụ: `products.view_import_price`), gán chúng cho các vai trò, và gán vai trò cho người dùng ngay trong CSDL mà không cần sửa code.
+  - Cấu trúc này cho phép bạn hiện thực hóa chức năng phân quyền một cách linh hoạt. Bạn có thể tạo ra các quyền rất chi tiết (ví dụ: `products.view_import_price`), gán chúng cho các vai trò, và gán vai trò cho người dùng ngay trong CSDL mà không cần sửa code.
 - **Lựa chọn Kiểu dữ liệu:**
-    - **`decimal(18, 2)` cho tiền tệ:** **Không bao giờ** dùng `float` hay `double` để lưu trữ tiền. Các kiểu dấu phẩy động không thể biểu diễn chính xác các giá trị thập phân, dẫn đến sai sót trong tính toán. `decimal` được thiết kế cho việc này.
-    - **`nvarchar` cho chuỗi:** `n` ở đầu có nghĩa là hỗ trợ **Unicode**, cho phép bạn lưu trữ các ký tự có dấu như tiếng Việt một cách chính xác.
-    - **`datetime2` thay vì `datetime`:** `datetime2` có độ chính xác cao hơn và dải giá trị rộng hơn so với kiểu `datetime` cũ.
+  - **`decimal(18, 2)` cho tiền tệ:** **Không bao giờ** dùng `float` hay `double` để lưu trữ tiền. Các kiểu dấu phẩy động không thể biểu diễn chính xác các giá trị thập phân, dẫn đến sai sót trong tính toán. `decimal` được thiết kế cho việc này.
+  - **`nvarchar` cho chuỗi:** `n` ở đầu có nghĩa là hỗ trợ **Unicode**, cho phép bạn lưu trữ các ký tự có dấu như tiếng Việt một cách chính xác.
+  - **`datetime2` thay vì `datetime`:** `datetime2` có độ chính xác cao hơn và dải giá trị rộng hơn so với kiểu `datetime` cũ.
 
 ---
 
@@ -261,17 +297,17 @@ MyShop.sln (Solution)
 ### **Giải thích vai trò của từng Project và Thư mục**
 
 - **`MyShop.Core` (Class Library):**
-    - **Mục đích:** Đây là project trung tâm, không phụ thuộc vào bất kỳ project nào khác. Nó chứa tất cả logic nghiệp vụ và các định nghĩa cốt lõi. Nó không biết gì về database, UI hay bất kỳ công nghệ cụ thể nào.
-    - **`Domain/Entities`:** Chứa các class C# thuần túy (POCO) ánh xạ 1-1 với các bảng trong CSDL mà chúng ta vừa thiết kế.
-    - **`Application/Interfaces` (Services & Repositories):** Đây là phần **cực kỳ quan trọng**. Nó định nghĩa các "hợp đồng" mà các lớp bên ngoài phải tuân theo. Ví dụ, `IProductRepository` định nghĩa "Tôi cần một ai đó có khả năng lấy tất cả sản phẩm", nhưng nó không quan tâm ai và làm điều đó như thế nào.
-    - **`Application/DTOs`:** Các Data Transfer Objects. Đây là các class dùng để truyền dữ liệu giữa các lớp, đặc biệt là giữa BLL và Presentation. Nó giúp che giấu cấu trúc Entity thật khỏi lớp UI.
+  - **Mục đích:** Đây là project trung tâm, không phụ thuộc vào bất kỳ project nào khác. Nó chứa tất cả logic nghiệp vụ và các định nghĩa cốt lõi. Nó không biết gì về database, UI hay bất kỳ công nghệ cụ thể nào.
+  - **`Domain/Entities`:** Chứa các class C# thuần túy (POCO) ánh xạ 1-1 với các bảng trong CSDL mà chúng ta vừa thiết kế.
+  - **`Application/Interfaces` (Services & Repositories):** Đây là phần **cực kỳ quan trọng**. Nó định nghĩa các "hợp đồng" mà các lớp bên ngoài phải tuân theo. Ví dụ, `IProductRepository` định nghĩa "Tôi cần một ai đó có khả năng lấy tất cả sản phẩm", nhưng nó không quan tâm ai và làm điều đó như thế nào.
+  - **`Application/DTOs`:** Các Data Transfer Objects. Đây là các class dùng để truyền dữ liệu giữa các lớp, đặc biệt là giữa BLL và Presentation. Nó giúp che giấu cấu trúc Entity thật khỏi lớp UI.
 - **`MyShop.Infrastructure` (Class Library):**
-    - **Mục đích:** Là nơi hiện thực hóa các chi tiết kỹ thuật. Nó **implement** các interface đã được định nghĩa trong `MyShop.Core`.
-    - **`Persistence/DbContext`:** Chứa class `MyShopDbContext` kế thừa từ `DbContext` của Entity Framework. Đây là cầu nối chính đến CSDL.
-    - **`Persistence/Repositories`:** Chứa các class `ProductRepository`, `OrderRepository`... **implement** các interface `IProductRepository`, `IOrderRepository` từ `Core`. Đây là nơi code Entity Framework thực sự được viết.
+  - **Mục đích:** Là nơi hiện thực hóa các chi tiết kỹ thuật. Nó **implement** các interface đã được định nghĩa trong `MyShop.Core`.
+  - **`Persistence/DbContext`:** Chứa class `MyShopDbContext` kế thừa từ `DbContext` của Entity Framework. Đây là cầu nối chính đến CSDL.
+  - **`Persistence/Repositories`:** Chứa các class `ProductRepository`, `OrderRepository`... **implement** các interface `IProductRepository`, `IOrderRepository` từ `Core`. Đây là nơi code Entity Framework thực sự được viết.
 - **`MyShop.UI` (WinUI 3 Project):**
-    - **Mục đích:** Chứa tất cả mọi thứ liên quan đến giao diện người dùng.
-    - **`Views` & `ViewModels`:** Hiện thực hóa pattern MVVM. ViewModel sẽ gọi các `Service` từ `MyShop.Core`.
+  - **Mục đích:** Chứa tất cả mọi thứ liên quan đến giao diện người dùng.
+  - **`Views` & `ViewModels`:** Hiện thực hóa pattern MVVM. ViewModel sẽ gọi các `Service` từ `MyShop.Core`.
 
 ### **Sơ đồ Phụ thuộc (The Dependency Rule in Action)**
 
@@ -301,8 +337,8 @@ graph TD
 - **`MyShop.UI`** tham chiếu đến **`MyShop.Core`** để có thể sử dụng các `IService` và `DTO`.
 - **`MyShop.Infrastructure`** tham chiếu đến **`MyShop.Core`** để có thể implement các `IRepository` và sử dụng các `Entity`.
 - **QUAN TRỌNG NHẤT:**
-    - **`MyShop.Core` không tham chiếu đến bất kỳ ai.** Nó là trung tâm độc lập.
-    - **`MyShop.UI` KHÔNG BAO GIỜ được tham chiếu đến `MyShop.Infrastructure`**. Lớp giao diện không được phép biết về sự tồn tại của Entity Framework hay cách bạn lưu trữ dữ liệu.
+  - **`MyShop.Core` không tham chiếu đến bất kỳ ai.** Nó là trung tâm độc lập.
+  - **`MyShop.UI` KHÔNG BAO GIỜ được tham chiếu đến `MyShop.Infrastructure`**. Lớp giao diện không được phép biết về sự tồn tại của Entity Framework hay cách bạn lưu trữ dữ liệu.
 
 ### **Các bước thực hiện trong Visual Studio**
 
@@ -310,12 +346,12 @@ Với vai trò Lead Backend, đây là các bước bạn sẽ thực hiện đ�
 
 1. **Tạo Solution:** Mở Visual Studio, tạo một Blank Solution tên là `MyShop`.
 2. **Tạo các Project:**
-    - Chuột phải vào Solution -> Add -> New Project -> Chọn **Class Library** -> Đặt tên `MyShop.Core`.
-    - Làm tương tự để tạo `MyShop.Infrastructure`.
-    - Chuột phải vào Solution -> Add -> New Project -> Chọn **Blank App, Packaged (WinUI 3 in Desktop)** -> Đặt tên `MyShop.UI`.
+   - Chuột phải vào Solution -> Add -> New Project -> Chọn **Class Library** -> Đặt tên `MyShop.Core`.
+   - Làm tương tự để tạo `MyShop.Infrastructure`.
+   - Chuột phải vào Solution -> Add -> New Project -> Chọn **Blank App, Packaged (WinUI 3 in Desktop)** -> Đặt tên `MyShop.UI`.
 3. **Thiết lập Tham chiếu (Project References):**
-    - Trong project `MyShop.UI`, chuột phải vào Dependencies -> Add Project Reference -> Check vào `MyShop.Core`.
-    - Trong project `MyShop.Infrastructure`, chuột phải vào Dependencies -> Add Project Reference -> Check vào `MyShop.Core`.
+   - Trong project `MyShop.UI`, chuột phải vào Dependencies -> Add Project Reference -> Check vào `MyShop.Core`.
+   - Trong project `MyShop.Infrastructure`, chuột phải vào Dependencies -> Add Project Reference -> Check vào `MyShop.Core`.
 
 Bạn đã hoàn thành việc xây dựng bộ khung kiến trúc. Đây là một nền tảng cực kỳ vững chắc và chuyên nghiệp.
 
@@ -470,11 +506,11 @@ Bây giờ, EF Core đã biết về các `Entity` của bạn (qua `DbSet`), bi
 1. Trong Visual Studio, đảm bảo project **`MyShop.UI`** là **Startup Project**.
 2. Trong **Package Manager Console**, đảm bảo **Default project** là **`MyShop.Infrastructure`**.
 3. Chạy lệnh:
-    
-    ```powershell
-    Add-Migration InitialCreate
-    ```
-    
+
+   ```powershell
+   Add-Migration InitialCreate
+   ```
+
 4. Lệnh này sẽ phân tích `MyShopDbContext` của bạn, so sánh với CSDL hiện tại (chưa có gì), và tạo ra một folder `Migrations` trong `MyShop.Infrastructure` chứa một file C# mô tả tất cả các câu lệnh SQL cần thiết để tạo ra các bảng, cột, khóa chính, khóa ngoại...
 
 **Bước 6: Áp dụng Migration vào CSDL**
@@ -542,7 +578,7 @@ namespace MyShop.Core.Application.Repositories
 
 ```
 
-*(Lưu ý: Bạn cần cho tất cả các Entity của mình kế thừa từ `BaseEntity`)*
+_(Lưu ý: Bạn cần cho tất cả các Entity của mình kế thừa từ `BaseEntity`)_
 
 **Bước 2: Implement Interface trong `MyShop.Infrastructure`**
 
@@ -905,19 +941,19 @@ Bạn sẽ thấy việc chuyển đổi dữ liệu thủ công giữa `DTO` v�
 
 1. Cài đặt gói `AutoMapper` vào project `Core`.
 2. Tạo các `Profile` để định nghĩa cách ánh xạ:
-    
-    ```csharp
-    public class MappingProfile : Profile
-    {
-        public MappingProfile()
-        {
-            CreateMap<Product, ProductDto>();
-            CreateMap<CreateProductDto, Product>();
-            // ...
-        }
-    }
-    ```
-    
+
+   ```csharp
+   public class MappingProfile : Profile
+   {
+       public MappingProfile()
+       {
+           CreateMap<Product, ProductDto>();
+           CreateMap<CreateProductDto, Product>();
+           // ...
+       }
+   }
+   ```
+
 3. Inject `IMapper` vào Service và sử dụng: `var productDto = _mapper.Map<ProductDto>(productEntity);`
 
 ---
@@ -1115,12 +1151,12 @@ Với vai trò Backend Lead, bạn cần hiểu rằng Unit Test không phải l
 Dựa trên kim tự tháp kiểm thử, chúng ta sẽ tập trung vào nơi chứa nhiều logic nhất và dễ cô lập nhất.
 
 - **✅ NÊN TEST:**
-    - **Các lớp `Service` (BLL):** Đây là mục tiêu chính. Toàn bộ logic nghiệp vụ, các câu lệnh `if/else`, các vòng lặp, các phép tính toán đều nằm ở đây.
-    - **Các lớp `Validator` (nếu có):** Nếu bạn dùng FluentValidation, bạn sẽ viết test cho các quy tắc validation của mình.
+  - **Các lớp `Service` (BLL):** Đây là mục tiêu chính. Toàn bộ logic nghiệp vụ, các câu lệnh `if/else`, các vòng lặp, các phép tính toán đều nằm ở đây.
+  - **Các lớp `Validator` (nếu có):** Nếu bạn dùng FluentValidation, bạn sẽ viết test cho các quy tắc validation của mình.
 - **❌ KHÔNG CẦN TEST:**
-    - **Các lớp `Repository`:** Chúng chỉ là một lớp mỏng trên `DbContext`. Việc test chúng chẳng khác nào test xem phương thức `ToList()` của EF Core có hoạt động không. Chúng ta tin tưởng vào Microsoft.
-    - **`DbContext`:** Đây là một thành phần hạ tầng phức tạp.
-    - **Các `Entity` và `DTO`:** Chúng chỉ là các túi chứa dữ liệu, không có logic để test.
+  - **Các lớp `Repository`:** Chúng chỉ là một lớp mỏng trên `DbContext`. Việc test chúng chẳng khác nào test xem phương thức `ToList()` của EF Core có hoạt động không. Chúng ta tin tưởng vào Microsoft.
+  - **`DbContext`:** Đây là một thành phần hạ tầng phức tạp.
+  - **Các `Entity` và `DTO`:** Chúng chỉ là các túi chứa dữ liệu, không có logic để test.
 
 ### **Kỹ thuật Cốt lõi: Mocking (The "How")**
 
@@ -1138,12 +1174,11 @@ Làm thế nào chúng ta có thể test `OrderService` mà không cần kết n
 1. Tạo một project mới trong solution: **xUnit Test Project**, đặt tên là **`MyShop.Core.Tests`**.
 2. Trong `MyShop.Core.Tests`, thêm tham chiếu đến project `MyShop.Core`.
 3. Cài đặt các gói NuGet cần thiết cho `MyShop.Core.Tests`:
-    
-    ```powershell
-    Install-Package Moq
-    Install-Package AutoFixture # Thư viện giúp tạo dữ liệu test ngẫu nhiên, rất hữu ích
-    ```
-    
+
+   ```powershell
+   Install-Package Moq
+   Install-Package AutoFixture # Thư viện giúp tạo dữ liệu test ngẫu nhiên, rất hữu ích
+   ```
 
 **Bước 2: Viết Test cho `OrderService`**
 
@@ -1264,150 +1299,144 @@ Mọi kỹ thuật tối ưu hóa đều xoay quanh hai nguyên tắc vàng:
 - **Vấn đề:** Mặc định, khi bạn truy vấn dữ liệu, `DbContext` sẽ giữ một "bản sao" của các đối tượng đó trong bộ nhớ để theo dõi các thay đổi (Change Tracking). Việc này tốn bộ nhớ và thời gian xử lý.
 - **Giải pháp:** Nếu bạn chỉ đọc dữ liệu để hiển thị và không có ý định cập nhật nó, hãy luôn luôn sử dụng `.AsNoTracking()`.
 - **Ví dụ:**
-    
-    ```csharp
-    // Trong ProductRepository
-    public async Task<IReadOnlyList<ProductDto>> GetAllProductsForDisplayAsync()
-    {
-        return await _dbContext.Products
-                               .AsNoTracking() // Báo cho EF Core: "Đừng theo dõi những đối tượng này"
-                               .Select(p => new ProductDto { ... })
-                               .ToListAsync();
-    }
-    
-    ```
-    
+
+  ```csharp
+  // Trong ProductRepository
+  public async Task<IReadOnlyList<ProductDto>> GetAllProductsForDisplayAsync()
+  {
+      return await _dbContext.Products
+                             .AsNoTracking() // Báo cho EF Core: "Đừng theo dõi những đối tượng này"
+                             .Select(p => new ProductDto { ... })
+                             .ToListAsync();
+  }
+
+  ```
 
 **2. Projection (`.Select()`) - Chỉ lấy những cột bạn cần**
 
 - **Vấn đề:** Khi bạn thực thi `_dbContext.Products.ToListAsync()`, EF Core sẽ sinh ra câu lệnh `SELECT [Id], [Name], [Description], [Price], ... FROM [Products]`, lấy về tất cả các cột, kể cả những cột nặng như `Description` (nvarchar(MAX)) mà bạn có thể không cần cho màn hình danh sách.
 - **Giải pháp:** Luôn sử dụng `.Select()` để tạo ra một DTO hoặc một Anonymous Type chỉ chứa các thuộc tính bạn cần. EF Core đủ thông minh để chỉ sinh ra câu lệnh SQL lấy đúng những cột đó.
 - **Ví dụ:**
-    
-    ```csharp
-    // Lấy danh sách sản phẩm chỉ với Tên và Giá để hiển thị
-    public async Task<IReadOnlyList<ProductSummaryDto>> GetProductSummariesAsync()
-    {
-        return await _dbContext.Products
-                               .AsNoTracking()
-                               .Select(p => new ProductSummaryDto // Projection
-                               {
-                                   Id = p.Id,
-                                   Name = p.Name,
-                                   Price = p.Price
-                               })
-                               .ToListAsync();
-    }
-    // SQL được sinh ra sẽ là: SELECT [Id], [Name], [Price] FROM [Products]
-    
-    ```
-    
+
+  ```csharp
+  // Lấy danh sách sản phẩm chỉ với Tên và Giá để hiển thị
+  public async Task<IReadOnlyList<ProductSummaryDto>> GetProductSummariesAsync()
+  {
+      return await _dbContext.Products
+                             .AsNoTracking()
+                             .Select(p => new ProductSummaryDto // Projection
+                             {
+                                 Id = p.Id,
+                                 Name = p.Name,
+                                 Price = p.Price
+                             })
+                             .ToListAsync();
+  }
+  // SQL được sinh ra sẽ là: SELECT [Id], [Name], [Price] FROM [Products]
+
+  ```
 
 **3. Eager Loading (`.Include()` và `.ThenInclude()`) - Tránh vấn đề N+1**
 
 - **Vấn đề (N+1 Query Problem):** Đây là lỗi hiệu năng phổ biến và nghiêm trọng nhất. Hãy xem xét kịch bản sau:
-    
-    ```csharp
-    // CODE TỆ - GÂY RA LỖI N+1
-    var products = await _dbContext.Products.ToListAsync(); // 1 câu query
-    foreach (var product in products)
-    {
-        // Với mỗi sản phẩm, EF Core sẽ chạy thêm 1 câu query nữa để lấy Category
-        Console.WriteLine($"Product: {product.Name}, Category: {product.Category.Name}");
-    }
-    // Nếu có N sản phẩm, bạn sẽ thực thi tổng cộng N+1 câu query!
-    
-    ```
-    
+
+  ```csharp
+  // CODE TỆ - GÂY RA LỖI N+1
+  var products = await _dbContext.Products.ToListAsync(); // 1 câu query
+  foreach (var product in products)
+  {
+      // Với mỗi sản phẩm, EF Core sẽ chạy thêm 1 câu query nữa để lấy Category
+      Console.WriteLine($"Product: {product.Name}, Category: {product.Category.Name}");
+  }
+  // Nếu có N sản phẩm, bạn sẽ thực thi tổng cộng N+1 câu query!
+
+  ```
+
 - **Giải pháp (Eager Loading):** Sử dụng `.Include()` để báo cho EF Core: "Khi lấy danh sách sản phẩm, hãy lấy luôn dữ liệu của bảng `Category` liên quan trong cùng một câu lệnh SQL (sử dụng `LEFT JOIN`)".
 - **Ví dụ:**
-    
-    ```csharp
-    public async Task<IReadOnlyList<Product>> GetProductsWithCategoryAsync()
-    {
-        return await _dbContext.Products
-                               .AsNoTracking()
-                               .Include(p => p.Category) // Eager load Category
-                               .ToListAsync();
-    }
-    // SQL được sinh ra sẽ chỉ là 1 câu query duy nhất có LEFT JOIN.
-    
-    ```
-    
+
+  ```csharp
+  public async Task<IReadOnlyList<Product>> GetProductsWithCategoryAsync()
+  {
+      return await _dbContext.Products
+                             .AsNoTracking()
+                             .Include(p => p.Category) // Eager load Category
+                             .ToListAsync();
+  }
+  // SQL được sinh ra sẽ chỉ là 1 câu query duy nhất có LEFT JOIN.
+
+  ```
+
 - **Với quan hệ sâu hơn (Order -> OrderDetails -> Product):**
-    
-    ```csharp
-    var order = await _dbContext.Orders
-                                .Include(o => o.OrderDetails) // Lấy các chi tiết đơn hàng
-                                    .ThenInclude(od => od.Product) // Với mỗi chi tiết, lấy luôn sản phẩm
-                                .SingleOrDefaultAsync(o => o.Id == orderId);
-    
-    ```
-    
+
+  ```csharp
+  var order = await _dbContext.Orders
+                              .Include(o => o.OrderDetails) // Lấy các chi tiết đơn hàng
+                                  .ThenInclude(od => od.Product) // Với mỗi chi tiết, lấy luôn sản phẩm
+                              .SingleOrDefaultAsync(o => o.Id == orderId);
+
+  ```
 
 **4. Lọc dữ liệu ở phía Database (`.Where()`)**
 
 - **Vấn đề:** Lấy toàn bộ dữ liệu về phía ứng dụng rồi mới lọc là một cách làm cực kỳ tồi tệ.
-    
-    ```csharp
-    // CODE RẤT TỆ
-    var allProducts = await _dbContext.Products.ToListAsync(); // Kéo 10,000 sản phẩm về RAM
-    var cheapLaptops = allProducts.Where(p => p.Category.Name == "Laptop" && p.Price < 1000); // Lọc trong RAM
-    
-    ```
-    
+
+  ```csharp
+  // CODE RẤT TỆ
+  var allProducts = await _dbContext.Products.ToListAsync(); // Kéo 10,000 sản phẩm về RAM
+  var cheapLaptops = allProducts.Where(p => p.Category.Name == "Laptop" && p.Price < 1000); // Lọc trong RAM
+
+  ```
+
 - **Giải pháp:** Luôn đặt các mệnh đề `.Where()` trước `.ToListAsync()` hoặc các toán tử thực thi khác. EF Core sẽ dịch các điều kiện này thành mệnh đề `WHERE` trong câu lệnh SQL, để cho database làm công việc mà nó giỏi nhất: lọc dữ liệu.
 - **Ví dụ:**
-    
-    ```csharp
-    // CODE TỐT
-    var cheapLaptops = await _dbContext.Products
-                                       .Where(p => p.Category.Name == "Laptop" && p.Price < 1000) // Lọc trên DB
-                                       .ToListAsync(); // Chỉ kéo về những sản phẩm thỏa mãn điều kiện
-    
-    ```
-    
+
+  ```csharp
+  // CODE TỐT
+  var cheapLaptops = await _dbContext.Products
+                                     .Where(p => p.Category.Name == "Laptop" && p.Price < 1000) // Lọc trên DB
+                                     .ToListAsync(); // Chỉ kéo về những sản phẩm thỏa mãn điều kiện
+
+  ```
 
 **5. Phân trang (Pagination)**
 
 - **Vấn đề:** Hiển thị 10,000 sản phẩm cùng lúc trên một `ListView` sẽ làm ứng dụng bị treo.
 - **Giải pháp:** Chỉ lấy một "trang" dữ liệu mỗi lần (ví dụ: 20 sản phẩm). Sử dụng `.Skip()` và `.Take()`.
 - **Ví dụ:**
-    
-    ```csharp
-    public async Task<PagedResult<ProductDto>> GetProductsPagedAsync(int pageNumber, int pageSize)
-    {
-        var query = _dbContext.Products.AsNoTracking();
-    
-        var totalCount = await query.CountAsync(); // Lấy tổng số record
-    
-        var items = await query.Skip((pageNumber - 1) * pageSize) // Bỏ qua các trang trước
-                               .Take(pageSize) // Lấy số lượng record của trang hiện tại
-                               .Select(p => new ProductDto { ... })
-                               .ToListAsync();
-    
-        return new PagedResult<ProductDto> { Items = items, TotalCount = totalCount };
-    }
-    
-    ```
-    
+
+  ```csharp
+  public async Task<PagedResult<ProductDto>> GetProductsPagedAsync(int pageNumber, int pageSize)
+  {
+      var query = _dbContext.Products.AsNoTracking();
+
+      var totalCount = await query.CountAsync(); // Lấy tổng số record
+
+      var items = await query.Skip((pageNumber - 1) * pageSize) // Bỏ qua các trang trước
+                             .Take(pageSize) // Lấy số lượng record của trang hiện tại
+                             .Select(p => new ProductDto { ... })
+                             .ToListAsync();
+
+      return new PagedResult<ProductDto> { Items = items, TotalCount = totalCount };
+  }
+
+  ```
 
 **Công cụ để chẩn đoán**
 
 Làm sao bạn biết EF Core đang sinh ra câu lệnh SQL nào?
 
 - **Logging:** Cấu hình EF Core để ghi log tất cả các câu lệnh SQL mà nó tạo ra ra cửa sổ Console hoặc Debug. Đây là cách đơn giản và hiệu quả nhất để "thấy" những gì đang thực sự xảy ra.
-    
-    ```csharp
-    // Trong App.xaml.cs, khi cấu hình DbContext
-    services.AddDbContext<MyShopDbContext>(options =>
-    {
-        options.UseSqlServer(connectionString);
-        options.LogTo(Console.WriteLine, LogLevel.Information); // Log SQL ra Console
-    });
-    
-    ```
-    
+
+  ```csharp
+  // Trong App.xaml.cs, khi cấu hình DbContext
+  services.AddDbContext<MyShopDbContext>(options =>
+  {
+      options.UseSqlServer(connectionString);
+      options.LogTo(Console.WriteLine, LogLevel.Information); // Log SQL ra Console
+  });
+
+  ```
 
 ---
 
@@ -1535,28 +1564,26 @@ Migrations là "lịch sử" thay đổi CSDL của bạn. Mỗi file migration 
 Với vai trò Lead Backend, bạn cần đảm bảo cả nhóm tuân thủ các quy tắc sau:
 
 1. **Mỗi Migration phải nhỏ và có mục đích duy nhất:**
-    - **Tệ:** Một migration khổng lồ tên là `UpdateFeaturesForSprint5` vừa thêm bảng `Promotions`, vừa sửa bảng `Products`, vừa xóa cột trong bảng `Customers`.
-    - **Tốt:** Ba migration riêng biệt: `AddPromotionsTable`, `AddImageUrlToProducts`, `RemoveAddressFromCustomers`. Điều này giúp dễ dàng xác định và rollback khi có lỗi.
+   - **Tệ:** Một migration khổng lồ tên là `UpdateFeaturesForSprint5` vừa thêm bảng `Promotions`, vừa sửa bảng `Products`, vừa xóa cột trong bảng `Customers`.
+   - **Tốt:** Ba migration riêng biệt: `AddPromotionsTable`, `AddImageUrlToProducts`, `RemoveAddressFromCustomers`. Điều này giúp dễ dàng xác định và rollback khi có lỗi.
 2. **Luôn đặt tên Migration một cách rõ ràng:** Tên phải mô tả chính xác sự thay đổi.
 3. **Không bao giờ chỉnh sửa một file Migration đã được commit và chia sẻ:**
-    - Một khi file migration đã được đẩy lên repository chung, nó được coi là "bất biến". Nếu bạn cần thay đổi thêm, hãy tạo một migration mới.
-    - **Lý do:** Các thành viên khác có thể đã áp dụng migration đó vào CSDL của họ. Việc bạn sửa đổi nó sẽ gây ra xung đột và không nhất quán.
+   - Một khi file migration đã được đẩy lên repository chung, nó được coi là "bất biến". Nếu bạn cần thay đổi thêm, hãy tạo một migration mới.
+   - **Lý do:** Các thành viên khác có thể đã áp dụng migration đó vào CSDL của họ. Việc bạn sửa đổi nó sẽ gây ra xung đột và không nhất quán.
 4. **Giải quyết xung đột Migration (Merge Conflicts):**
-    - Đây là tình huống khó khăn nhất. Nó xảy ra khi hai người cùng tạo migration trên cùng một nhánh và sau đó cố gắng hợp nhất (merge).
-    - **Giải pháp tốt nhất là phòng ngừa:** Giao tiếp tốt trong team. Nếu bạn và một người khác cùng làm việc trên các chức năng liên quan đến CSDL, hãy thống nhất ai sẽ tạo migration trước.
-    - **Khi xung đột xảy ra:** Thường cách giải quyết an toàn nhất là:
-        1. Hoàn tác (revert) migration của bạn.
-        2. Lấy code mới nhất (bao gồm migration của người kia) về.
-        3. Áp dụng migration của người kia vào CSDL của bạn (`Update-Database`).
-        4. Tạo lại migration của bạn từ đầu. Lần này nó sẽ được tạo dựa trên schema mới nhất.
+   - Đây là tình huống khó khăn nhất. Nó xảy ra khi hai người cùng tạo migration trên cùng một nhánh và sau đó cố gắng hợp nhất (merge).
+   - **Giải pháp tốt nhất là phòng ngừa:** Giao tiếp tốt trong team. Nếu bạn và một người khác cùng làm việc trên các chức năng liên quan đến CSDL, hãy thống nhất ai sẽ tạo migration trước.
+   - **Khi xung đột xảy ra:** Thường cách giải quyết an toàn nhất là:
+     1. Hoàn tác (revert) migration của bạn.
+     2. Lấy code mới nhất (bao gồm migration của người kia) về.
+     3. Áp dụng migration của người kia vào CSDL của bạn (`Update-Database`).
+     4. Tạo lại migration của bạn từ đầu. Lần này nó sẽ được tạo dựa trên schema mới nhất.
 5. **Tạo Script SQL từ Migrations:**
-    - Trong môi trường production, DBA (Quản trị CSDL) có thể không cho phép ứng dụng tự ý thay đổi schema.
-    - Bạn có thể tạo ra một file script SQL từ các migration để DBA review và tự chạy:
-        
-        ```powershell
-        Script-Migration -From [Migration_Bắt_Đầu] -To [Migration_Kết_Thúc] -Output "update_script.sql"
-        ```
-        
+   - Trong môi trường production, DBA (Quản trị CSDL) có thể không cho phép ứng dụng tự ý thay đổi schema.
+   - Bạn có thể tạo ra một file script SQL từ các migration để DBA review và tự chạy:
+     ```powershell
+     Script-Migration -From [Migration_Bắt_Đầu] -To [Migration_Kết_Thúc] -Output "update_script.sql"
+     ```
 
 ---
 
@@ -1769,7 +1796,7 @@ public class SettingsViewModel : ObservableObject
 
 # Kịch bản đầy đủ
 
-### Chức năng:  **Người dùng tạo một đơn hàng mới**.
+### Chức năng: **Người dùng tạo một đơn hàng mới**.
 
 Sơ đồ này sẽ cho bạn thấy chính xác dữ liệu chảy qua từng lớp, từng thành phần trong kiến trúc backend mà bạn đã thiết kế như thế nào, và liên kết nó với 10 điểm trong roadmap của bạn.
 
@@ -1864,22 +1891,22 @@ sequenceDiagram
 Sơ đồ trên mô tả một hành trình hoàn chỉnh. Đây là cách 10 điểm trong roadmap của bạn được thể hiện trong luồng này:
 
 - **1. Thiết kế Sơ đồ Cơ sở dữ liệu:**
-    - **Thể hiện ở đâu:** Toàn bộ cấu trúc của `Database` và các `Entity` (Product, Order) mà `DbContext` làm việc cùng đều là kết quả trực tiếp của bước thiết kế này. Mối quan hệ giữa các bảng quyết định cách các câu `INSERT`/`UPDATE` được thực thi.
+  - **Thể hiện ở đâu:** Toàn bộ cấu trúc của `Database` và các `Entity` (Product, Order) mà `DbContext` làm việc cùng đều là kết quả trực tiếp của bước thiết kế này. Mối quan hệ giữa các bảng quyết định cách các câu `INSERT`/`UPDATE` được thực thi.
 - **2. Thiết lập Kiến trúc Backend:**
-    - **Thể hiện ở đâu:** Cấu trúc của chính sơ đồ này là minh chứng rõ nhất. Bạn có thể thấy sự phân tách rõ ràng giữa các lớp: `ViewModel` (UI) -> `AppService` (Facade) -> `Services` (BLL) -> `Repositories` (DAL). Các mũi tên chỉ đi theo một chiều, tuân thủ Quy tắc Phụ thuộc.
+  - **Thể hiện ở đâu:** Cấu trúc của chính sơ đồ này là minh chứng rõ nhất. Bạn có thể thấy sự phân tách rõ ràng giữa các lớp: `ViewModel` (UI) -> `AppService` (Facade) -> `Services` (BLL) -> `Repositories` (DAL). Các mũi tên chỉ đi theo một chiều, tuân thủ Quy tắc Phụ thuộc.
 - **3. Cấu hình Lớp Truy cập Dữ liệu (DAL):**
-    - **Thể hiện ở đâu:** Participant `DbContext` và khả năng nó có thể gửi lệnh SQL đến `Database` là kết quả của việc cấu hình EF Core, `ConnectionString`, và đăng ký `DbContext` với DI container.
+  - **Thể hiện ở đâu:** Participant `DbContext` và khả năng nó có thể gửi lệnh SQL đến `Database` là kết quả của việc cấu hình EF Core, `ConnectionString`, và đăng ký `DbContext` với DI container.
 - **4. Hiện thực hóa các Repository:**
-    - **Thể hiện ở đâu:** Khi `OrderService` cần dữ liệu, nó không gọi `DbContext` trực tiếp. Nó gọi đến `UnitOfWork` và `Repositories`. Các phương thức như `GetByIdAsync`, `AddAsync` chính là những gì bạn đã implement trong lớp Repository.
+  - **Thể hiện ở đâu:** Khi `OrderService` cần dữ liệu, nó không gọi `DbContext` trực tiếp. Nó gọi đến `UnitOfWork` và `Repositories`. Các phương thức như `GetByIdAsync`, `AddAsync` chính là những gì bạn đã implement trong lớp Repository.
 - **5. Xây dựng Lớp Nghiệp vụ (BLL):**
-    - **Thể hiện ở đâu:** Đây là phần "bộ não" trong participant `OrderService`. Các hành động như "Kiểm tra tồn kho", "Trừ tồn kho", "Tính tổng tiền" là logic nghiệp vụ thuần túy, không dính dáng gì đến UI hay chi tiết DB.
+  - **Thể hiện ở đâu:** Đây là phần "bộ não" trong participant `OrderService`. Các hành động như "Kiểm tra tồn kho", "Trừ tồn kho", "Tính tổng tiền" là logic nghiệp vụ thuần túy, không dính dáng gì đến UI hay chi tiết DB.
 - **6. Thiết kế API nội bộ (Facade):**
-    - **Thể hiện ở đâu:** Participant `AppService (Facade)` là điểm mấu chốt. `ViewModel` chỉ cần biết đến một "cửa" duy nhất này. Nó không cần biết rằng để tạo một đơn hàng, hệ thống phải gọi đến cả `OrderService` và `ProductService`.
+  - **Thể hiện ở đâu:** Participant `AppService (Facade)` là điểm mấu chốt. `ViewModel` chỉ cần biết đến một "cửa" duy nhất này. Nó không cần biết rằng để tạo một đơn hàng, hệ thống phải gọi đến cả `OrderService` và `ProductService`.
 - **7. Viết Unit Test cho Backend:**
-    - **Thể hiện ở đâu:** Sơ đồ này mô tả luồng chạy thực tế. Unit Test không nằm trong luồng này, nhưng nó là công cụ để **đảm bảo** luồng này chạy đúng. Khi test `OrderService`, bạn sẽ **mock** `IUnitOfWork` và dạy cho nó cách hành xử (ví dụ: "khi `ProductRepository.GetByIdAsync` được gọi, hãy trả về sản phẩm X"). Sau đó bạn kiểm tra xem `OrderService` có gọi `Update` và `SaveChangesAsync` đúng như mong đợi không.
+  - **Thể hiện ở đâu:** Sơ đồ này mô tả luồng chạy thực tế. Unit Test không nằm trong luồng này, nhưng nó là công cụ để **đảm bảo** luồng này chạy đúng. Khi test `OrderService`, bạn sẽ **mock** `IUnitOfWork` và dạy cho nó cách hành xử (ví dụ: "khi `ProductRepository.GetByIdAsync` được gọi, hãy trả về sản phẩm X"). Sau đó bạn kiểm tra xem `OrderService` có gọi `Update` và `SaveChangesAsync` đúng như mong đợi không.
 - **8. Tối ưu hóa Hiệu năng Truy vấn:**
-    - **Thể hiện ở đâu:** Khi `DbContext` gửi lệnh `SELECT` đến `Database`. Một truy vấn được tối ưu (ví dụ dùng `AsNoTracking` nếu chỉ đọc) sẽ chạy nhanh hơn. Mặc dù không thể hiện rõ trong sơ đồ, nhưng nó ảnh hưởng trực tiếp đến thời gian phản hồi của mũi tên `Database -->> DbContext`.
+  - **Thể hiện ở đâu:** Khi `DbContext` gửi lệnh `SELECT` đến `Database`. Một truy vấn được tối ưu (ví dụ dùng `AsNoTracking` nếu chỉ đọc) sẽ chạy nhanh hơn. Mặc dù không thể hiện rõ trong sơ đồ, nhưng nó ảnh hưởng trực tiếp đến thời gian phản hồi của mũi tên `Database -->> DbContext`.
 - **9. Quản lý Dữ liệu và Di chuyển (Migration):**
-    - **Thể hiện ở đâu:** Giống như Unit Test, đây là một hoạt động ở thời điểm phát triển. Cấu trúc của các bảng `Orders`, `Products`... trong `Database` mà `DbContext` tương tác được tạo ra và quản lý bởi các file Migration bạn đã tạo.
+  - **Thể hiện ở đâu:** Giống như Unit Test, đây là một hoạt động ở thời điểm phát triển. Cấu trúc của các bảng `Orders`, `Products`... trong `Database` mà `DbContext` tương tác được tạo ra và quản lý bởi các file Migration bạn đã tạo.
 - **10. Xây dựng Kịch bản Backup và Restore:**
-    - **Thể hiện ở đâu:** Đây là một luồng nghiệp vụ hoàn toàn riêng biệt, không nằm trong sơ đồ "Tạo đơn hàng". Nó sẽ có một sơ đồ tương tự, bắt đầu từ một `BackupViewModel`, gọi đến một `IDatabaseManagementService`, và service đó sẽ thực thi các lệnh SQL thô (`BACKUP DATABASE`) trực tiếp lên `Database`.
+  - **Thể hiện ở đâu:** Đây là một luồng nghiệp vụ hoàn toàn riêng biệt, không nằm trong sơ đồ "Tạo đơn hàng". Nó sẽ có một sơ đồ tương tự, bắt đầu từ một `BackupViewModel`, gọi đến một `IDatabaseManagementService`, và service đó sẽ thực thi các lệnh SQL thô (`BACKUP DATABASE`) trực tiếp lên `Database`.
