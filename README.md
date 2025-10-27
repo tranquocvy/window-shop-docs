@@ -62,6 +62,73 @@ Lead sẽ review và merge các nhánh vào `main` sau khi kiểm tra nội dung
 
 ---
 
+## 🔧 Quy trình làm việc nhóm (Workflow)
+
+Để tránh chồng chéo và giúp việc review dễ dàng, nhóm tuân theo quy trình sau:
+
+### 🧩 1. Giao task
+
+- Lead giao task cụ thể trên file `Task Tracker` (Google Sheets).
+- Mỗi task có **tên và mô tả ngắn**, **người phụ trách**, **deadline**.
+
+---
+
+### ✍️ 2. Thực hiện
+
+- Thành viên **checkout nhánh riêng của mình** (`duong`, `hoang`, `hau`, `vuong`) hoặc tạo nhánh con tạm thời nếu task lớn.
+- Thực hiện chỉnh sửa / bổ sung nội dung trong file `.md` tương ứng.
+- Khi commit, dùng cú pháp rõ ràng:
+
+  ```bash
+  git commit -m "fix(docs): standardize technical tone in backend guideline document"
+  ```
+
+📘 **Gợi ý prefix commit:**
+
+| Prefix      | Ý nghĩa                           |
+| ----------- | --------------------------------- |
+| `add:`      | thêm tài liệu mới                 |
+| `fix:`      | chỉnh sửa nội dung hiện có        |
+| `update:`   | cập nhật tiến độ hoặc ghi chú nhỏ |
+| `refactor:` | cấu trúc lại bố cục tài liệu      |
+
+---
+
+### 🔍 3. Review
+
+- Khi hoàn tất, tạo **Pull Request** vào nhánh `main`.
+- Lead (hoặc reviewer được phân công) sẽ:
+
+  - Kiểm tra format Markdown, văn phong, và độ chính xác nội dung.
+  - Comment trực tiếp trong PR nếu cần chỉnh sửa.
+
+---
+
+### ✅ 4. Merge & theo dõi
+
+- Sau khi PR được duyệt, Lead sẽ merge vào `main`.
+- Thành viên **không tự merge hoặc push trực tiếp lên `main`**.
+- Task được đánh dấu là **“Completed”** trong bảng quản lý task.
+
+---
+
+### ⚙️ Ví dụ luồng thực tế:
+
+1. Lead tạo task: “Backend chuẩn hóa văn phong kỹ thuật trong tài liệu định hướng nhóm”.
+
+2. Thành viên chỉnh sửa trên nhánh của mình.
+
+3. Sau khi xong, commit và push:
+
+   ```bash
+   git commit -m "fix(docs): standardize technical tone in backend guideline document"
+   git push origin duong
+   ```
+
+4. Tạo Pull Request → Lead review → Merge.
+
+---
+
 ## 💡 Lưu ý
 
 - Chỉ commit file `.md` hoặc tài liệu liên quan (không commit file nhị phân, ảnh, hoặc build).
@@ -80,5 +147,3 @@ Lead sẽ review và merge các nhánh vào `main` sau khi kiểm tra nội dung
 
 > 📘 _Repo này chỉ dành cho lưu trữ tài liệu Markdown của dự án WinUI.
 > Mã nguồn của ứng dụng được lưu riêng trong repo `window-shop-app`._
-
----
