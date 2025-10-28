@@ -62,33 +62,14 @@
 
 ## 4. 🧱 Kiến trúc phần mềm
 
-Mô tả cách **Clean Architecture**, **3-Layer Architecture** và **MVVM** được áp dụng:
+### Cấu trúc Dự án (MVVM + 3-Layer Hybrid)
 
-- Clean Architecture: ...
-- 3 Layer (Presentation – Business – Data): ...
-- MVVM: ...
-
-(Sơ đồ hoặc ảnh minh họa nếu có)
+Dự án áp dụng mô hình **Clean Architecture**, kết hợp **3-Layer Architecture** và **MVVM** trong lớp Presentation.
+Mục tiêu: đảm bảo **tách biệt hoàn toàn giữa các tầng** (UI – Logic – Data), **dễ mở rộng**, **dễ test**, và **bảo trì**.
 
 ---
 
-## 5. 🧠 Design Patterns
-
-Liệt kê các **Design Pattern** nhóm áp dụng (mỗi thành viên ít nhất 1 pattern, không tính Builder & Singleton).
-
-| Pattern | Mục đích | Vị trí áp dụng trong dự án | Người thực hiện |
-| ------- | -------- | -------------------------- | --------------- |
-|         |          |                            |                 |
-|         |          |                            |                 |
-
----
-
-## 6. ✅ Đảm bảo chất lượng
-
-### 6.1 Coding Convention
-#### a. Cấu trúc Dự án (MVVM + 3-Layer Hybrid)
-
-Mô hình hoá Kiến trúc phần mềm chia thành các Class Library riêng biệt (Dự kiến áp dụng):
+#### 🧱 Cấu trúc tổng thể
 
 ```
 MyShop.sln (Solution)
@@ -129,26 +110,46 @@ MyShop.sln (Solution)
         └── App.xaml
 ```
 
-**Giải thích vai trò và quy ước của từng Project:**
+---
 
-1. 📦 **MyShop.Domain**
-    - **Trách nhiệm:** Chứa các đối tượng nghiệp vụ cốt lõi (Entities). Các lớp này là POCO thuần túy, chỉ chứa thuộc tính và các phương thức logic nghiệp vụ gắn liền với chính nó.
-    - **Quy ước:** Tên class là danh từ, đại diện cho đối tượng nghiệp vụ (`Product`, `Customer`).
-    - **Không phụ thuộc** vào bất kỳ project nào khác.
-2. 📦 **MyShop.Application**
-    - **Trách nhiệm:** Điều phối luồng dữ liệu và logic.
-    - `Interfaces`: Định nghĩa các "hợp đồng" cho lớp Infrastructure. Ví dụ: "Tôi cần một thứ gì đó có thể lấy sản phẩm theo ID", nhưng tôi không quan tâm nó lấy từ đâu.
-    - `Services/UseCases`: Chứa logic nghiệp vụ của ứng dụng. Ví dụ: `OrderProcessingService` sẽ nhận yêu cầu, sử dụng `IProductRepository` để kiểm tra sản phẩm, tính toán, và lưu đơn hàng.
-    - `DTOs`: Các đối tượng truyền dữ liệu giữa các lớp. ViewModel sẽ làm việc với `ProductDto` thay vì `Product` entity trực tiếp, giúp tách biệt hoàn toàn lớp UI khỏi lớp Domain.
-    - **Phụ thuộc** vào `MyShop.Domain`.
-3. 📦 **MyShop.Infrastructure**
-    - **Trách nhiệm:** Triển khai các "hợp đồng" đã định nghĩa ở lớp Application. Đây là nơi chứa các chi tiết kỹ thuật.
-    - `Persistence`: Chứa mọi thứ liên quan đến database (DbContext của EF Core, các lớp Repository cụ thể).
-    - `ExternalServices`: Chứa các lớp làm việc với dịch vụ bên ngoài (gửi email, thanh toán, gọi API khác...).
-    - **Phụ thuộc** vào `MyShop.Application`.
-4. 📦 **MyShop.Presentation.WinUI**
-    - **Trách nhiệm:** Hiển thị giao diện và xử lý tương tác người dùng. Cấu trúc thư mục bên trong project này vẫn tuân theo MVVM (`Views`, `ViewModels`...) như chúng ta đã thảo luận.
-    - **Sự thay đổi quan trọng:** `ViewModel` giờ đây sẽ **không** trực tiếp truy cập database. Thay vào đó, nó sẽ được **inject** các services từ lớp Application để sử dụng.
+### Vai trò và quy ước của từng Project
+
+1. **📦 MyShop.Domain (Core Layer)**
+
+   * **Trách nhiệm:** Chứa các đối tượng nghiệp vụ (Entities) — các class thuần tuý, chỉ có thuộc tính và logic nghiệp vụ cơ bản.
+   * **Ví dụ:** `Product`, `Customer`, `Order`.
+   * **Không phụ thuộc** vào bất kỳ lớp nào khác.
+
+2. **📦 MyShop.Application (Use Case Layer)**
+
+   * **Trách nhiệm:** Điều phối logic và luồng dữ liệu giữa Domain và các tầng khác.
+   * `Interfaces`: Định nghĩa hợp đồng (contract) cho lớp Infrastructure.
+   * `Services/UseCases`: Xử lý nghiệp vụ, điều phối logic.
+   * `DTOs`: Truyền dữ liệu giữa Application và Presentation.
+   * **Phụ thuộc:** `MyShop.Domain`.
+
+3. **📦 MyShop.Infrastructure (Infrastructure Layer)**
+
+   * **Trách nhiệm:** Triển khai các hợp đồng từ Application, chứa các chi tiết kỹ thuật (Database, Email, API).
+   * `Persistence`: Làm việc với database, chứa DbContext, Repository.
+   * `ExternalServices`: Tương tác với dịch vụ bên ngoài.
+   * **Phụ thuộc:** `MyShop.Application`.
+
+4. **📦 MyShop.Presentation.WinUI (Presentation Layer)**
+
+   * **Trách nhiệm:** Xử lý giao diện và tương tác người dùng, theo mô hình **MVVM**.
+   * `ViewModel` sẽ được **inject** các service từ `Application` để lấy dữ liệu và thao tác.
+   * **Phụ thuộc:** `MyShop.Application`.
+
+---
+
+### Mối quan hệ giữa Clean Architecture – 3-Layer – MVVM
+
+| Mô hình                         | Vai trò                                                             | Áp dụng trong dự án                                        |
+| ------------------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------- |
+| **Clean Architecture**          | Giữ nguyên tắc “Dependency Rule” – chỉ phụ thuộc từ ngoài vào trong | Toàn bộ Solution                                           |
+| **3-Layer Architecture**        | Phân tách logic theo tầng: Domain – Application – Infrastructure    | MyShop.Domain / MyShop.Application / MyShop.Infrastructure |
+| **MVVM (Model–View–ViewModel)** | Tổ chức lớp giao diện, tách biệt View và ViewModel                  | MyShop.Presentation.WinUI                                  |
 
 **Dependency Rule:**
 
@@ -157,7 +158,22 @@ MyShop.sln (Solution)
 
 ---
 
-#### b. Quy ước cho C#
+## 5. 🧠 Design Patterns
+
+Liệt kê các **Design Pattern** nhóm áp dụng (mỗi thành viên ít nhất 1 pattern, không tính Builder & Singleton).
+
+| Pattern | Mục đích | Vị trí áp dụng trong dự án | Người thực hiện |
+| ------- | -------- | -------------------------- | --------------- |
+|         |          |                            |                 |
+|         |          |                            |                 |
+
+---
+
+## 6. ✅ Đảm bảo chất lượng
+
+### 6.1 Coding Convention
+
+#### a. Quy ước cho C#
 
 ##### 1. **Naming Rules**
 
@@ -292,7 +308,7 @@ public decimal CalculateFinalPrice(Product product) => product.Price * 0.9m;
 
 ---
 
-#### c. Quy ước cho XAML
+#### b. Quy ước cho XAML
 
 ##### 1. **Đặt tên Controls**
 
@@ -361,7 +377,7 @@ public decimal CalculateFinalPrice(Product product) => product.Price * 0.9m;
 
 ```
 
-#### d. Nguồn tham khảo Coding Convention:
+#### c. Nguồn tham khảo Coding Convention:
 1. Common C# code conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
 2. C# identifier naming rules and conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names?utm_source=chatgpt.com
 3. .NET code-style rule options: https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options?utm_source=chatgpt.com
