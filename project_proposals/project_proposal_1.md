@@ -62,13 +62,99 @@
 
 ## 4. 🧱 Kiến trúc phần mềm
 
-Mô tả cách **Clean Architecture**, **3-Layer Architecture** và **MVVM** được áp dụng:
+### Cấu trúc Dự án (MVVM + 3-Layer Hybrid)
 
-- Clean Architecture: ...
-- 3 Layer (Presentation – Business – Data): ...
-- MVVM: ...
+Dự án áp dụng mô hình **Clean Architecture**, kết hợp **3-Layer Architecture** và **MVVM** trong lớp Presentation.
+Mục tiêu: đảm bảo **tách biệt hoàn toàn giữa các tầng** (UI – Logic – Data), **dễ mở rộng**, **dễ test**, và **bảo trì**.
 
-(Sơ đồ hoặc ảnh minh họa nếu có)
+---
+
+#### 🧱 Cấu trúc tổng thể
+
+```
+MyShop.sln (Solution)
+│
+├── 📁 1. Core
+│   └── 📦 MyShop.Domain (.NET Standard / .NET 6+)
+│       └── 📁 Entities
+│           ├── Product.cs
+│           └── Order.cs
+│
+├── 📁 2. Application
+│   └── 📦 MyShop.Application (.NET Standard / .NET 6+)
+│       ├── 📁 Interfaces
+│       │   ├── IProductRepository.cs
+│       │   └── IEmailService.cs
+│       ├── 📁 Services (or UseCases)
+│       │   └── OrderProcessingService.cs
+│       └── 📁 DTOs (Data Transfer Objects)
+│           └── ProductDto.cs
+│
+├── 📁 3. Infrastructure
+│   └── 📦 MyShop.Infrastructure (.NET 6+)
+│       ├── 📁 Persistence (or DataAccess)
+│       │   ├── AppDbContext.cs
+│       │   └── Repositories
+│       │       └── ProductRepository.cs  // Implements IProductRepository
+│       └── 📁 ExternalServices
+│           └── EmailService.cs         // Implements IEmailService
+│
+└── 📁 4. Presentation
+    └── 📦 MyShop.Presentation.WinUI (WinUI Project)
+        ├── 📁 Views
+        │   └── ProductDetailPage.xaml
+        ├── 📁 ViewModels
+        │   └── ProductDetailViewModel.cs
+        ├── 📁 Converters
+        ├── 📁 Helpers
+        └── App.xaml
+```
+
+---
+
+### Vai trò và quy ước của từng Project
+
+1. **📦 MyShop.Domain (Core Layer)**
+
+   * **Trách nhiệm:** Chứa các đối tượng nghiệp vụ (Entities) — các class thuần tuý, chỉ có thuộc tính và logic nghiệp vụ cơ bản.
+   * **Ví dụ:** `Product`, `Customer`, `Order`.
+   * **Không phụ thuộc** vào bất kỳ lớp nào khác.
+
+2. **📦 MyShop.Application (Use Case Layer)**
+
+   * **Trách nhiệm:** Điều phối logic và luồng dữ liệu giữa Domain và các tầng khác.
+   * `Interfaces`: Định nghĩa hợp đồng (contract) cho lớp Infrastructure.
+   * `Services/UseCases`: Xử lý nghiệp vụ, điều phối logic.
+   * `DTOs`: Truyền dữ liệu giữa Application và Presentation.
+   * **Phụ thuộc:** `MyShop.Domain`.
+
+3. **📦 MyShop.Infrastructure (Infrastructure Layer)**
+
+   * **Trách nhiệm:** Triển khai các hợp đồng từ Application, chứa các chi tiết kỹ thuật (Database, Email, API).
+   * `Persistence`: Làm việc với database, chứa DbContext, Repository.
+   * `ExternalServices`: Tương tác với dịch vụ bên ngoài.
+   * **Phụ thuộc:** `MyShop.Application`.
+
+4. **📦 MyShop.Presentation.WinUI (Presentation Layer)**
+
+   * **Trách nhiệm:** Xử lý giao diện và tương tác người dùng, theo mô hình **MVVM**.
+   * `ViewModel` sẽ được **inject** các service từ `Application` để lấy dữ liệu và thao tác.
+   * **Phụ thuộc:** `MyShop.Application`.
+
+---
+
+### Mối quan hệ giữa Clean Architecture – 3-Layer – MVVM
+
+| Mô hình                         | Vai trò                                                             | Áp dụng trong dự án                                        |
+| ------------------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------- |
+| **Clean Architecture**          | Giữ nguyên tắc “Dependency Rule” – chỉ phụ thuộc từ ngoài vào trong | Toàn bộ Solution                                           |
+| **3-Layer Architecture**        | Phân tách logic theo tầng: Domain – Application – Infrastructure    | MyShop.Domain / MyShop.Application / MyShop.Infrastructure |
+| **MVVM (Model–View–ViewModel)** | Tổ chức lớp giao diện, tách biệt View và ViewModel                  | MyShop.Presentation.WinUI                                  |
+
+**Dependency Rule:**
+
+> Chỉ được phụ thuộc “vào trong” — Presentation → Application → Domain
+> Domain không phụ thuộc bất kỳ lớp nào khác.
 
 ---
 
