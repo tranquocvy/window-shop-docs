@@ -86,78 +86,8 @@ Liệt kê các **Design Pattern** nhóm áp dụng (mỗi thành viên ít nh�
 ## 6. ✅ Đảm bảo chất lượng
 
 ### 6.1 Coding Convention
-#### a. Cấu trúc Dự án (MVVM + 3-Layer Hybrid)
 
-Mô hình hoá Kiến trúc phần mềm chia thành các Class Library riêng biệt (Dự kiến áp dụng):
-
-```
-MyShop.sln (Solution)
-│
-├── 📁 1. Core
-│   └── 📦 MyShop.Domain (.NET Standard / .NET 6+)
-│       └── 📁 Entities
-│           ├── Product.cs
-│           └── Order.cs
-│
-├── 📁 2. Application
-│   └── 📦 MyShop.Application (.NET Standard / .NET 6+)
-│       ├── 📁 Interfaces
-│       │   ├── IProductRepository.cs
-│       │   └── IEmailService.cs
-│       ├── 📁 Services (or UseCases)
-│       │   └── OrderProcessingService.cs
-│       └── 📁 DTOs (Data Transfer Objects)
-│           └── ProductDto.cs
-│
-├── 📁 3. Infrastructure
-│   └── 📦 MyShop.Infrastructure (.NET 6+)
-│       ├── 📁 Persistence (or DataAccess)
-│       │   ├── AppDbContext.cs
-│       │   └── Repositories
-│       │       └── ProductRepository.cs  // Implements IProductRepository
-│       └── 📁 ExternalServices
-│           └── EmailService.cs         // Implements IEmailService
-│
-└── 📁 4. Presentation
-    └── 📦 MyShop.Presentation.WinUI (WinUI Project)
-        ├── 📁 Views
-        │   └── ProductDetailPage.xaml
-        ├── 📁 ViewModels
-        │   └── ProductDetailViewModel.cs
-        ├── 📁 Converters
-        ├── 📁 Helpers
-        └── App.xaml
-```
-
-**Giải thích vai trò và quy ước của từng Project:**
-
-1. 📦 **MyShop.Domain**
-    - **Trách nhiệm:** Chứa các đối tượng nghiệp vụ cốt lõi (Entities). Các lớp này là POCO thuần túy, chỉ chứa thuộc tính và các phương thức logic nghiệp vụ gắn liền với chính nó.
-    - **Quy ước:** Tên class là danh từ, đại diện cho đối tượng nghiệp vụ (`Product`, `Customer`).
-    - **Không phụ thuộc** vào bất kỳ project nào khác.
-2. 📦 **MyShop.Application**
-    - **Trách nhiệm:** Điều phối luồng dữ liệu và logic.
-    - `Interfaces`: Định nghĩa các "hợp đồng" cho lớp Infrastructure. Ví dụ: "Tôi cần một thứ gì đó có thể lấy sản phẩm theo ID", nhưng tôi không quan tâm nó lấy từ đâu.
-    - `Services/UseCases`: Chứa logic nghiệp vụ của ứng dụng. Ví dụ: `OrderProcessingService` sẽ nhận yêu cầu, sử dụng `IProductRepository` để kiểm tra sản phẩm, tính toán, và lưu đơn hàng.
-    - `DTOs`: Các đối tượng truyền dữ liệu giữa các lớp. ViewModel sẽ làm việc với `ProductDto` thay vì `Product` entity trực tiếp, giúp tách biệt hoàn toàn lớp UI khỏi lớp Domain.
-    - **Phụ thuộc** vào `MyShop.Domain`.
-3. 📦 **MyShop.Infrastructure**
-    - **Trách nhiệm:** Triển khai các "hợp đồng" đã định nghĩa ở lớp Application. Đây là nơi chứa các chi tiết kỹ thuật.
-    - `Persistence`: Chứa mọi thứ liên quan đến database (DbContext của EF Core, các lớp Repository cụ thể).
-    - `ExternalServices`: Chứa các lớp làm việc với dịch vụ bên ngoài (gửi email, thanh toán, gọi API khác...).
-    - **Phụ thuộc** vào `MyShop.Application`.
-4. 📦 **MyShop.Presentation.WinUI**
-    - **Trách nhiệm:** Hiển thị giao diện và xử lý tương tác người dùng. Cấu trúc thư mục bên trong project này vẫn tuân theo MVVM (`Views`, `ViewModels`...) như chúng ta đã thảo luận.
-    - **Sự thay đổi quan trọng:** `ViewModel` giờ đây sẽ **không** trực tiếp truy cập database. Thay vào đó, nó sẽ được **inject** các services từ lớp Application để sử dụng.
-
-**Dependency Rule:**
-
-> Chỉ được phụ thuộc “vào trong” — Presentation → Application → Domain
-> Domain không phụ thuộc bất kỳ lớp nào khác.
-
----
-
-#### b. Quy ước cho C#
+#### a. Quy ước cho C#
 
 ##### 1. **Naming Rules**
 
@@ -292,7 +222,7 @@ public decimal CalculateFinalPrice(Product product) => product.Price * 0.9m;
 
 ---
 
-#### c. Quy ước cho XAML
+#### b. Quy ước cho XAML
 
 ##### 1. **Đặt tên Controls**
 
@@ -361,7 +291,7 @@ public decimal CalculateFinalPrice(Product product) => product.Price * 0.9m;
 
 ```
 
-#### d. Nguồn tham khảo Coding Convention:
+#### c. Nguồn tham khảo Coding Convention:
 1. Common C# code conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
 2. C# identifier naming rules and conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names?utm_source=chatgpt.com
 3. .NET code-style rule options: https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options?utm_source=chatgpt.com
