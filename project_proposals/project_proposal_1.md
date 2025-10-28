@@ -379,9 +379,9 @@ public decimal CalculateFinalPrice(Product product) => product.Price * 0.9m;
 
 #### c. Nguồn tham khảo Coding Convention:
 1. Common C# code conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
-2. C# identifier naming rules and conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names?utm_source=chatgpt.com
-3. .NET code-style rule options: https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options?utm_source=chatgpt.com
-4. Get started with Windows development using WinUI: https://learn.microsoft.com/en-us/windows/apps/get-started/start-here?utm_source=chatgpt.com&tabs=vs-2022-17-10
+2. C# identifier naming rules and conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names
+3. .NET code-style rule options: https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
+4. Get started with Windows development using WinUI: https://learn.microsoft.com/en-us/windows/apps/get-started/start-here
 5. Style Coding có trong Slides Windows Programming của ThS. Trần Duy Quang
 
 ### 6.2 Testing
@@ -488,7 +488,6 @@ public class DashboardViewModelTests
         Assert.Equal(0, _viewModel.DailyOrderCount);
     }
 }
-
 ```
 
 ---
