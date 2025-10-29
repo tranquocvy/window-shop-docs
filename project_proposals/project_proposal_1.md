@@ -60,103 +60,215 @@
 
 ---
 
-## 4. 🧱 Kiến trúc phần mềm
+## 4. Kiến trúc phần mềm
 
-### Cấu trúc Dự án (MVVM + 3-Layer Hybrid)
+### 4.1. Các kiến trúc áp dụng
 
-Dự án áp dụng mô hình **Clean Architecture**, kết hợp **3-Layer Architecture** và **MVVM** trong lớp Presentation.
-Mục tiêu: đảm bảo **tách biệt hoàn toàn giữa các tầng** (UI – Logic – Data), **dễ mở rộng**, **dễ test**, và **bảo trì**.
+* **3-layer architecture**: Phân tách lớp đảm nhiệm các chức năng riêng biệt
+* **Clean architecture**: Một bản nâng cấp của 3-layer áp dụng các kiến thức về OOP như SOLID cũng như Dependency Rule nhưng thực hiện ở mức đơn giản để tránh over engineering.
+* **MVVM**: cho phần Presentation (UI cho ứng dụng)
 
----
+### 4.2. Sơ đồ kiến trúc
 
-#### 🧱 Cấu trúc tổng thể
+```mermaid
+flowchart LR
+  %% --- Presentation Layer ---
+  subgraph PresentationLayer["Presentation Layer"]
+    UI["WinUI / Web / API Controllers / ViewModels"]
+  end
 
+  %% --- Application Layer ---
+  subgraph ApplicationLayer["Application Layer (Use Cases)"]
+    App["Use Cases / Services / DTOs / Interfaces"]
+  end
+
+  %% --- Domain Layer ---
+  subgraph DomainLayer["Domain Layer (Core)"]
+    DomainEntities["Entities / ValueObjects / Domain Services / Domain Events / Exceptions"]
+  end
+
+  %% --- Infrastructure Layer ---
+  subgraph InfrastructureLayer["Infrastructure Layer (Adapters)"]
+    InfraPersist["Persistence (EF Core DbContext, Repositories)"]
+    InfraExternal["External Services (Email, Cache, Storage)"]
+    InfraDI["Dependency Registration"]
+  end
+
+  %% --- Dependencies ---
+  UI -->|calls| App
+  App -->|depends on / uses| DomainEntities
+  App -- "depends on (abstractions/interfaces)" --> DomainEntities
+  InfraPersist -->|implements| App
+  InfraExternal -->|implements| App
+  InfraDI -->|registers implementations to| App
+  InfraPersist -.->|adapter for| DomainEntities
+
+  %% --- Inversion of Control ---
+  App <-->|interfaces implemented by| InfraPersist
+  App <-->|interfaces implemented by| InfraExternal
+
+  %% --- Optional: Tests and Cross-cutting ---
+  Tests["Tests (Unit / Integration)"] -.-> App
+  Tests -.-> DomainEntities
+
+  %% --- Styling ---
+  classDef layer fill:#f8f9fa,stroke:#333,stroke-width:1px;
+  class PresentationLayer,ApplicationLayer,DomainLayer,InfrastructureLayer layer;
 ```
-MyShop.sln (Solution)
-│
-├── 📁 1. Core
-│   └── 📦 MyShop.Domain (.NET Standard / .NET 6+)
-│       └── 📁 Entities
-│           ├── Product.cs
-│           └── Order.cs
-│
-├── 📁 2. Application
-│   └── 📦 MyShop.Application (.NET Standard / .NET 6+)
-│       ├── 📁 Interfaces
-│       │   ├── IProductRepository.cs
-│       │   └── IEmailService.cs
-│       ├── 📁 Services (or UseCases)
-│       │   └── OrderProcessingService.cs
-│       └── 📁 DTOs (Data Transfer Objects)
-│           └── ProductDto.cs
-│
-├── 📁 3. Infrastructure
-│   └── 📦 MyShop.Infrastructure (.NET 6+)
-│       ├── 📁 Persistence (or DataAccess)
-│       │   ├── AppDbContext.cs
-│       │   └── Repositories
-│       │       └── ProductRepository.cs  // Implements IProductRepository
-│       └── 📁 ExternalServices
-│           └── EmailService.cs         // Implements IEmailService
-│
-└── 📁 4. Presentation
-    └── 📦 MyShop.Presentation.WinUI (WinUI Project)
-        ├── 📁 Views
-        │   └── ProductDetailPage.xaml
-        ├── 📁 ViewModels
-        │   └── ProductDetailViewModel.cs
-        ├── 📁 Converters
-        ├── 📁 Helpers
-        └── App.xaml
+
+### 4.3. Phân tích chi tiết từng layer
+
+#### Presentation Layer (UI/ API)
+**Nhiệm vụ:**
+
+- Entry point của client (người dùng app).
+- Không chứa logic nghiệp vụ.
+- Chịu trách nhiệm nhận request → gọi Application Layer → trả response
+
+**Thành phần cụ thể:**
+
+- **WinUI:** giao diện đồ họa người dùng.
+- **API Controllers:** endpoint trong ASP.NET Core, nhận và phản hồi HTTP.
+- **ViewModels / DTOs:** chuyển đổi dữ liệu giữa Presentation và Application.
+
+---
+
+#### Application Layer (Use Cases)
+**Nhiệm vụ**
+
+- Chứa **use case (dịch vụ ứng dụng)** — mô tả *hành động của hệ thống* theo góc nhìn nghiệp vụ.
+- Điều phối luồng nghiệp vụ giữa Domain và hạ tầng.
+- Không chứa logic nghiệp vụ chi tiết, mà **sử dụng Domain Layer** để xử lý.
+
+**Thành phần**
+
+- **Use Cases / Services:** các lớp xử lý yêu cầu cụ thể (CreateOrderHandler, LoginService...).
+- **DTOs:** đối tượng truyền dữ liệu (Application ↔ Presentation).
+- **Interfaces (Ports):** định nghĩa hợp đồng trừu tượng cho các adapter bên ngoài (repository, external service, v.v.).
+
+**Phụ thuộc**
+
+- **Phụ thuộc vào Domain Layer (vì dùng domain entities, domain services)**.
+- **Được Infrastructure Layer “cài đặt” thông qua các interface.**
+
+**Vai trò quan trọng**
+
+- Application Layer **không quan tâm database nào, email service nào, cache gì** — chỉ quan tâm *“có repository”* hoặc *“có email service”*.
+    
+    → Điều này làm cho ứng dụng dễ **test, mở rộng, thay thế** (ví dụ đổi từ SQL sang MongoDB mà không đổi code logic).
+    
+
+---
+
+#### Domain Layer (Core)
+
+**Nhiệm vụ**
+
+- Là **tầng trung tâm**, chứa **business logic cốt lõi**.
+- Không phụ thuộc vào bất kỳ framework hay database nào.
+- Có thể được dùng lại ở mọi ứng dụng khác nhau.
+
+**Thành phần**
+
+- **Entities:** đối tượng có định danh (ID) và trạng thái, ví dụ `User`, `Order`, `Product`.
+- **ValueObjects:** đối tượng không định danh, ví dụ `Money`, `Address`.
+- **Domain Services:** nghiệp vụ không gắn chặt vào 1 entity, ví dụ “tính chiết khấu đơn hàng”.
+- **Domain Events:** sự kiện nghiệp vụ, ví dụ “OrderCreatedEvent”.
+- **Exceptions:** lỗi nghiệp vụ (BusinessException, ValidationException).
+
+**Phụ thuộc**
+
+- **Không phụ thuộc vào bất kỳ tầng nào khác.**
+- Các tầng khác **phải phụ thuộc vào nó**.
+
+**Tầm quan trọng**
+
+- Đây là tầng bạn **bảo vệ và đầu tư nhiều nhất**, vì mọi hệ thống đều xoay quanh nó.
+- Nếu Domain được thiết kế tốt → bạn có thể thay UI, DB, API mà vẫn giữ được nghiệp vụ cốt lõi.
+
+---
+
+#### Infrastructure Layer (Adapters)
+
+**Nhiệm vụ**
+
+- Cài đặt các **interface / port** do Application Layer định nghĩa.
+- Kết nối ra **thế giới bên ngoài**: database, API, file, email, cache,...
+
+**Thành phần**
+
+- **Persistence:** nơi triển khai các Repository bằng EF Core, hoặc gọi SQL.
+- **External Services:** nơi triển khai các dịch vụ ngoài như EmailSender, CloudStorage, RedisCache.
+- **Dependency Injection (DI):** đăng ký các lớp cài đặt vào container để Application có thể sử dụng.
+
+**Phụ thuộc**
+
+- **Phụ thuộc vào Application Layer** (vì nó *implement interfaces* mà Application định nghĩa).
+- **Không được phụ thuộc trực tiếp vào Presentation.**
+
+**Ví dụ**
+
+```csharp
+// Application Layer
+public interface IUserRepository {
+    Task<User?> GetByEmail(string email);
+}
+
+// Infrastructure Layer
+public class UserRepository : IUserRepository {
+    private readonly AppDbContext _context;
+    public UserRepository(AppDbContext context) { _context = context; }
+    public Task<User?> GetByEmail(string email) => _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+}
 ```
 
 ---
 
-### Vai trò và quy ước của từng Project
-
-1. **📦 MyShop.Domain (Core Layer)**
-
-   * **Trách nhiệm:** Chứa các đối tượng nghiệp vụ (Entities) — các class thuần tuý, chỉ có thuộc tính và logic nghiệp vụ cơ bản.
-   * **Ví dụ:** `Product`, `Customer`, `Order`.
-   * **Không phụ thuộc** vào bất kỳ lớp nào khác.
-
-2. **📦 MyShop.Application (Use Case Layer)**
-
-   * **Trách nhiệm:** Điều phối logic và luồng dữ liệu giữa Domain và các tầng khác.
-   * `Interfaces`: Định nghĩa hợp đồng (contract) cho lớp Infrastructure.
-   * `Services/UseCases`: Xử lý nghiệp vụ, điều phối logic.
-   * `DTOs`: Truyền dữ liệu giữa Application và Presentation.
-   * **Phụ thuộc:** `MyShop.Domain`.
-
-3. **📦 MyShop.Infrastructure (Infrastructure Layer)**
-
-   * **Trách nhiệm:** Triển khai các hợp đồng từ Application, chứa các chi tiết kỹ thuật (Database, Email, API).
-   * `Persistence`: Làm việc với database, chứa DbContext, Repository.
-   * `ExternalServices`: Tương tác với dịch vụ bên ngoài.
-   * **Phụ thuộc:** `MyShop.Application`.
-
-4. **📦 MyShop.Presentation.WinUI (Presentation Layer)**
-
-   * **Trách nhiệm:** Xử lý giao diện và tương tác người dùng, theo mô hình **MVVM**.
-   * `ViewModel` sẽ được **inject** các service từ `Application` để lấy dữ liệu và thao tác.
-   * **Phụ thuộc:** `MyShop.Application`.
+#### Tests và Cross-cutting Concerns
+- **Unit Tests:** kiểm tra logic trong Domain (cần chạy độc lập với DB).
+- **Integration Tests:** kiểm tra tương tác Application – Infrastructure.
+- **Cross-cutting Concerns:** logging, validation, caching có thể tách ra hoặc chèn qua middleware.
 
 ---
+### 4.4. Ghi chú triển khai quan trọng
 
-### Mối quan hệ giữa Clean Architecture – 3-Layer – MVVM
-
-| Mô hình                         | Vai trò                                                             | Áp dụng trong dự án                                        |
-| ------------------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------- |
-| **Clean Architecture**          | Giữ nguyên tắc “Dependency Rule” – chỉ phụ thuộc từ ngoài vào trong | Toàn bộ Solution                                           |
-| **3-Layer Architecture**        | Phân tách logic theo tầng: Domain – Application – Infrastructure    | MyShop.Domain / MyShop.Application / MyShop.Infrastructure |
-| **MVVM (Model–View–ViewModel)** | Tổ chức lớp giao diện, tách biệt View và ViewModel                  | MyShop.Presentation.WinUI                                  |
-
-**Dependency Rule:**
-
-> Chỉ được phụ thuộc “vào trong” — Presentation → Application → Domain
-> Domain không phụ thuộc bất kỳ lớp nào khác.
-
----
+1. **Domain không chỉ là DTOs**
+    - Thực hiện: đặt trạng thái và hành vi trong `Order`, `Product`. Dùng `DomainException` cho rule violation.
+    - Tránh: chuyển mọi validation sang Application.
+2. **Abstraction tại Application**
+    - Tất cả interfaces (ví dụ `IProductRepository`) đặt trong `MyShop.Application.Interfaces`.
+    - Infrastructure implement interface này.
+3. **Dependency Injection**
+    - Mỗi project infra cung cấp extension method để đăng ký DI:
+    
+    ```csharp
+    // MyShop.Infrastructure/InfrastructureModule.cs
+    public static class InfrastructureModule
+    {
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(config.GetConnectionString("Default")));
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IEmailService, EmailService>();
+            return services;
+        }
+    }
+    
+    ```
+    
+    - Presentation/Host gọi `services.AddInfrastructure(config).AddApplication();`
+4. **Use Cases đơn giản, mỗi use case 1 class (SRP)**
+    - Ví dụ `CreateOrderHandler` gọi các method domain (`order.ValidateBeforeCheckout()`), lưu qua repository, publish domain event.
+5. **Mapping & DTOs**
+    - Dùng AutoMapper hoặc Mapster chỉ ở Application layer. DTOs không leak vào Domain.
+6. **Testing**
+    - Unit test cho Domain (logic thuần) không cần DI.
+    - Unit test cho Application: mock repositories, verify orchestration.
+    - Integration test: in-memory DB (SQLite in-memory hoặc InMemory provider) để kiểm tra migration + repository.
+7. **Migrations**
+    - Migrations nằm trong Infrastructure/Migrations; chạy ở môi trường dev trước khi chạy app.
+8. **Logging / Configuration / Secrets**
+    - Cross-cutting concerns (logging, config) đăng ký ở Presentation host; infra/services nhận ILogger qua DI.
 
 ## 5. 🧠 Design Patterns
 
