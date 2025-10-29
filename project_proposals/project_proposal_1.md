@@ -84,31 +84,114 @@
 
 ## 3. Làm việc nhóm
 
-### 3.1 Phân công công việc
+### 3.1 Công cụ quản lý & theo dõi tiến độ
 
-- Phân công và cập nhật công việc được thực hiện qua **Google Drive** (file `.xlsx` dùng để theo dõi tiến độ và nhiệm vụ của từng thành viên).
+#### Theo dõi tiến độ & quản lý tài liệu
+- Nhóm sử dụng **2 repository trên GitHub** để tách biệt rõ ràng giữa tài liệu và mã nguồn:
+- **[`window-shop-docs`](https://github.com/tranquocvy/window-shop-docs)**: Lưu trữ tất cả các loại tài liệu của dự án, bao gồm meeting notes, thiết kế giao diện, báo cáo tiến độ, sơ đồ kiến trúc phần mềm, và các tài liệu tham khảo khác.  
+- **[`window-shop-app`](https://github.com/tranquocvy/window-shop-app)**: Lưu trữ toàn bộ mã nguồn chính của ứng dụng, bao gồm Frontend, Backend, và các module bổ trợ. Repo này quản lý version code, đảm bảo việc phát triển và deploy được kiểm soát chặt chẽ.
+
+
+#### Kênh liên lạc
+- **Zalo:** Trao đổi nhanh các vấn đề hằng ngày, chia sẻ thông tin tức thời, phối hợp khi gặp khó khăn hoặc cần sự hỗ trợ ngay lập tức.
+- **Google Meet:** Sử dụng cho các buổi họp nhóm định kỳ và các cuộc họp quan trọng, giúp nhóm cập nhật tiến độ, thảo luận các vấn đề kỹ thuật.
+
+#### Họp nhóm
+- Nhóm tổ chức họp **hằng tuần** để các thành viên báo cáo tiến độ công việc, nêu ra các khó khăn gặp phải, và thống nhất hướng giải quyết.
+- Trong trường hợp phát sinh vấn đề quan trọng, nhóm có thể tổ chức **họp đột xuất** để xử lý ngay.
+- Mỗi buổi họp đều có lịch trình rõ ràng, bao gồm cập nhật task, thảo luận giải pháp, và xác định nhiệm vụ cho tuần tới.
+
+#### Lưu biên bản họp
+- Biên bản họp sẽ được ghi lại chi tiết, bao gồm các quyết định, nhiệm vụ được phân công, thời hạn hoàn thành, và các vấn đề còn tồn đọng.
+- Tất cả biên bản sẽ được lưu trữ trên **`window-shop-docs/meeting_notes`** dưới định dạng **Markdown (.md)**, giúp mọi thành viên truy cập, theo dõi và đảm bảo minh bạch trong quá trình làm việc.
+
+#### Phân công công việc
+- **Google Sheets([Task Tracker.xlsx](https://docs.google.com/spreadsheets/d/1KWgpPFkc63lKFDBwlLQgoh0oQovb13Z8vq_c4CN8w3I/edit?usp=drive_link))** được sử dụng làm công cụ quản lý nhiệm vụ, trong đó ghi rõ từng task, người chịu trách nhiệm, deadline và trạng thái công việc.
+
+- Công việc được phân chia theo từng giai đoạn dự án và giao nhiệm vụ cụ thể cho từng thành viên dựa trên kỹ năng và vai trò (Frontend, Backend, Lead).
+- Lead sẽ theo dõi tổng thể tiến độ, cập nhật sheet định kỳ và phối hợp giữa các thành viên để đảm bảo các task được thực hiện đúng kế hoạch.
+
+#### Theo dõi tiến độ
+- Tiến độ công việc được cập nhật liên tục trên **Google Sheets**, thông qua các trạng thái task như `Not started`, `Blocked`, `In Progress`, và `Completed`.
+- Nhóm thực hiện **đánh giá hàng tuần**, kiểm tra các task đã giao để đảm bảo tiến độ dự án phù hợp với kế hoạch.
+- Trong quá trình kiểm tra, nhóm có thể **điều chỉnh kế hoạch**, phân bổ lại task, hoặc hỗ trợ lẫn nhau nếu gặp khó khăn.
+- Việc theo dõi chi tiết này giúp nhóm nhận biết sớm các vấn đề, cải thiện phối hợp giữa các thành viên, và đảm bảo chất lượng sản phẩm cuối cùng.
+
+### 3.2 Chiến lược làm việc với Git
+
+#### Chiến lược làm việc với Git
+Nhóm áp dụng **Gitflow cơ bản** để quản lý mã nguồn dự án WinUI, giúp code trên nhánh chính luôn ổn định và cho phép các thành viên phát triển tính năng song song.
+
+- **Nhánh chính**
+  - `main`: Lưu trữ code ổn định, sẵn sàng deploy. Nhánh này chỉ được cập nhật từ nhánh `develop` sau khi các tính năng đã được kiểm thử.
+  - `develop`: Nhánh tích hợp các tính năng mới trước khi đưa vào `main`. Tất cả feature branch đều xuất phát từ nhánh này.
+
+- **Những nhánh phát sinh (feature branches)**
+  - Mỗi tính năng được phát triển trên một nhánh riêng từ `develop`.
+  - Ví dụ: `feature/login-frontend`, `feature/login-backend`, `feature/product-frontend`, `feature/product-backend`.
+  - Các nhánh này cho phép FE và BE làm việc song song mà không ảnh hưởng đến nhánh chính.
+  - Khi hoàn thành, nhánh feature sẽ được **merge trở lại `develop`** thông qua **pull request**, do Lead review để đảm bảo code đúng chuẩn, không xung đột, và logic hoạt động chính xác.
+
+- **Quy trình làm việc**
+  1. Lead tạo nhánh `develop` từ `main` khi bắt đầu dự án.
+  2. FE/BE tạo feature branch từ `develop`, commit và push thường xuyên để backup và dễ theo dõi.
+  3. Khi feature hoàn tất, tạo pull request lên `develop`:
+     - Pull request sẽ được Lead hoặc một thành viên khác review.
+     - Review bao gồm: kiểm tra code style, logic, khả năng tương thích với các tính năng khác và tài liệu liên quan.
+     - Nếu cần, yêu cầu chỉnh sửa trước khi merge.
+  4. Sau khi pull request được chấp thuận, merge feature branch vào `develop`.
+  5. Khi `develop` tích hợp đủ các tính năng, Lead sẽ merge `develop` vào `main`, đảm bảo nhánh chính luôn ổn định.
+
+- **Lợi ích**
+  - Code trên `main` luôn ổn định và sẵn sàng deploy.
+  - FE và BE có thể phát triển song song mà không xung đột.
+  - Lead dễ dàng kiểm soát chất lượng qua pull request.
+  - Nhóm có thể theo dõi tiến độ và lịch sử commit một cách rõ ràng.
+  - Phân tách rõ ràng giữa nhánh chính và nhánh phát sinh.
 
 ---
+**Sơ đồ Gitflow minh họa quá trình phát triển tính năng và merge vào nhánh chính:**
+```mermaid
+gitGraph
+   commit id: "Initial commit"
+   branch develop
+   checkout develop
+   commit id: "Start develop branch"
 
-### 3.2 Công cụ quản lý & Chiến lược làm việc với Git
+   %% Feature branches - version 1
+   branch feature/feature1
+   checkout feature/feature1
+   commit id: "Work on feature1"
+   checkout develop
+   merge feature/feature1 id: "PR merge feature1 into develop"
 
-- **Theo dõi tiến độ & quản lý tài liệu:**
+   branch feature/feature2
+   checkout feature/feature2
+   commit id: "Work on feature2"
+   checkout develop
+   merge feature/feature2 id: "PR merge feature2 into develop"
 
-  - Nhóm sử dụng **2 repository trên GitHub**:
-    - Repo 1: Lưu **tài liệu** (meeting notes, design, v.v.)
-    - Repo 2: Lưu **mã nguồn dự án** (source code chính của ứng dụng)
+   %% Release version 1
+   checkout main
+   merge develop id: "Merge develop to main - release-ready (ver1)"
 
-- **Kênh liên lạc:** Zalo (trao đổi hằng ngày), Google Meet (họp nhóm định kỳ)
+   %% Feature branches - version 2
+   branch feature/feature3
+   checkout feature/feature3
+   commit id: "Work on feature3"
+   checkout develop
+   merge feature/feature3 id: "PR merge feature3 into develop"
 
-- **Chiến lược làm việc với Git:**
-  - Nhánh chính: `main`
-  - Nhánh Frontend: `vuong`, `hau`
-  - Nhánh Backend: `hoang`, `duong`
-  - **Quy trình làm việc:**
-    1. Thành viên FE/BE làm việc và **push code lên nhánh cá nhân** tương ứng.
-    2. **Lead sẽ review** nội dung trên GitHub.
-    3. Sau khi kiểm tra và xác nhận ổn định, **Lead sẽ merge các nhánh vào `main`**.
+   branch feature/feature4
+   checkout feature/feature4
+   commit id: "Work on feature4"
+   checkout develop
+   merge feature/feature4 id: "PR merge feature4 into develop"
 
+   %% Release version 2
+   checkout main
+   merge develop id: "Merge develop to main - release-ready (ver2)"
+```
 ---
 
 ## 4. Kiến trúc phần mềm
