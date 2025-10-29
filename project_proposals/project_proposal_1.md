@@ -1,4 +1,4 @@
-# 🧾 Project Report Template
+# Project Report Template
 
 ## 0. Thông tin các thành viên
 
@@ -12,26 +12,77 @@
 
 ---
 
-## 1. 🧩 Chức năng
+## 1. Chức năng
 
-- Liệt kê các chức năng chính của ứng dụng.
+### A. Các chức năng cơ sở (5 điểm)
 
-**Danh sách chức năng:**
+| # | Chức năng                                    | Điểm |
+| - | -------------------------------------------- | ---- |
+| 1 | Đăng nhập                                    | 0.25 |
+| 2 | Dashboard tổng quan hệ thống                 | 0.5  |
+| 3 | Quản lý sản phẩm – Products (Master data)    | 1.25 |
+| 4 | Quản lý đơn hàng – Orders (Transaction data) | 1.5  |
+| 5 | Báo cáo thống kê – Report                    | 1    |
+| 6 | Cấu hình chương trình                        | 0.25 |
+| 7 | Đóng gói thành file cài đặt                  | 0.25 |
 
-- [ ] Chức năng 1: ...
-- [ ] Chức năng 2: ...
-- [ ] Chức năng 3: ...
+### B. Các chức năng tự chọn (5.5 điểm)
+
+| #  | Tính năng                                               | Điểm |
+| -- | ------------------------------------------------------- | ---- |
+| 1  | Auto-save khi tạo đơn hàng / thêm sản phẩm              | 0.25 |
+| 2  | Responsive layout – tự điều chỉnh theo độ rộng màn hình | 0.5  |
+| 3  | Làm rối mã nguồn (obfuscator) chống dịch ngược          | 0.25 |
+| 4  | Backup / restore database                               | 0.25 |
+| 5  | Áp dụng kiến trúc MVVM                                  | 0.5  |
+| 6  | Dependency Injection                                    | 0.5  |
+| 7  | Phân quyền admin / moderator / sale                     | 0.5  |
+| 8  | Hoa hồng KPI cho sale                                   | 0.25 |
+| 9  | Quản lý khách hàng                                      | 0.5  |
+| 10 | Test case chức năng & giao diện                         | 0.5  |
+| 11 | In đơn hàng ra PDF/XPS                                  | 0.5  |
+| 12 | Sắp xếp danh sách theo nhiều tiêu chí                   | 0.5  |
+| 13 | Onboarding – hướng dẫn sử dụng lần đầu                  | 0.5  |
+
+### C. Mức độ bao phủ các chuẩn đầu ra của môn học
+
+| Mã chuẩn đầu ra | Mô tả chuẩn đầu ra                                                    | Cách mà ứng dụng nhóm đáp ứng                                                                                                                                                                              |
+| --------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **G1.1**        | Liệt kê được các thành phần giao diện đồ họa Windows                  | Các form chức năng chính như **Quản lý sản phẩm**, **Tạo đơn hàng** sử dụng đầy đủ các điều khiển WinUI3: `DataGrid`, `Button`, `TextBox`, `ComboBox`, cùng layout `Grid`, `StackPanel`, `NavigationView`. |
+| **G1.2**        | Liệt kê được các loại tài nguyên ứng dụng                             | Ứng dụng quản lý nhiều loại resource như **ảnh sản phẩm**, **icon**, **theme**, **chuỗi nội dung**, và **file cấu hình JSON**.                                                                             |
+| **G1.3**        | Hiểu, giải thích được các thuật ngữ tiếng Anh trong Lập trình Windows | Hai tính năng **MVVM** và **Dependency Injection** yêu cầu hiểu rõ các thuật ngữ như `ViewModel`, `Repository`, `Service`, `Binding`, `Command`, `ObservableCollection`.                                   |
+| **G2.1**        | Tạo ra ứng dụng sử dụng các điều khiển đơn giản                       | Các form **Thêm/Sửa Sản phẩm** sử dụng điều khiển `TextBox`, `ComboBox`, `DatePicker`, `Button` để nhập dữ liệu.                                                                                           |
+| **G2.2**        | Thao tác với tài nguyên (menu, hình ảnh, hộp thoại, chuỗi)            | Ứng dụng có **menu điều hướng**, **hộp thoại xác nhận (ContentDialog)**, **thông báo (InfoBar)** và hiển thị **ảnh sản phẩm**.                                                                             |
+| **G2.3**        | Tạo, hiệu chỉnh đối tượng đồ họa                                      | Giao diện được **tùy biến bằng ControlTemplate và Style**, sử dụng **bố cục responsive**, màu sắc và theme được hiệu chỉnh để phù hợp nhận diện ứng dụng.                                                  |
+| **G2.4**        | Xử lý sự kiện chuột, bàn phím                                         | Các event `Click`, `KeyDown`, `PointerPressed` được sử dụng trong các thao tác thêm, xóa, sửa dữ liệu.                                                                                                     |
+| **G2.5**        | Làm việc với hệ thống tập tin Windows                                 | Tính năng **In đơn hàng ra PDF/XPS** và **Backup / Restore Database** thao tác trực tiếp với file hệ thống thông qua `FileSavePicker`, `FileOpenPicker`.                                                   |
+| **G2.6**        | Làm việc với clipboard & registry                                     | Cho phép sao chép **mã đơn hàng** hoặc **mã sản phẩm** vào clipboard để tra cứu nhanh.                                                                                                                     |
+| **G2.7**        | Tạo và sử dụng thư viện liên kết động DLL                             | Dự án tách thành nhiều module (`WindowShop.Core`, `WindowShop.Services`). Các thư viện `.dll` được **inject động** bằng **Dependency Injection**.                                                          |
+| **G2.8**        | Đọc tập tin đa phương tiện                                            | Ứng dụng cho phép **chủ cửa hàng chọn và hiển thị ảnh sản phẩm** từ máy tính thông qua `FileOpenPicker`, hỗ trợ các định dạng ảnh phổ biến như `.jpg`, `.png`.                                             |
+| **G2.9**        | Giám sát sự kiện bằng Hook                                            | *(Không áp dụng – không cần truy cập hệ thống mức thấp.)*                                                                                                                                                  |
+| **G3.1**        | Làm việc độc lập để giải quyết bài toán                               | Mỗi thành viên phụ trách 1–2 module riêng (UI, API, Database, Pattern) và báo cáo tiến độ cá nhân.                                                                                                         |
+| **G3.2**        | Làm việc theo nhóm để giải quyết bài toán                             | Dự án quản lý qua **GitHub**, sử dụng **branching**, **commit convention**, và **review code định kỳ**.                                                                                                    |
+| **G4.1**        | Viết báo cáo ứng dụng                                                 | Nhóm có báo cáo `.md` mô tả **chức năng, kiến trúc, quy trình phát triển và kết quả thực hiện**.                                                                                                           |
+| **G4.2**        | Trình bày chủ đề nhóm tìm hiểu                                        | Nhóm chuẩn bị **slide và báo cáo thuyết trình** giới thiệu ứng dụng **Window Shop**, trình bày về **kiến trúc, quy trình phát triển**, và **các công nghệ được áp dụng (MVVM, Dependency Injection)**.     |
+| **G5**          | Tạo ứng dụng thao tác với cơ sở dữ liệu                               | Các chức năng **Quản lý sản phẩm** và **Đơn hàng** thực hiện **CRUD(Create, Read, Update, Delete)** trực tiếp trên cơ sở dữ liệu cục bộ (SQLite) hoặc Supabase.                                                                              |
+| **G6.1**        | Tạo ứng dụng gọi Restful API                                          | Ứng dụng kết nối backend qua **Restful API** để truy vấn, thêm, sửa dữ liệu sản phẩm và đơn hàng.                                                                                       |
+| **G6.2**        | Tạo ứng dụng gọi GraphQL API                                          | *(Chưa áp dụng – có thể mở rộng trong bản nâng cấp.)*                                                                                                                                                      |
+
+#### Kết luận
+
+> Ứng dụng **Window Shop** đáp ứng **hầu hết các chuẩn đầu ra từ G1 → G5** và **một phần G6.1**
+> Mức độ bao phủ ước tính: **~90–95% chuẩn đầu ra môn học.**
 
 ---
 
-## 2. 🎨 Giao diện (Prototype)
+## 2. Giao diện (Prototype)
 
 - Link Figma: [Figma Prototype](#)
 - Mô tả ngắn gọn các luồng chức năng chính (VD: Màn hình đăng nhập → Trang chủ → Quản lý sản phẩm → Báo cáo doanh thu).
 
 ---
 
-## 3. 👥 Làm việc nhóm
+## 3. Làm việc nhóm
 
 ### 3.1 Phân công công việc
 
@@ -224,53 +275,53 @@ public class UserRepository : IUserRepository {
 
 ---
 
-#### Tests và Cross-cutting Concerns
-- **Unit Tests:** kiểm tra logic trong Domain (cần chạy độc lập với DB).
-- **Integration Tests:** kiểm tra tương tác Application – Infrastructure.
-- **Cross-cutting Concerns:** logging, validation, caching có thể tách ra hoặc chèn qua middleware.
+### Vai trò và quy ước của từng Project
+
+1. **📦 MyShop.Domain (Core Layer)**
+
+   * **Trách nhiệm:** Chứa các đối tượng nghiệp vụ (Entities) — các class thuần tuý, chỉ có thuộc tính và logic nghiệp vụ cơ bản.
+   * **Ví dụ:** `Product`, `Customer`, `Order`.
+   * **Không phụ thuộc** vào bất kỳ lớp nào khác.
+
+2. **📦 MyShop.Application (Use Case Layer)**
+
+   * **Trách nhiệm:** Điều phối logic và luồng dữ liệu giữa Domain và các tầng khác.
+   * `Interfaces`: Định nghĩa hợp đồng (contract) cho lớp Infrastructure.
+   * `Services/UseCases`: Xử lý nghiệp vụ, điều phối logic.
+   * `DTOs`: Truyền dữ liệu giữa Application và Presentation.
+   * **Phụ thuộc:** `MyShop.Domain`.
+
+3. **📦 MyShop.Infrastructure (Infrastructure Layer)**
+
+   * **Trách nhiệm:** Triển khai các hợp đồng từ Application, chứa các chi tiết kỹ thuật (Database, Email, API).
+   * `Persistence`: Làm việc với database, chứa DbContext, Repository.
+   * `ExternalServices`: Tương tác với dịch vụ bên ngoài.
+   * **Phụ thuộc:** `MyShop.Application`.
+
+4. **📦 MyShop.Presentation.WinUI (Presentation Layer)**
+
+   * **Trách nhiệm:** Xử lý giao diện và tương tác người dùng, theo mô hình **MVVM**.
+   * `ViewModel` sẽ được **inject** các service từ `Application` để lấy dữ liệu và thao tác.
+   * **Phụ thuộc:** `MyShop.Application`.
 
 ---
-### 4.4. Ghi chú triển khai quan trọng
 
-1. **Domain không chỉ là DTOs**
-    - Thực hiện: đặt trạng thái và hành vi trong `Order`, `Product`. Dùng `DomainException` cho rule violation.
-    - Tránh: chuyển mọi validation sang Application.
-2. **Abstraction tại Application**
-    - Tất cả interfaces (ví dụ `IProductRepository`) đặt trong `MyShop.Application.Interfaces`.
-    - Infrastructure implement interface này.
-3. **Dependency Injection**
-    - Mỗi project infra cung cấp extension method để đăng ký DI:
-    
-    ```csharp
-    // MyShop.Infrastructure/InfrastructureModule.cs
-    public static class InfrastructureModule
-    {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
-        {
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(config.GetConnectionString("Default")));
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IEmailService, EmailService>();
-            return services;
-        }
-    }
-    
-    ```
-    
-    - Presentation/Host gọi `services.AddInfrastructure(config).AddApplication();`
-4. **Use Cases đơn giản, mỗi use case 1 class (SRP)**
-    - Ví dụ `CreateOrderHandler` gọi các method domain (`order.ValidateBeforeCheckout()`), lưu qua repository, publish domain event.
-5. **Mapping & DTOs**
-    - Dùng AutoMapper hoặc Mapster chỉ ở Application layer. DTOs không leak vào Domain.
-6. **Testing**
-    - Unit test cho Domain (logic thuần) không cần DI.
-    - Unit test cho Application: mock repositories, verify orchestration.
-    - Integration test: in-memory DB (SQLite in-memory hoặc InMemory provider) để kiểm tra migration + repository.
-7. **Migrations**
-    - Migrations nằm trong Infrastructure/Migrations; chạy ở môi trường dev trước khi chạy app.
-8. **Logging / Configuration / Secrets**
-    - Cross-cutting concerns (logging, config) đăng ký ở Presentation host; infra/services nhận ILogger qua DI.
+### Mối quan hệ giữa Clean Architecture – 3-Layer – MVVM
 
-## 5. 🧠 Design Patterns
+| Mô hình                         | Vai trò                                                             | Áp dụng trong dự án                                        |
+| ------------------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------- |
+| **Clean Architecture**          | Giữ nguyên tắc “Dependency Rule” – chỉ phụ thuộc từ ngoài vào trong | Toàn bộ Solution                                           |
+| **3-Layer Architecture**        | Phân tách logic theo tầng: Domain – Application – Infrastructure    | MyShop.Domain / MyShop.Application / MyShop.Infrastructure |
+| **MVVM (Model–View–ViewModel)** | Tổ chức lớp giao diện, tách biệt View và ViewModel                  | MyShop.Presentation.WinUI                                  |
+
+**Dependency Rule:**
+
+> Chỉ được phụ thuộc “vào trong” — Presentation → Application → Domain
+> Domain không phụ thuộc bất kỳ lớp nào khác.
+
+---
+
+## 5. Design Patterns
 
 Liệt kê các **Design Pattern** nhóm áp dụng (mỗi thành viên ít nhất 1 pattern, không tính Builder & Singleton).
 
@@ -281,7 +332,7 @@ Liệt kê các **Design Pattern** nhóm áp dụng (mỗi thành viên ít nh�
 
 ---
 
-## 6. ✅ Đảm bảo chất lượng
+## 6. Đảm bảo chất lượng
 
 ### 6.1 Coding Convention
 
@@ -430,8 +481,8 @@ public decimal CalculateFinalPrice(Product product) => product.Price * 0.9m;
 | Event Handler         | `[ControlName]_[Event]`               | `SaveOrderButton_Click`                     |
 | Resource Key          | PascalCase + hậu tố mô tả             | `PrimaryButtonStyle`, `TitleTextBlockStyle` |
 
-❌ Sai: `btnSubmit`, `txtName`
-✅ Đúng: `SubmitButton`, `UserNameTextBox`
+Sai: `btnSubmit`, `txtName`
+Đúng: `SubmitButton`, `UserNameTextBox`
 
 ---
 
@@ -703,7 +754,7 @@ public void CreateNewOrder_HappyPath()
 
 ---
 
-## 7. 🚀 Nâng cao
+## 7. Nâng cao
 
 Nhóm có **5** thành viên → cần **5** tính năng nâng cao.
 
@@ -714,7 +765,7 @@ Nhóm có **5** thành viên → cần **5** tính năng nâng cao.
 
 ---
 
-## 8. 🗓️ Kế hoạch nháp ban đầu
+## 8. Kế hoạch nháp ban đầu
 
 - **Ý tưởng ban đầu:**  
   Phát triển ứng dụng **Windows (WinUI)** dành cho **chủ cửa hàng nhỏ** để quản lý sản phẩm, doanh thu và các báo cáo bán hàng.  

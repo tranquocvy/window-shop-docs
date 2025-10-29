@@ -1,4 +1,4 @@
-# 🧩 Task: Tài liệu định hướng Frontend – MyShop (WinUI 3)
+# Task: Tài liệu định hướng Frontend – MyShop (WinUI 3)
 
 **Người thực hiện:** Nguyễn Khắc Vượng, Nguyễn Phúc Hậu
 **Ngày giao:** 21/10/2025
@@ -8,7 +8,7 @@
 
 ## 1. Giới thiệu
 
-**🎯 Mục tiêu:**  
+**Mục tiêu:**  
 Frontend của **MyShop** là giao diện người dùng chính, cho phép chủ cửa hàng:
 - Quản lý danh mục sản phẩm
 - Theo dõi đơn hàng và trạng thái
@@ -17,7 +17,7 @@ Frontend của **MyShop** là giao diện người dùng chính, cho phép chủ
 
 Giao diện sẽ kết nối với Backend qua **API** để lấy và cập nhật dữ liệu theo thời gian thực, đảm bảo trải nghiệm mượt mà và trực quan.
 
-**📌 Phạm vi:**
+**Phạm vi:**
 - Ứng dụng **Desktop Windows** sử dụng **WinUI 3** và **XAML**.
 - Người dùng duy nhất: **quản trị viên** (Chủ cửa hàng).
 
@@ -28,13 +28,13 @@ Giao diện sẽ kết nối với Backend qua **API** để lấy và cập nh�
 | Thành phần | Mô tả |
 |------------|-------|
 |IDE| Visual Studio 2022|
-| 📝 Ngôn ngữ | C# |
-| 🖼 Framework UI | WinUI 3 |
-| 📄 Markup | XAML |
-| 🏗 Kiến trúc | MVVM (Model-View-ViewModel) |
-| 🔗 Data Binding | Liên kết dữ liệu giữa ViewModel và UI |
-| 📦 Thư viện hỗ trợ | CommunityToolkit.Mvvm, WinUI 3 Controls |
-| 📦 Ứng dụng hỗ trợ | WinUI3 Gallery|
+| Ngôn ngữ | C# |
+| Framework UI | WinUI 3 |
+| Markup | XAML |
+| Kiến trúc | MVVM (Model-View-ViewModel) |
+| Data Binding | Liên kết dữ liệu giữa ViewModel và UI |
+| Thư viện hỗ trợ | CommunityToolkit.Mvvm, WinUI 3 Controls |
+| Ứng dụng hỗ trợ | WinUI3 Gallery|
 
 **MVVM Pattern:**
 - **Model:** định nghĩa dữ liệu như `Product`, 'Order', 'Inventory', 'Report'
@@ -45,33 +45,33 @@ Giao diện sẽ kết nối với Backend qua **API** để lấy và cập nh�
 
 ## 3. Màn hình chính
 
-### 🌐 Config Screen
+### Config Screen
 - Cấu hình địa chỉ server (API end point) mà ứng dụng sẽ kết nối.
 
-### 🖥️ Login Screen
+### Login Screen
 - Màn hình đăng nhập cho chủ cửa hàng
 - Xác thực tài khoản khi đăng nhập.
 
-### 🏠 Dashboard
+### Dashboard
 - Tổng quan: số lượng sản phẩm, đơn hàng mới, doanh thu
 - Biểu đồ bán hàng và báo cáo nhanh
 
-### 📋 Product Screen
+### Product Screen
 - Thêm, sửa, xóa sản phẩm
 - Quản lý danh mục sản phẩm
 - Upload hình ảnh, thiết lập giá, tồn kho
 
-### 🛒 Order Screen
+### Order Screen
 - Danh sách đơn hàng
 - Xem chi tiết đơn hàng, trạng thái thanh toán, giao hàng
 - Cập nhật trạng thái đơn hàng
 
-### 📊 Reports Screen
+### Reports Screen
 - Báo cáo doanh thu theo ngày/tuần/tháng
 - Top sản phẩm bán chạy
 - Thống kê khách hàng (nếu có)
 
-### ⚙️ Settings Scrreen
+### Settings Scrreen
 - Quản lý thông tin cá nhân
 - Thay đổi mật khẩu, cài đặt
 
@@ -80,18 +80,18 @@ Giao diện sẽ kết nối với Backend qua **API** để lấy và cập nh�
 ```mermaid
 flowchart TD
     %% Các node chính
-    A[🖥️ Login Screen] -->|Nhập thông tin| B{Đăng nhập thành công?}
-    A --> C[🌐 Config Screen]
+    A[Login Screen] -->|Nhập thông tin| B{Đăng nhập thành công?}
+    A --> C[Config Screen]
     B -->|Thành công| D[MainApp]
     B -->|Thất bại| A
     D -->|Đăng xuất| A
 
     subgraph MainScreens [Các màn hình chính]
-        E[🛒 Order Screen]
-        F[🏠 Dashboard]
-        G[📋 Product Screen]
-        H[📊 Reports Screen]
-        I[⚙️ Settings Scrreen]
+        E[Order Screen]
+        F[Dashboard]
+        G[Product Screen]
+        H[Reports Screen]
+        I[Settings Scrreen]
     end
 
     D --> E
@@ -116,50 +116,50 @@ flowchart TD
 
 ## 5. Tính năng UX nâng cao
 
-- 🔔 Hiển thị thông báo khi thêm sản phẩm vào giỏ  
-- ⚡ Cập nhật giỏ hàng theo thời gian thực  
-- 🪟 Hỗ trợ resize window, layout tự điều chỉnh  
-- ✨ Animation/Transition khi chuyển màn hình hoặc thêm sản phẩm  
+- Hiển thị thông báo khi thêm sản phẩm vào giỏ  
+- Cập nhật giỏ hàng theo thời gian thực  
+- Hỗ trợ resize window, layout tự điều chỉnh  
+- Animation/Transition khi chuyển màn hình hoặc thêm sản phẩm  
 
 ---
 
 ## 6. Yêu cầu kỹ thuật
 
-- 🔗 **Kết nối API Backend:** lấy danh sách sản phẩm, đặt hàng, quản lý tài khoản  
-- ✅ **Validation input:** email, mật khẩu, số lượng sản phẩm  
-- ⚠ **Error Handling:** thông báo lỗi khi API trả về lỗi  
-- 🔄 **Data Binding:** tự động cập nhật giao diện khi dữ liệu thay đổi  
+- **Kết nối API Backend:** lấy danh sách sản phẩm, đặt hàng, quản lý tài khoản  
+- **Validation input:** email, mật khẩu, số lượng sản phẩm  
+- **Error Handling:** thông báo lỗi khi API trả về lỗi  
+- **Data Binding:** tự động cập nhật giao diện khi dữ liệu thay đổi  
 
 ---
 
 ## 7. Tài liệu hóa UI
 
-- 🎨 **Wireframes / Mockups:** vẽ sơ đồ giao diện từng màn hình  
-- 🧩 **Component diagram:** liệt kê các component UI chính  
-- 🔄 **Flowchart:** luồng thao tác chủ cửa hàng
+- **Wireframes / Mockups:** vẽ sơ đồ giao diện từng màn hình  
+- **Component diagram:** liệt kê các component UI chính  
+- **Flowchart:** luồng thao tác chủ cửa hàng
 
 ---
 
 ## 8. Workflow đề xuất:
 ```
-📦 MyShop.Frontend
+MyShop.Frontend
 │
-├─ 📂 Models        # Định nghĩa dữ liệu (Data structures)
+├─ Models        # Định nghĩa dữ liệu (Data structures)
 |
 │
-├─ 📂 Services      # Logic gọi API, xử lý dữ liệu cấp thấp
+├─ Services      # Logic gọi API, xử lý dữ liệu cấp thấp
 |
 │
-├─ 📂 ViewModels    # Logic nghiệp vụ, Command, Property
+├─ ViewModels    # Logic nghiệp vụ, Command, Property
 |
 │
-├─ 📂 Views         # Các trang XAML và User Controls
+├─ Views         # Các trang XAML và User Controls
 |
 │
-├─ 📂 Assets        # Hình ảnh, Icon, Styles
+├─ Assets        # Hình ảnh, Icon, Styles
 |
 │
-└─ 📂 Helpers       # Converter, Utility Functions
+└─ Helpers       # Converter, Utility Functions
 
 ```
 

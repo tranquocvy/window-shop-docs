@@ -1,10 +1,10 @@
-# 📁 Supplementary Docs
+# Supplementary Docs
 
 Thư mục này được dùng để lưu **các tài liệu hoặc nhiệm vụ phát sinh trong quá trình làm việc nhóm**
 
 ---
 
-## 🧭 Mục đích
+## Mục đích
 
 Cụ thể:
 
@@ -20,16 +20,16 @@ Ví dụ:
 
 ---
 
-## 🚀 Quy định làm việc với thư mục này
+## Quy định làm việc với thư mục này
 
 - Thành viên **push trực tiếp lên nhánh `main`**.  
   (Không cần pull request hoặc review, vì đây là task cá nhân)
 
 ---
 
-## 🧩 Cách đặt tên file
+## Cách đặt tên file
 
-### 🔹 Cấu trúc:
+### Cấu trúc:
 
 ```
 
@@ -37,7 +37,7 @@ Ví dụ:
 
 ```
 
-### 🔹 Quy ước:
+### Quy ước:
 
 | Thành phần          | Ý nghĩa                               | Ví dụ                                           |
 | ------------------- | ------------------------------------- | ----------------------------------------------- |
@@ -45,7 +45,7 @@ Ví dụ:
 | `<người_thực_hiện>` | Tên hoặc vai trò thành viên           | `frontend`, `backend`, `qa`, `vuong`            |
 | `<mô_tả_ngắn>`      | Mô tả ngắn gọn nội dung               | `team-guideline`, `api-draft`, `test-checklist` |
 
-### 🔹 Ví dụ:
+### Ví dụ:
 
 ```
 
@@ -57,10 +57,10 @@ Ví dụ:
 
 ---
 
-## 🧾 Mẫu nội dung file cá nhân
+## Mẫu nội dung file cá nhân
 
 ```markdown
-# 🧩 Task: <tên tài liệu hoặc yêu cầu>
+# Task: <tên tài liệu hoặc yêu cầu>
 
 **Người thực hiện:**
 **Ngày giao:**
@@ -69,20 +69,20 @@ Ví dụ:
 
 ---
 
-## 🎯 Mục tiêu
+## Mục tiêu
 
 Mô tả ngắn gọn mục tiêu hoặc lý do của tài liệu / nhiệm vụ.
 
 ---
 
-## 📋 Nội dung thực hiện
+## Nội dung thực hiện
 
 Liệt kê các bước, kết quả hoặc phần việc đã thực hiện.
 ```
 
 ---
 
-## ⚠️ Lưu ý
+## Lưu ý
 
 - Đây **không phải khu vực làm việc chung**, mà là nơi để mỗi thành viên **nộp kết quả hoặc tài liệu phát sinh**.
 - **Push trực tiếp lên nhánh `main`**, không cần Leader duyệt lại.

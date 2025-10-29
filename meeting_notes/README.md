@@ -1,10 +1,10 @@
-# 🗓️ Meeting Notes
+# Meeting Notes
 
 Thư mục này lưu trữ **biên bản họp (meeting notes)** của nhóm trong suốt quá trình phát triển dự án **Window Shop App**.
 
 ---
 
-## 🧭 Mục đích
+## Mục đích
 
 - Ghi lại nội dung, quyết định, và phân công công việc trong mỗi buổi họp.
 - Theo dõi tiến độ, vấn đề phát sinh và hướng giải quyết.
@@ -12,7 +12,7 @@ Thư mục này lưu trữ **biên bản họp (meeting notes)** của nhóm tro
 
 ---
 
-## 📁 Cấu trúc & Quy tắc đặt tên file
+## Cấu trúc & Quy tắc đặt tên file
 
 Mỗi biên bản họp là **một file `.md`**, được đặt tên theo ngày họp:
 
@@ -26,7 +26,7 @@ meeting_notes/
 
 ```
 
-📌 **Cú pháp tên file:**
+**Cú pháp tên file:**
 
 ```
 
@@ -38,10 +38,10 @@ Ví dụ: `meeting_2025-10-21.md`
 
 ---
 
-## 🧱 Cấu trúc mẫu của một biên bản họp
+## Cấu trúc mẫu của một biên bản họp
 
 ```markdown
-# 📝 Meeting - 2025-10-21
+# Meeting - 2025-10-21
 
 **Thời gian:** 20:00 – 21:00
 **Hình thức:** Online (Google Meet)
@@ -49,14 +49,14 @@ Ví dụ: `meeting_2025-10-21.md`
 
 ---
 
-## 🎯 Mục tiêu cuộc họp
+## Mục tiêu cuộc họp
 
 - Thống nhất kiến trúc tổng thể của ứng dụng.
 - Phân chia công việc cho tuần tới.
 
 ---
 
-## 👥 Thành viên tham dự
+## Thành viên tham dự
 
 | Tên   | Có mặt |
 | ----- | ------ |
@@ -68,7 +68,7 @@ Ví dụ: `meeting_2025-10-21.md`
 
 ---
 
-## 💬 Nội dung chính
+## Nội dung chính
 
 - Xem lại tiến độ tuần trước.
 - Chốt UI layout và tính năng chính.
@@ -76,7 +76,7 @@ Ví dụ: `meeting_2025-10-21.md`
 
 ---
 
-## 📌 Quyết định & Phân công
+## Quyết định & Phân công
 
 | Công việc                | Người phụ trách | Deadline   |
 | ------------------------ | --------------- | ---------- |
@@ -86,14 +86,14 @@ Ví dụ: `meeting_2025-10-21.md`
 
 ---
 
-## 🚧 Vấn đề tồn tại
+## Vấn đề tồn tại
 
 - Một số component WinUI chưa hoạt động ổn định.
 - Cần xác định trước flow tạo hóa đơn trước khi code.
 
 ---
 
-## 🗓️ Kế hoạch họp tiếp theo
+## Kế hoạch họp tiếp theo
 
 **Thời gian:** 2025-10-28
 **Nội dung dự kiến:**
@@ -103,12 +103,12 @@ Ví dụ: `meeting_2025-10-21.md`
 
 ---
 
-> 📘 _Mỗi buổi họp nên có người ghi biên bản cụ thể. Các thành viên cần đọc lại và xác nhận nội dung sau khi đăng lên._
+> _Mỗi buổi họp nên có người ghi biên bản cụ thể. Các thành viên cần đọc lại và xác nhận nội dung sau khi đăng lên._
 ```
 
 ---
 
-## 🧩 Quy trình làm việc
+## Quy trình làm việc
 
 1. **Sau mỗi buổi họp**, người ghi biên bản:
 
@@ -127,7 +127,7 @@ Ví dụ: `meeting_2025-10-21.md`
 
 ---
 
-## 💡 Gợi ý công cụ
+## Gợi ý công cụ
 
 - VS Code + extension _Markdown Preview Enhanced_ để xem nội dung rõ ràng.
 - Có thể dùng **Mermaid** để vẽ sơ đồ quyết định hoặc luồng họp.
