@@ -275,52 +275,6 @@ public class UserRepository : IUserRepository {
 
 ---
 
-### Vai trò và quy ước của từng Project
-
-1. **📦 MyShop.Domain (Core Layer)**
-
-   * **Trách nhiệm:** Chứa các đối tượng nghiệp vụ (Entities) — các class thuần tuý, chỉ có thuộc tính và logic nghiệp vụ cơ bản.
-   * **Ví dụ:** `Product`, `Customer`, `Order`.
-   * **Không phụ thuộc** vào bất kỳ lớp nào khác.
-
-2. **📦 MyShop.Application (Use Case Layer)**
-
-   * **Trách nhiệm:** Điều phối logic và luồng dữ liệu giữa Domain và các tầng khác.
-   * `Interfaces`: Định nghĩa hợp đồng (contract) cho lớp Infrastructure.
-   * `Services/UseCases`: Xử lý nghiệp vụ, điều phối logic.
-   * `DTOs`: Truyền dữ liệu giữa Application và Presentation.
-   * **Phụ thuộc:** `MyShop.Domain`.
-
-3. **📦 MyShop.Infrastructure (Infrastructure Layer)**
-
-   * **Trách nhiệm:** Triển khai các hợp đồng từ Application, chứa các chi tiết kỹ thuật (Database, Email, API).
-   * `Persistence`: Làm việc với database, chứa DbContext, Repository.
-   * `ExternalServices`: Tương tác với dịch vụ bên ngoài.
-   * **Phụ thuộc:** `MyShop.Application`.
-
-4. **📦 MyShop.Presentation.WinUI (Presentation Layer)**
-
-   * **Trách nhiệm:** Xử lý giao diện và tương tác người dùng, theo mô hình **MVVM**.
-   * `ViewModel` sẽ được **inject** các service từ `Application` để lấy dữ liệu và thao tác.
-   * **Phụ thuộc:** `MyShop.Application`.
-
----
-
-### Mối quan hệ giữa Clean Architecture – 3-Layer – MVVM
-
-| Mô hình                         | Vai trò                                                             | Áp dụng trong dự án                                        |
-| ------------------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------- |
-| **Clean Architecture**          | Giữ nguyên tắc “Dependency Rule” – chỉ phụ thuộc từ ngoài vào trong | Toàn bộ Solution                                           |
-| **3-Layer Architecture**        | Phân tách logic theo tầng: Domain – Application – Infrastructure    | MyShop.Domain / MyShop.Application / MyShop.Infrastructure |
-| **MVVM (Model–View–ViewModel)** | Tổ chức lớp giao diện, tách biệt View và ViewModel                  | MyShop.Presentation.WinUI                                  |
-
-**Dependency Rule:**
-
-> Chỉ được phụ thuộc “vào trong” — Presentation → Application → Domain
-> Domain không phụ thuộc bất kỳ lớp nào khác.
-
----
-
 ## 5. Design Patterns
 
 Liệt kê các **Design Pattern** nhóm áp dụng (mỗi thành viên ít nhất 1 pattern, không tính Builder & Singleton).

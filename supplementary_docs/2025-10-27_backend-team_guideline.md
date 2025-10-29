@@ -60,8 +60,6 @@ Tài liệu CHI TIẾT Định hướng các công việc của Backend được
 
 ### **Roadmap: Toàn cảnh Vai trò Backend Lead trong Dự án "MyShop"**
 
-Đây là lộ trình tổng quan về các trách nhiệm và công việc mà bạn, trong vai trò Backend Lead, sẽ dẫn dắt và thực hiện.
-
 **Giai đoạn 1: Thiết kế & Nền tảng (Architecture & Foundation)**
 
 1. **Thiết kế Sơ đồ Cơ sở dữ liệu (Database Schema Design):**
