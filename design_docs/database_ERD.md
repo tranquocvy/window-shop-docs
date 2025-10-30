@@ -1,4 +1,4 @@
-order_detail -- belong to --> order
+**Note: order_detail  --belong_to--> order**
 ```mermaid
 ---
 config:
@@ -88,9 +88,9 @@ erDiagram
     %% Relationships
     user }o--|| role : belongs_to
     product }o--|| category : belongs_to
-    orders }o--|| customer : placed_by
+    order }o--|| customer : placed_by
     order }o--|| user : created_by
-    order_detail }o--|| orders : belongs_to
+    order_detail }o--|| order : belongs_to
     order_detail }o--|| product : contains
-    payment ||--o{ orders : paid_via
+    payment ||--o{ order : paid_via
     commission }o--|| user : belongs_to
