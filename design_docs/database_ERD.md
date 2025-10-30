@@ -1,3 +1,4 @@
+order_detail -- belong to --> order
 ```mermaid
 ---
 config:
@@ -44,7 +45,7 @@ erDiagram
         NVARCHAR address
         DATETIME created_at
     }
-    orders {
+    order {
         BIGINT order_id PK
         INT customer_id FK
         INT user_id FK
@@ -88,7 +89,7 @@ erDiagram
     user }o--|| role : belongs_to
     product }o--|| category : belongs_to
     orders }o--|| customer : placed_by
-    orders }o--|| user : created_by
+    order }o--|| user : created_by
     order_detail }o--|| orders : belongs_to
     order_detail }o--|| product : contains
     payment ||--o{ orders : paid_via
