@@ -75,7 +75,9 @@
 
 | Thuộc tính | Kiểu | Ràng buộc | Ghi chú |
 |-------------|-------|------------|----------|
-| `order_id` | BIGINT | PK | Sử dụng ID đặc biệt |
+| `order_id` | BigInt | PK | Id = "YYYYMMDD hiện tại + số tăng tự nhiên"
+VD: 202510300001
+ |
 | `customer_id` | INT | FK → Customer |  |
 | `user_id` | INT | FK → User | Người lập đơn |
 | `order_date` | DATETIME | DEFAULT GETDATE() |  |
