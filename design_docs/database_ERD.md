@@ -94,3 +94,4 @@ erDiagram
     order_detail }o--|| product : contains
     payment ||--o{ order : paid_via
     commission }o--|| user : belongs_to
+```
