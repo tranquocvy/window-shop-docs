@@ -219,7 +219,7 @@ graph TD
     end
     
     subgraph "Backend System"
-        WebAPI(TechHaven.WebAPI)
+        WebAPI(TechHaven.Presentation.WebAPI)
         Infra(TechHaven.Infrastructure)
         App(TechHaven.Application)
         Domain(TechHaven.Domain)
@@ -260,7 +260,7 @@ graph TD
 
 1. **WinUI App:** Nhân viên bán hàng nhấn nút "Tạo Đơn hàng" trên giao diện WinUI.
 2. **ViewModel (WinUI):** Thu thập dữ liệu từ Form, tạo một DTO/Request (ví dụ: `CreateOrderRequestDto`).
-3. **HTTP Client (WinUI):** Gửi `CreateOrderRequestDto` qua một `POST` request đến endpoint `api/orders` trên `TechHaven.WebAPI`.
+3. **HTTP Client (WinUI):** Gửi `CreateOrderRequestDto` qua một `POST` request đến endpoint `api/orders` trên `TechHaven.Presentation.WebAPI`.
 4. **OrdersController (WebAPI):** Nhận request, chuyển đổi DTO thành `CreateOrderCommand`.
 5. **MediatR (WebAPI):** Gửi `CreateOrderCommand` đi.
 6. **CreateOrderCommandHandler (Application):** Nhận Command, thực thi logic nghiệp vụ (kiểm tra tồn kho, tính tổng tiền), tạo Entity `Order`.
@@ -308,7 +308,7 @@ Lớp này là nơi triển khai các chi tiết "how" cho các định nghĩa (
 
 #### 4. Các Lớp Ngoài
 
-##### `TechHaven.WebAPI` (Backend Entry Point)
+##### `TechHaven.Presentation.WebAPI` (Backend Entry Point)
 
 - Đây là lớp Presentation cho backend.
 - Chứa các **API Controllers** (ví dụ: `ProductsController`, `OrdersController`).
@@ -318,7 +318,7 @@ Lớp này là nơi triển khai các chi tiết "how" cho các định nghĩa (
 ##### `TechHaven.Presentation.WinUI` (Frontend Client)
 
 - Một ứng dụng Desktop **hoàn toàn tách biệt**.
-- Là "người tiêu dùng" (consumer) của `TechHaven.WebAPI`.
+- Là "người tiêu dùng" (consumer) của `TechHaven.Presentation.WebAPI`.
 - Giao tiếp với Backend thông qua **HTTP Requests** (sử dụng `HttpClient`).
 - Chứa giao diện người dùng (XAML), ViewModels (MVVM) và logic gọi API.
 
@@ -336,7 +336,7 @@ graph TD
     end
 
     subgraph "Backend Server"
-        WebAPI[TechHaven.WebAPI]
+        WebAPI[TechHaven.Presentation.WebAPI]
         Infra[TechHaven.Infrastructure]
         App[TechHaven.Application]
         Domain[TechHaven.Domain]
@@ -365,7 +365,7 @@ graph TD
 Hệ thống sẽ được triển khai như sau:
 
 1. **Client (Máy nhân viên):** Ứng dụng `TechHaven.Presentation.WinUI` được cài đặt (ví dụ: qua MSIX) trên các máy tính Windows tại cửa hàng.
-2. **Application Server:** `TechHaven.WebAPI` (ASP.NET) được triển khai dưới dạng dịch vụ (ví dụ: Docker Container, Azure App Service, hoặc trên IIS) trên một máy chủ (cloud hoặc on-premise).
+2. **Application Server:** `TechHaven.Presentation.WebAPI` (ASP.NET) được triển khai dưới dạng dịch vụ (ví dụ: Docker Container, Azure App Service, hoặc trên IIS) trên một máy chủ (cloud hoặc on-premise).
 3. **Database Server:** `PostgreSQL` chạy trên một máy chủ cơ sở dữ liệu riêng biệt, được bảo mật và chỉ cho phép kết nối từ Application Server.
 4. **Mạng:** Client (WinUI) giao tiếp với Application Server (WebAPI) qua mạng (Internet/LAN) bằng giao thức HTTPS.
 
