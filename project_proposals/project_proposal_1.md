@@ -196,164 +196,257 @@ gitGraph
 
 ## 4. Kiến trúc phần mềm
 
-### 4.1. Các kiến trúc áp dụng
+### 4.1. Phạm vi
+
+Hệ thống bao gồm hai thành phần chính:
+
+- **Backend:** Một `ASP.NET WebAPI` xử lý toàn bộ logic nghiệp vụ, quản lý dữ liệu và cung cấp API cho các client.
+- **Frontend:** Một ứng dụng Desktop `WinUI 3` dành cho nhân viên cửa hàng (quản lý, bán hàng, kho) để thao tác với hệ thống.
+
+### 4.2. Mẫu kiến trúc áp dụng
 
 * **3-layer architecture**: Phân tách lớp đảm nhiệm các chức năng riêng biệt
 * **Clean architecture**: Một bản nâng cấp của 3-layer áp dụng các kiến thức về OOP như SOLID cũng như Dependency Rule nhưng thực hiện ở mức đơn giản để tránh over engineering.
 * **MVVM**: cho phần Presentation (UI cho ứng dụng)
 
-### 4.2. Sơ đồ kiến trúc
+### 4.3. Sơ đồ kiến trúc
 
 ```mermaid
-flowchart LR
-  %% --- Presentation Layer ---
-  subgraph PresentationLayer["Presentation Layer"]
-    UI["WinUI / Web / API Controllers / ViewModels"]
-  end
+graph TD
+    %% Định nghĩa các khối (Layers)
+    subgraph "Client (Bên ngoài)"
+        WinUI(TechHaven.Presentation.WinUI)
+    end
+    
+    subgraph "Backend System"
+        WebAPI(TechHaven.WebAPI)
+        Infra(TechHaven.Infrastructure)
+        App(TechHaven.Application)
+        Domain(TechHaven.Domain)
+    end
 
-  %% --- Application Layer ---
-  subgraph ApplicationLayer["Application Layer (Use Cases)"]
-    App["Use Cases / Services / DTOs / Interfaces"]
-  end
+    subgraph "Dùng chung"
+        Shared(TechHaven.Shared)
+    end
 
-  %% --- Domain Layer ---
-  subgraph DomainLayer["Domain Layer (Core)"]
-    DomainEntities["Entities / ValueObjects / Domain Services / Domain Events / Exceptions"]
-  end
+    %% Định nghĩa các thành phần bên ngoài
+    User[<fa:fa-user> Nhân viên]
+    Database[<fa:fa-database> PostgreSQL DB]
 
-  %% --- Infrastructure Layer ---
-  subgraph InfrastructureLayer["Infrastructure Layer (Adapters)"]
-    InfraPersist["Persistence (EF Core DbContext, Repositories)"]
-    InfraExternal["External Services (Email, Cache, Storage)"]
-    InfraDI["Dependency Registration"]
-  end
+    %% Định nghĩa các luồng phụ thuộc
+    User -- "Sử dụng" --> WinUI
+    WinUI -- "Gọi HTTP API" --> WebAPI
+    WinUI -- "Tham chiếu DTOs" --> Shared
 
-  %% --- Dependencies ---
-  UI -->|calls| App
-  App -->|depends on / uses| DomainEntities
-  App -- "depends on (abstractions/interfaces)" --> DomainEntities
-  InfraPersist -->|implements| App
-  InfraExternal -->|implements| App
-  InfraDI -->|registers implementations to| App
-  InfraPersist -.->|adapter for| DomainEntities
+    WebAPI -- "Tham chiếu (DI/Startup)" --> Infra
+    WebAPI -- "Gửi Commands/Queries" --> App
+    WebAPI -- "Tham chiếu DTOs" --> Shared
+    
+    Infra -- "Truy cập DB" --> Database
+    Infra -- "Triển khai Interfaces" --> App
+    Infra -- "Triển khai Repositories" --> Domain
 
-  %% --- Inversion of Control ---
-  App <-->|interfaces implemented by| InfraPersist
-  App <-->|interfaces implemented by| InfraExternal
+    App -- "Phụ thuộc vào" --> Domain
 
-  %% --- Optional: Tests and Cross-cutting ---
-  Tests["Tests (Unit / Integration)"] -.-> App
-  Tests -.-> DomainEntities
-
-  %% --- Styling ---
-  classDef layer fill:#e2e3e5,color:#111,stroke:#333,stroke-width:1px;
-  class PresentationLayer,ApplicationLayer,DomainLayer,InfrastructureLayer layer;
+    %% Thêm style cho các Layer
+    style Domain fill:#f9fbe7,stroke:#333,stroke-width:2px,color:#333
+    style App fill:#f0f4c3,stroke:#333,stroke-width:2px,color:#333
+    style Infra fill:#e6ee9c,stroke:#333,stroke-width:2px,color:#333
+    style WebAPI fill:#dce775,stroke:#333,stroke-width:2px,color:#333
+    style WinUI fill:#b0c4de,stroke:#333,stroke-width:2px,color:#333
 ```
 
-### 4.3. Phân tích chi tiết từng layer
+**Ví dụ luồng "Tạo Đơn hàng" giải thích kiến trúc trên**
 
-#### Presentation Layer (UI/ API)
-**Nhiệm vụ:**
+1. **WinUI App:** Nhân viên bán hàng nhấn nút "Tạo Đơn hàng" trên giao diện WinUI.
+2. **ViewModel (WinUI):** Thu thập dữ liệu từ Form, tạo một DTO/Request (ví dụ: `CreateOrderRequestDto`).
+3. **HTTP Client (WinUI):** Gửi `CreateOrderRequestDto` qua một `POST` request đến endpoint `api/orders` trên `TechHaven.WebAPI`.
+4. **OrdersController (WebAPI):** Nhận request, chuyển đổi DTO thành `CreateOrderCommand`.
+5. **MediatR (WebAPI):** Gửi `CreateOrderCommand` đi.
+6. **CreateOrderCommandHandler (Application):** Nhận Command, thực thi logic nghiệp vụ (kiểm tra tồn kho, tính tổng tiền), tạo Entity `Order`.
+7. **IOrderRepository (Application):** Gọi hàm `AddAsync(order)`.
+8. **OrderRepository (Infrastructure):** Sử dụng EF Core DbContext để chuyển Entity `Order` thành lệnh SQL và lưu vào CSDL **PostgreSQL**.
+9. **(Hoàn tất):** Kết quả được trả ngược về `WebAPI`, sau đó trả về `WinUI` (ví dụ: trả về `OrderID` vừa tạo).
 
-- Entry point của client (người dùng app).
-- Không chứa logic nghiệp vụ.
-- Chịu trách nhiệm nhận request → gọi Application Layer → trả response
 
-**Thành phần cụ thể:**
+### 4.4. Phân tích chi tiết từng layer
 
-- **WinUI:** giao diện đồ họa người dùng.
-- **API Controllers:** endpoint trong ASP.NET Core, nhận và phản hồi HTTP.
-- **ViewModels / DTOs:** chuyển đổi dữ liệu giữa Presentation và Application.
+#### 1. `TechHaven.Domain`
 
----
+Đây là lớp trong cùng, chứa đựng logic nghiệp vụ cốt lõi và không phụ thuộc vào bất kỳ công nghệ cụ thể nào.
 
-#### Application Layer (Use Cases)
-**Nhiệm vụ**
+- **Entities:** Các đối tượng nghiệp vụ thuần túy (POCO).
+    - Ví dụ: `Product`, `Order`, `OrderItem`, `Customer`, `Stock`.
+- **Interfaces (Repository):** Các định nghĩa (contract) cho việc truy cập dữ liệu.
+    - Ví dụ: `IProductRepository`, `IOrderRepository`.
+- **Domain Events:** (Tùy chọn) Các sự kiện nghiệp vụ.
+    - Ví dụ: `OrderPlacedEvent`.
 
-- Chứa **use case (dịch vụ ứng dụng)** — mô tả *hành động của hệ thống* theo góc nhìn nghiệp vụ.
-- Điều phối luồng nghiệp vụ giữa Domain và hạ tầng.
-- Không chứa logic nghiệp vụ chi tiết, mà **sử dụng Domain Layer** để xử lý.
+#### 2. `TechHaven.Application`
 
-**Thành phần**
+Lớp này chứa các quy trình nghiệp vụ (use cases) của hệ thống.
 
-- **Use Cases / Services:** các lớp xử lý yêu cầu cụ thể (CreateOrderHandler, LoginService...).
-- **DTOs:** đối tượng truyền dữ liệu (Application ↔ Presentation).
-- **Interfaces (Ports):** định nghĩa hợp đồng trừu tượng cho các adapter bên ngoài (repository, external service, v.v.).
+- **Use Cases/Features:** Thường được triển khai bằng mẫu **CQRS** (Command Query Responsibility Segregation) với **MediatR**.
+    - **Commands:** Các tác vụ thay đổi dữ liệu (Create, Update, Delete).
+        - Ví dụ: `CreateOrderCommand`, `UpdateProductStockCommand`.
+    - **Queries:** Các tác vụ truy vấn dữ liệu (Read).
+        - Ví dụ: `GetProductByIdQuery`, `GetSalesDashboardQuery`.
+- **Interfaces (External Services):** Các định nghĩa cho dịch vụ bên ngoài.
+    - Ví dụ: `IEmailService`, `IPaymentGateway`.
+- **Validators:** Sử dụng `FluentValidation` để kiểm tra tính hợp lệ của các Command và Query.
 
-**Phụ thuộc**
+#### 3. `TechHaven.Infrastructure`
 
-- **Phụ thuộc vào Domain Layer (vì dùng domain entities, domain services)**.
-- **Được Infrastructure Layer “cài đặt” thông qua các interface.**
+Lớp này là nơi triển khai các chi tiết "how" cho các định nghĩa (what) ở lớp `Application` và `Domain`.
 
-**Vai trò quan trọng**
+- **Database Access:** Triển khai các Repository Interface.
+    - Sử dụng **Entity Framework Core** để làm việc với **PostgreSQL**.
+    - Ví dụ: `ProductRepository` (triển khai `IProductRepository`).
+- **External Services:** Triển khai các Interface dịch vụ.
+    - Ví dụ: `SmtpEmailService` (triển khai `IEmailService`).
+- **Authentication:** Cấu hình **ASP.NET Core Identity** hoặc **JWT**.
 
-- Application Layer **không quan tâm database nào, email service nào, cache gì** — chỉ quan tâm *“có repository”* hoặc *“có email service”*.
-    
-    → Điều này làm cho ứng dụng dễ **test, mở rộng, thay thế** (ví dụ đổi từ SQL sang MongoDB mà không đổi code logic).
-    
+#### 4. Các Lớp Ngoài
 
----
+##### `TechHaven.WebAPI` (Backend Entry Point)
 
-#### Domain Layer (Core)
+- Đây là lớp Presentation cho backend.
+- Chứa các **API Controllers** (ví dụ: `ProductsController`, `OrdersController`).
+- Nhận các yêu cầu HTTP từ client (WinUI), gửi các `Command` hoặc `Query` (dùng MediatR) đến lớp `Application` và trả về kết quả (thường là JSON).
+- Chịu trách nhiệm khởi tạo và **Dependency Injection (DI)**.
 
-**Nhiệm vụ**
+##### `TechHaven.Presentation.WinUI` (Frontend Client)
 
-- Là **tầng trung tâm**, chứa **business logic cốt lõi**.
-- Không phụ thuộc vào bất kỳ framework hay database nào.
-- Có thể được dùng lại ở mọi ứng dụng khác nhau.
+- Một ứng dụng Desktop **hoàn toàn tách biệt**.
+- Là "người tiêu dùng" (consumer) của `TechHaven.WebAPI`.
+- Giao tiếp với Backend thông qua **HTTP Requests** (sử dụng `HttpClient`).
+- Chứa giao diện người dùng (XAML), ViewModels (MVVM) và logic gọi API.
 
-**Thành phần**
+##### `TechHaven.Shared` (Dùng chung)
 
-- **Entities:** đối tượng có định danh (ID) và trạng thái, ví dụ `User`, `Order`, `Product`.
-- **ValueObjects:** đối tượng không định danh, ví dụ `Money`, `Address`.
-- **Domain Services:** nghiệp vụ không gắn chặt vào 1 entity, ví dụ “tính chiết khấu đơn hàng”.
-- **Domain Events:** sự kiện nghiệp vụ, ví dụ “OrderCreatedEvent”.
-- **Exceptions:** lỗi nghiệp vụ (BusinessException, ValidationException).
+- Chứa các lớp **DTOs (Data Transfer Objects)**, các lớp hằng số (Constants), hoặc các lớp tiện ích (Utilities) được dùng chung bởi cả `WebAPI` (khi trả về) và `WinUI` (khi nhận về).
+- Giúp giảm sự phụ thuộc trực tiếp giữa Client và Server.
 
-**Phụ thuộc**
+#### Luồng phụ thuộc
+Mọi phụ thuộc chỉ được phép hướng vào trong
+```mermaid
+graph TD
+    subgraph "Frontend Client"
+        WinUI[TechHaven.WinUI]
+    end
 
-- **Không phụ thuộc vào bất kỳ tầng nào khác.**
-- Các tầng khác **phải phụ thuộc vào nó**.
+    subgraph "Backend Server"
+        WebAPI[TechHaven.WebAPI]
+        Infra[TechHaven.Infrastructure]
+        App[TechHaven.Application]
+        Domain[TechHaven.Domain]
+    end
 
-**Tầm quan trọng**
+    subgraph "Shared"
+        Contracts[TechHaven.Shared]
+    end
 
-- Đây là tầng bạn **bảo vệ và đầu tư nhiều nhất**, vì mọi hệ thống đều xoay quanh nó.
-- Nếu Domain được thiết kế tốt → bạn có thể thay UI, DB, API mà vẫn giữ được nghiệp vụ cốt lõi.
+    %% Dependencies
+    WinUI --> Contracts
+    WinUI -. HTTP Request .-> WebAPI
 
----
+    WebAPI --> App
+    WebAPI --> Infra
+    WebAPI --> Contracts
 
-#### Infrastructure Layer (Adapters)
+    Infra --> App
+    App --> Domain
+    App --> Contracts
 
-**Nhiệm vụ**
+```
 
-- Cài đặt các **interface / port** do Application Layer định nghĩa.
-- Kết nối ra **thế giới bên ngoài**: database, API, file, email, cache,...
+### 4.5. Deployment View
 
-**Thành phần**
+Hệ thống sẽ được triển khai như sau:
 
-- **Persistence:** nơi triển khai các Repository bằng EF Core, hoặc gọi SQL.
-- **External Services:** nơi triển khai các dịch vụ ngoài như EmailSender, CloudStorage, RedisCache.
-- **Dependency Injection (DI):** đăng ký các lớp cài đặt vào container để Application có thể sử dụng.
+1. **Client (Máy nhân viên):** Ứng dụng `TechHaven.Presentation.WinUI` được cài đặt (ví dụ: qua MSIX) trên các máy tính Windows tại cửa hàng.
+2. **Application Server:** `TechHaven.WebAPI` (ASP.NET) được triển khai dưới dạng dịch vụ (ví dụ: Docker Container, Azure App Service, hoặc trên IIS) trên một máy chủ (cloud hoặc on-premise).
+3. **Database Server:** `PostgreSQL` chạy trên một máy chủ cơ sở dữ liệu riêng biệt, được bảo mật và chỉ cho phép kết nối từ Application Server.
+4. **Mạng:** Client (WinUI) giao tiếp với Application Server (WebAPI) qua mạng (Internet/LAN) bằng giao thức HTTPS.
 
-**Phụ thuộc**
+### 4.6. Công nghệ
 
-- **Phụ thuộc vào Application Layer** (vì nó *implement interfaces* mà Application định nghĩa).
-- **Không được phụ thuộc trực tiếp vào Presentation.**
+- **Backend:** .NET 8, ASP.NET Core Web API
+- **Database:** PostgreSQL
+- **ORM:** Entity Framework Core (EF Core)
+- **Frontend:** WinUI 3, .NET (chạy trên Windows App SDK)
+- **Kiến trúc:** Clean Architecture + MVVM
+- **Thư viện (Backend):**
+*(Dự kiến có thể thay đổi trong lúc thực hiện đồ án)*
+    - `MediatR`: Triển khai CQRS.
+    - `AutoMapper`: Ánh xạ giữa Entities và DTOs.
+    - `FluentValidation`: Xác thực dữ liệu đầu vào.
+    - `Serilog`: Ghi log.
+    - `Swashbuckle`: Tạo tài liệu API (Swagger).
+- **Giao tiếp:** RESTful API (JSON qua HTTPS).
 
-**Ví dụ**
+### 4.6. Cross-cutting Concerns
+*(Dự kiến triển khai, có thể thay đổi trong lúc thực hiện đồ án)*
 
-```csharp
-// Application Layer
-public interface IUserRepository {
-    Task<User?> GetByEmail(string email);
-}
+- **Xác thực & Phân quyền:** Sử dụng **JWT Bearer Token**. `WebAPI` sẽ cấp token khi đăng nhập. `WinUI` sẽ lưu token này (ví dụ: trong Windows Credential Manager) và đính kèm vào header của mỗi request.
+- **Xử lý lỗi:** `WebAPI` sử dụng Middleware (Global Exception Handler) để bắt lỗi và trả về mã lỗi HTTP chuẩn (400, 404, 500). `WinUI` sẽ diễn giải các mã lỗi này và hiển thị thông báo thân thiện.
+- **Logging:** Sử dụng `Serilog` để ghi log tập trung (ra file, console, hoặc hệ thống giám sát) ở cả `WebAPI` và `WinUI`.
 
-// Infrastructure Layer
-public class UserRepository : IUserRepository {
-    private readonly AppDbContext _context;
-    public UserRepository(AppDbContext context) { _context = context; }
-    public Task<User?> GetByEmail(string email) => _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-}
+### 4.7. Thư mục mô phỏng kiến trúc phần mềm
+```cpp
+TechHaven.sln
+│
+├── src/
+│   │
+│   ├── TechHaven.Domain/   // LỚP LÕI (CORE): Chứa nghiệp vụ cốt lõi, không phụ thuộc vào bất cứ project nào khác.
+│   │   ├── TechHaven.Domain.csproj
+│   │   ├── Entities/       // Các đối tượng nghiệp vụ (ví dụ: Product, Order, Customer). Đây là "trái tim" của Domain.
+│   │   ├── Interfaces/     // Các "hợp đồng" (interfaces) mà Infrastructure PHẢI triển khai (ví dụ: IProductRepository).
+│   │   ├── Events/         // Các "Domain Events" (sự kiện nghiệp vụ, ví dụ: OrderCreatedEvent). Dùng cho các logic phức tạp, tách biệt.
+│   │   ├── Exceptions/     // Các ngoại lệ (exceptions) nghiệp vụ tùy chỉnh (ví dụ: ProductNotFoundException).
+│   │   └── Services/       // Các "Domain Services", chứa logic nghiệp vụ phức tạp không thuộc về một Entity cụ thể.
+│   │
+│   ├── TechHaven.Application/
+│   │   ├── TechHaven.Application.csproj
+│   │   ├── Interfaces/     // Các "hợp đồng" của Application (ví dụ: IEmailService, IAuthenticationService) mà Infrastructure sẽ triển khai.
+│   │   ├── UseCases/Features/ // Chứa các "trường hợp sử dụng" (use cases), thường chia theo "Tính năng" (Features). Rất phổ biến khi dùng CQRS.
+│   │   │                   // Ví dụ: Features/Products/Queries/GetProductListQuery.cs
+│   │   │                   // Ví dụ: Features/Products/Commands/CreateProductCommand.cs
+│   │   ├── Mappings/       // Cấu hình AutoMapper, để chuyển đổi (map) tự động giữa Entities <-> DTOs.
+│   │   └── Validators/     // Chứa các bộ quy tắc xác thực (validation) cho DTOs/Commands (thường dùng thư viện FluentValidation).
+│   │
+│   ├── TechHaven.Infrastructure/
+│   │   ├── TechHaven.Infrastructure.csproj
+│   │   ├── Persistence/    // Chứa mọi thứ liên quan đến cơ sở dữ liệu.
+│   │   │   ├── AppDbContext.cs // File DbContext của Entity Framework Core, quản lý kết nối và ánh xạ CSDL.
+│   │   │   └── Repositories/ // Nơi triển khai (implement) các interfaces từ Domain (ví dụ: ProductRepository.cs).
+│   │   ├── ExternalServices/ // Nơi triển khai (implement) các interfaces từ Application (ví dụ: EmailService.cs, PaymentService.cs).
+│   │   ├── Migrations/     // Thư mục do EF Core tự động tạo, chứa các file C# để cập nhật schema (cấu trúc) CSDL.
+│   │   └── Authentication/ // Chứa logic liên quan đến xác thực (ví dụ: cấu hình JWT, Identity).
+│   │
+│   ├── TechHaven.Presentation.WebAPI/
+│   │   ├── TechHaven.Presentation.WebAPI.csproj
+│   │   └── Controllers/    // Chứa các API controllers (ví dụ: ProductsController.cs). Đây là "cửa ngõ" của backend.
+│   │
+│   └── TechHaven.Presentation.WinUI/ // LỚP TRÌNH BÀY (Frontend): Ứng dụng desktop WinUI.
+│       ├── TechHaven.Presentation.WinUI.csproj
+│       ├── Views/          // Chứa các file XAML (giao diện người dùng) và file code-behind (.xaml.cs).
+│       ├── ViewModels/     // Chứa các file ViewModel (theo mẫu MVVM), là logic chính của UI, gọi API từ WebAPI.
+│       ├── Utils/        // Các lớp tiện ích cho UI (ví dụ: NavigationService để chuyển trang).
+│       └── App.xaml        // File "khởi động" của ứng dụng WinUI, quản lý tài nguyên (resources) toàn cục.
+│
+├── tests/
+│   │
+│   ├── TechHaven.UnitTests/ // Project kiểm thử đơn vị (Unit Test), test Domain và Application mà không cần CSDL.
+│   │   ├── TechHaven.UnitTests.csproj
+│   │   └── Domain/         // Thư mục con, ví dụ chứa các unit test cho lớp Domain.
+│   │
+│   └── TechHaven.IntegrationTests/ // Project kiểm thử tích hợp (Integration Test), test Application + Infrastructure.
+│       └── TechHaven.IntegrationTests.csproj // Thường test với CSDL giả lập trong bộ nhớ (in-memory database).
+│
+└── docs/
+    ├── ARCHITECTURE.md     // File Markdown giải thích về các quyết định kiến trúc đã chọn.
+    └── README.md           // File hướng dẫn chính của dự án (cách cài đặt, chạy...).
 ```
 
 ---
@@ -574,10 +667,81 @@ Sai: `btnSubmit`, `txtName`
 
 <!-- GOOD -->
 <Button Content="Save" Style="{StaticResource PrimaryButtonStyle}"/>
-
 ```
 
-#### c. Nguồn tham khảo Coding Convention:
+#### d. Quy tắc sử dụng thư mục
+**Cấu trúc thư mục:**
+```
+TechHaven.sln
+├── src/
+│   ├── TechHaven.Domain/
+│   ├── TechHaven.Application/
+│   ├── TechHaven.Infrastructure/
+│   ├── TechHaven.Presentation.WebAPI/
+│   └── TechHaven.Presentation.WinUI/
+│
+├── tests/
+│   ├── TechHaven.UnitTests/
+│   └── TechHaven.IntegrationTests/
+│
+└── docs/
+```
+**Quy tắc làm việc giữa Frontend và Backend:**
+##### 1. Tổng thể
+
+* **Frontend (WinUI)** chỉ **giao tiếp qua API** với **Backend (WebAPI)**.
+* **Backend (WebAPI)** đóng vai trò **gateway**, tiếp nhận request, gọi **Application layer**, xử lý nghiệp vụ qua **Domain**, và lưu trữ dữ liệu bằng **Infrastructure**.
+* Mỗi layer có **ràng buộc phụ thuộc một chiều**:
+  `WinUI → WebAPI → Application → Domain`
+  `Infrastructure ↔ Application, Domain` (chỉ implement interfaces, không gọi ngược).
+
+##### 2. Quy tắc sử dụng thư mục
+
+**Frontend: `TechHaven.Presentation.WinUI`**
+
+* **Views/**: chứa giao diện XAML, không viết logic nghiệp vụ ở đây.
+* **ViewModels/**: thực hiện logic UI, **gọi API HTTP** tới WebAPI (qua `HttpClient`, `RestService`, v.v.).
+* **Utils/**: chứa helper, service phụ trợ cho UI (ví dụ navigation, binding, formatting).
+* **Không truy cập trực tiếp DB hay lớp Domain**. Mọi dữ liệu đến từ WebAPI.
+
+**Backend: `TechHaven.Presentation.WebAPI`**
+
+* **Controllers/**: định nghĩa các endpoint (`/api/products`, `/api/orders`, …).
+
+  * Nhận request từ WinUI, map sang **Command/Query** của Application.
+  * Không chứa logic nghiệp vụ hay truy vấn DB trực tiếp.
+* **WebAPI** chỉ gọi tới lớp **Application**, không gọi Domain hay Infrastructure trực tiếp.
+
+**Application Layer: `TechHaven.Application`**
+
+* **UseCases/Features/**: định nghĩa các hành động nghiệp vụ (command/query).
+* **Interfaces/**: định nghĩa các “hợp đồng” cho **External services** (email, payment, authentication).
+* **Mappings/**: dùng AutoMapper chuyển đổi giữa DTO và Entity.
+* **Validators/**: dùng FluentValidation để kiểm tra dữ liệu đầu vào.
+* Chỉ gọi **Domain** và **Interfaces** (không gọi WebAPI, không thao tác DB trực tiếp).
+
+**Domain Layer: `TechHaven.Domain`**
+
+* **Entities/**: chứa mô hình dữ liệu nghiệp vụ thuần túy (business entities).
+* **Interfaces/**: khai báo các repository (ví dụ `IProductRepository`).
+* **Services/**, **Events/**, **Exceptions/**: xử lý logic thuần domain, không biết đến database hay UI.
+* **Không tham chiếu đến bất kỳ project nào khác**.
+
+**Infrastructure Layer: `TechHaven.Infrastructure`**
+
+* **Persistence/**: implement repository, chứa DbContext.
+* **ExternalServices/**: implement các interface trong Application (email, thanh toán, file storage).
+* **Authentication/**: cấu hình Identity/JWT.
+* **Migrations/**: lưu file migration của EF Core.
+* Không chứa logic nghiệp vụ, chỉ thực hiện các thao tác **kỹ thuật**.
+
+**Tests/**
+
+* **UnitTests/**: test logic trong Domain và Application (mock repository, không cần DB).
+* **IntegrationTests/**: test thật giữa Application + Infrastructure (dùng in-memory database).
+
+
+#### Nguồn tham khảo Coding Convention:
 1. Common C# code conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
 2. C# identifier naming rules and conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names
 3. .NET code-style rule options: https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
@@ -588,12 +752,10 @@ Sai: `btnSubmit`, `txtName`
 
 #### a. Triết lý Kiểm thử (Testing Philosophy)
 
-Chúng ta áp dụng mô hình **Kim tự tháp kiểm thử (Test Pyramid)** – nhấn mạnh rằng:
-
-* **Unit Test**: Nhiều nhất, nhanh, rẻ, kiểm thử logic cốt lõi.
-* **Integration / UI Test**: Trung bình, kiểm thử sự phối hợp giữa các module.
-* **Manual Test**: Ít hơn, tập trung vào trải nghiệm và kiểm thử giao diện người dùng.
----
+Áp dụng mô hình **Kim tự tháp kiểm thử (Test Pyramid)**:
+- **Unit Test**: Nhiều nhất, nhanh, rẻ, kiểm thử logic cốt lõi.
+- **Integration / UI Test**: Trung bình, kiểm thử sự phối hợp giữa các module.
+- **Manual Test**: Ít hơn, tập trung vào trải nghiệm và kiểm thử giao diện người dùng.
 
 #### b. **Unit Testing – Kiểm thử đơn vị (Cốt lõi của chất lượng)**
 
@@ -607,10 +769,10 @@ Chúng ta áp dụng mô hình **Kim tự tháp kiểm thử (Test Pyramid)** �
 
 | Thành phần            | Có kiểm thử | Ghi chú                                        |
 | --------------------- | ----------- | ---------------------------------------------- |
-| **ViewModels**        | ✅           | Kiểm tra Command, Validation, Property Binding |
-| **Business Services** | ✅           | Tính toán, điều kiện nghiệp vụ                 |
-| **Models / Entities** | ❌           | Chỉ là POCO chứa dữ liệu                       |
-| **Repositories (EF)** | ❌           | Tin cậy vào EF Core                            |
+| **ViewModels**        | Có           | Kiểm tra Command, Validation, Property Binding |
+| **Business Services** | Có           | Tính toán, điều kiện nghiệp vụ                 |
+| **Models / Entities** | Không           | Chỉ là POCO chứa dữ liệu                       |
+| **Repositories (EF)** | Không           | Tin cậy vào EF Core                            |
 
 **Công cụ sử dụng:**
 
@@ -622,8 +784,8 @@ Chúng ta áp dụng mô hình **Kim tự tháp kiểm thử (Test Pyramid)** �
 * Mỗi project logic có project test tương ứng:
 
   ```
-  MyShop.Application  →  MyShop.Application.Tests
-  MyShop.Presentation →  MyShop.Presentation.Tests
+  TechHaven.Application  →  TechHaven.Application.Tests
+  TechHaven.Presentation →  TechHaven.Presentation.Tests
   ```
 * **Tên test:** `[MethodName]_[Scenario]_[ExpectedResult]`
   Ví dụ: `CalculateTotal_WithValidDiscount_ReturnsCorrectDiscountedPrice`
@@ -636,7 +798,7 @@ Chúng ta áp dụng mô hình **Kim tự tháp kiểm thử (Test Pyramid)** �
 ##### **4. Ví dụ minh họa**
 
 ```csharp
-// Trong project MyShop.UI.Tests
+// Trong project TechHaven.UI.Tests
 
 public class DashboardViewModelTests
 {
@@ -743,7 +905,7 @@ Tự động hóa các luồng:
 ##### **4. Cấu trúc Test Automation Project**
 
 ```
-MyShop.UI.Automation/
+TechHaven.UI.Automation/
 │
 ├── Tests/
 │   ├── LoginTests.cs
@@ -765,7 +927,7 @@ MyShop.UI.Automation/
 sequenceDiagram
     participant Tester as UI Test Script
     participant WinAppDriver as WinAppDriver
-    participant App as MyShop.exe
+    participant App as TechHaven.exe
     Tester->>WinAppDriver: Gửi lệnh (click, input, navigate)
     WinAppDriver->>App: Thao tác thật trên giao diện
     App-->>WinAppDriver: Trả về kết quả hiển thị
