@@ -246,7 +246,7 @@ flowchart LR
   Tests -.-> DomainEntities
 
   %% --- Styling ---
-  classDef layer fill:#f8f9fa,stroke:#333,stroke-width:1px;
+  classDef layer fill:#e2e3e5,color:#111,stroke:#333,stroke-width:1px;
   class PresentationLayer,ApplicationLayer,DomainLayer,InfrastructureLayer layer;
 ```
 
