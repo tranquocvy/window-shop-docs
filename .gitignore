@@ -1,0 +1,26 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# macOS folder attributes
+__MACOSX/
+
+# macOS thumbnail cache files
+._*
+
+# Spotlight files
+.Spotlight-V100
+
+# Trash folder
+.Trashes
+
+# Volume settings
+.VolumeIcon.icns
+
+# Temporary files
+*.swp
+*.swo
+
+# VS Code settings (optional)
+.vscode/
