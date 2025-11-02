@@ -7,7 +7,7 @@
 - **Thời gian:** datetime2. Mặc định khuyến nghị GETDATE()/GETUTCDATE().
 - **Enum lưu int**.
 
-## Bảng: app_settings
+## Bảng: app_setting
 | Tên thuộc tính | Kiểu dữ liệu | Ràng buộc | Ghi chú |
 |---|---|---|---|
 | app_setting_id | int | PK, Identity, Not null | Khóa chính |
@@ -20,7 +20,7 @@
 | updated_at | datetime2 | Not null, Default GETUTCDATE() | Thời điểm cập nhật |
 
 
-## Bảng: products
+## Bảng: product
 | Tên thuộc tính | Kiểu dữ liệu | Ràng buộc | Ghi chú |
 |---|---|---|---|
 | product_id | int | PK, Identity, Not null | Khóa chính |
@@ -38,12 +38,12 @@
 | sell_price | decimal(18,2) | Not null, CHECK >= 0 | Giá bán |
 | stock_quantity | int | Not null, Default 0, CHECK >= 0 | Tồn kho |
 | description | nvarchar(max) | Null | Mô tả |
-| is_draft | bit | Not null, Default 0 | Nháp |
+| is_draft | bit | Not null, Default 0 | Cho phép lưu nháp khi auto-save |
 | created_at | datetime2 | Not null, Default GETDATE() | Ngày tạo |
 | updated_at | datetime2 | Null | Ngày cập nhật |
 
 
-## Bảng: users
+## Bảng: user
 | Tên thuộc tính | Kiểu dữ liệu | Ràng buộc | Ghi chú |
 |---|---|---|---|
 | user_id | int | PK, Identity, Not null | Khóa chính |
@@ -55,7 +55,7 @@
 | has_seen_guide | bit | Not null, Default 0 | Đã xem hướng dẫn |
 
 
-## Bảng: order_details
+## Bảng: order_detail
 | Tên thuộc tính | Kiểu dữ liệu | Ràng buộc | Ghi chú |
 |---|---|---|---|
 | order_detail_id | int | PK, Identity, Not null | Khóa chính |
@@ -65,26 +65,23 @@
 | unit_price | decimal(18,2) | Not null, CHECK >= 0 | Đơn giá tại thời điểm bán |
 
 
-## Bảng: payments
+## Bảng: payment
 | Tên thuộc tính | Kiểu dữ liệu | Ràng buộc | Ghi chú |
 |---|---|---|---|
 | payment_id | int | PK, Identity, Not null | Khóa chính |
 | order_id | int | FK -> orders.order_id, Not null | Tham chiếu đơn hàng |
-| payment_method | nvarchar(50) | Not null | Phương thức thanh toán |
+| payment_method | nvarchar(50) | Not null | Phương thức thanh toán (Cash, BankTransfer, CreditCard) |
 | amount | decimal(18,2) | Not null, CHECK > 0 | Số tiền thanh toán |
 | payment_date | datetime2 | Not null, Default GETDATE() | Ngày thanh toán |
 
-## Bảng: categories
+## Bảng: category
 | Tên thuộc tính | Kiểu dữ liệu | Ràng buộc | Ghi chú |
 |---|---|---|---|
 | category_id | int | PK, Identity, Not null | Khóa chính |
 | category_name | nvarchar(100) | Not null, UNIQUE | Tên danh mục |
 | description | nvarchar(255) | Null | Mô tả |
-| is_active | bit | Not null, Default 1 | Trạng thái |
-| created_at | datetime2 | Not null, Default GETDATE() | Ngày tạo |
-| updated_at | datetime2 | Null | Ngày cập nhật |
 
-## Bảng: customers
+## Bảng: customer
 | Tên thuộc tính | Kiểu dữ liệu | Ràng buộc | Ghi chú |
 |---|---|---|---|
 | customer_id | int | PK, Identity, Not null | Khóa chính |
@@ -92,11 +89,13 @@
 | phone_number | nvarchar(20) | Not null | SĐT liên hệ |
 | email | nvarchar(150) | Null | Email |
 | address | nvarchar(255) | Null | Địa chỉ |
+| type | int | Not null, Default 1 | Enum: 1=Regular,2=Student,3=VIP,4=Cancelled,5=Returned |
+| total_purchased | decimal(18,2) | Not null, CHECK > 0 | Tổng tiền mà khách hàng mua |
 | note | nvarchar(255) | Null | Ghi chú |
 | is_active | bit | Not null, Default 1 | Trạng thái |
 | created_at | datetime2 | Not null, Default GETDATE() | Ngày tạo |
 
-## Bảng: orders
+## Bảng: order
 | Tên thuộc tính | Kiểu dữ liệu | Ràng buộc | Ghi chú |
 |---|---|---|---|
 | order_id | int | PK, Identity, Not null | Khóa chính |
@@ -104,26 +103,27 @@
 | user_id | int | FK -> users.user_id, Not null | Nhân viên tạo đơn |
 | order_date | datetime2 | Not null, Default GETDATE() | Ngày đặt |
 | status | int | Not null, Default 1 | Enum: 1=Pending,2=Processing,3=Completed,4=Cancelled,5=Returned |
-| subtotal | decimal(18,2) | Not null, Default 0 | Tổng chưa giảm/thuế |
+| subtotal_amount | decimal(18,2) | Not null, Default 0 | Tổng chưa giảm/thuế |
 | discount | decimal(18,2) | Not null, Default 0 | Giảm giá đơn |
-| tax | decimal(18,2) | Not null, Default 0 | Thuế |
-| total | decimal(18,2) | Not null | Thành tiền |
+| total_amount | decimal(18,2) | Not null | Thành tiền |
 | notes | nvarchar(255) | Null | Ghi chú |
 
-## Bảng: roles
+## Bảng: role
 | Tên thuộc tính | Kiểu dữ liệu | Ràng buộc | Ghi chú |
 |---|---|---|---|
 | role_id | int | PK, Identity, Not null | Khóa chính |
 | role_name | nvarchar(50) | Not null, UNIQUE | Tên vai trò |
 | description | nvarchar(255) | Null | Mô tả |
-| is_active | bit | Not null, Default 1 | Trạng thái |
 
-## Bảng: commissions
+## Bảng: commission
 | Tên thuộc tính | Kiểu dữ liệu | Ràng buộc | Ghi chú |
 |---|---|---|---|
 | commission_id | int | PK, Identity, Not null | Khóa chính |
 | user_id | int | FK -> users.user_id, Not null | Nhân viên nhận hoa hồng |
-| order_id | int | FK -> orders.order_id, Not null | Gắn với đơn hàng |
-| amount | decimal(18,2) | Not null, CHECK >= 0 | Số tiền hoa hồng |
+| month | int | Not null | Tháng nhận |
+| year | int | Not null | Năm nhận |
+| total_sales | decimal(18,2) | Not null, CHECK >= 0 | Tổng số tiền nhân viên bán được |
+| commission_rate | decimal(18,2) | Not null, CHECK >= 0 | Phần trăm hoa hồng |
+| commission_amount | decimal(18,2) | Not null, CHECK >= 0 | Tổng tiền hoa hồng của nhân viên |
 | note | nvarchar(255) | Null | Ghi chú |
 | created_at | datetime2 | Not null, Default GETDATE() | Ngày tạo |

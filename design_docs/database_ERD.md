@@ -17,7 +17,7 @@ erDiagram
 
     role {
         int role_id PK
-        string name
+        string role_name
         string description
     }
 
@@ -48,6 +48,7 @@ erDiagram
         decimal screen_size
         int battery_capacity
         string image_url
+        string image_gallery_json
         decimal cost_price
         decimal sell_price
         int stock_quantity
@@ -63,6 +64,10 @@ erDiagram
         string phone_number
         string email
         string address
+        int type
+        decimal total_purchased
+        datetime created_at
+        datetime updated_at
     }
 
     order {
@@ -70,11 +75,10 @@ erDiagram
         int customer_id FK
         int user_id FK
         datetime order_date
-        string status
-        decimal subtotal
+        int status
+        decimal subtotal_amount
         decimal discount
-        decimal tax
-        decimal total
+        decimal total_amount
         string notes
     }
 
@@ -84,14 +88,12 @@ erDiagram
         int product_id FK
         int quantity
         decimal unit_price
-        decimal discount
-        decimal line_total
     }
 
     payment {
         int payment_id PK
         int order_id FK
-        string payment_method
+        int payment_method
         decimal amount
         datetime payment_date
     }
@@ -99,7 +101,11 @@ erDiagram
     commission {
         int commission_id PK
         int user_id FK
-        decimal amount
+        int month
+        int year
+        decimal total_sales
+        decimal comission_rate
+        string note
         datetime created_at
     }
 
