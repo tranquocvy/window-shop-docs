@@ -8,7 +8,7 @@
 | 2   | Nguyễn Phúc Hậu       | 23120252 | FE             |         |
 | 3   | Nguyễn Phúc Hoàng     | 23120264 | BE             |         |
 | 4   | Nguyễn Khắc Vượng     | 23120409 | FE             |         |
-| 5   | Trần Quốc Vỹ          | 23120410 | Lead           |         |
+| 5   | Trần Quốc Vỹ          | 23120410 | Lead, FE       |         |
 
 ---
 
@@ -26,7 +26,7 @@
 | 6 | Cấu hình chương trình                        | 0.25 |
 | 7 | Đóng gói thành file cài đặt                  | 0.25 |
 
-### B. Các chức năng tự chọn (5.5 điểm)
+### B. Các chức năng tự chọn (5 điểm)
 
 | #  | Tính năng                                               | Điểm |
 | -- | ------------------------------------------------------- | ---- |
@@ -91,7 +91,6 @@
 - **[`window-shop-docs`](https://github.com/tranquocvy/window-shop-docs)**: Lưu trữ tất cả các loại tài liệu của dự án, bao gồm meeting notes, thiết kế giao diện, báo cáo tiến độ, sơ đồ kiến trúc phần mềm, và các tài liệu tham khảo khác.  
 - **[`window-shop-app`](https://github.com/tranquocvy/window-shop-app)**: Lưu trữ toàn bộ mã nguồn chính của ứng dụng, bao gồm Frontend, Backend, và các module bổ trợ. Repo này quản lý version code, đảm bảo việc phát triển và deploy được kiểm soát chặt chẽ.
 
-
 #### Kênh liên lạc
 - **Zalo:** Trao đổi nhanh các vấn đề hằng ngày, chia sẻ thông tin tức thời, phối hợp khi gặp khó khăn hoặc cần sự hỗ trợ ngay lập tức.
 - **Google Meet:** Sử dụng cho các buổi họp nhóm định kỳ và các cuộc họp quan trọng, giúp nhóm cập nhật tiến độ, thảo luận các vấn đề kỹ thuật.
@@ -149,7 +148,6 @@ Nhóm áp dụng **Gitflow cơ bản** để quản lý mã nguồn dự án Win
   - Nhóm có thể theo dõi tiến độ và lịch sử commit một cách rõ ràng.
   - Phân tách rõ ràng giữa nhánh chính và nhánh phát sinh.
 
----
 **Sơ đồ Gitflow minh họa quá trình phát triển tính năng và merge vào nhánh chính:**
 ```mermaid
 gitGraph
@@ -491,8 +489,6 @@ Nhóm lựa chọn 5 Design Pattern phù hợp với chức năng và đặc đi
 * Không dùng Hungarian notation (ví dụ: `btnSave`, `txtUser`).
 * Hậu tố `Async` cho các hàm bất đồng bộ (ví dụ: `GetUserAsync()`).
 
----
-
 ##### 2. **Formatting & Layout**
 
 * **Sử dụng `var` một cách thông minh:**
@@ -558,8 +554,6 @@ public class ProductService
 }
 ```
 
----
-
 ##### 3. **Comment & Documentation**
 
 * Nên comment trả lời **“Why?”** thay vì “What?”.
@@ -571,8 +565,6 @@ public class ProductService
 /// </summary>
 public decimal CalculateFinalPrice(Product product) => product.Price * 0.9m;
 ```
-
----
 
 ##### 4. **Nguyên tắc lập trình**
 
@@ -603,8 +595,6 @@ public decimal CalculateFinalPrice(Product product) => product.Price * 0.9m;
   public string FullName => $"{FirstName} {LastName}";
   ```
 
----
-
 #### b. Quy ước cho XAML
 
 ##### 1. **Đặt tên Controls**
@@ -617,8 +607,6 @@ public decimal CalculateFinalPrice(Product product) => product.Price * 0.9m;
 
 Sai: `btnSubmit`, `txtName`
 Đúng: `SubmitButton`, `UserNameTextBox`
-
----
 
 ##### 2. **Thứ tự thuộc tính (optional)**
 
@@ -642,8 +630,6 @@ Sai: `btnSubmit`, `txtName`
     Command="{Binding SaveCommand}"
     Style="{StaticResource PrimaryButtonStyle}" />
 ```
-
----
 
 ##### 3. **Style & Resource**
 
@@ -743,7 +729,6 @@ TechHaven.sln
 
 * **UnitTests/**: test logic trong Domain và Application (mock repository, không cần DB).
 * **IntegrationTests/**: test thật giữa Application + Infrastructure (dùng in-memory database).
-
 
 #### Nguồn tham khảo Coding Convention:
 1. Common C# code conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
@@ -856,8 +841,6 @@ public class DashboardViewModelTests
 }
 ```
 
----
-
 #### c. Manual Testing – Kiểm thử thủ công
 
 ##### **1. Mục tiêu**
@@ -881,8 +864,6 @@ public class DashboardViewModelTests
 2. Người khác trong nhóm **thực thi Test Case** (nguyên tắc 4-mắt).
 3. Ghi lại kết quả và lỗi (bug) vào hệ thống quản lý (Excel, Notion, Jira…).
 4. Chạy lại toàn bộ trước mỗi bản release (**Regression Test**).
-
----
 
 #### d. UI Automation Testing – Kiểm thử giao diện tự động
 
@@ -957,74 +938,53 @@ public void CreateNewOrder_HappyPath()
 
 ---
 
-## 7. Nâng cao
+## 7. Tính năng nâng cao
 
-Nhóm có **5** thành viên → cần **5** tính năng nâng cao.
-
-| Tính năng nâng cao | Người thực hiện | Mô tả ngắn gọn |
-| ------------------ | --------------- | -------------- |
-|                    |                 |                |
-|                    |                 |                |
+| # | Tính năng                                  | Mô tả                                                                                                                             | Gợi ý điểm |
+| - | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| 1 | **Onboarding – hướng dẫn sử dụng lần đầu** | Khi người dùng mở ứng dụng lần đầu, hiển thị hướng dẫn trực quan (tooltip, overlay hoặc slide giới thiệu) giúp họ làm quen nhanh. | 0.5        |
+| 2 | **Chế độ dùng thử 15 ngày (Trial Mode)**   | Cho phép dùng full tính năng trong 15 ngày đầu. Sau đó yêu cầu đăng ký/kích hoạt để tiếp tục sử dụng (mô phỏng cơ chế bản quyền). | 0.5        |
+| 3 | **Dark / Light Mode (Theme Switching)**    | Cho phép người dùng chuyển đổi giữa giao diện sáng và tối. Lưu lại lựa chọn trong user settings (database hoặc local storage).    | 0.5        |
+| | | | |
 
 ---
 
 ## 8. Kế hoạch nháp ban đầu
 
-- **Ý tưởng ban đầu:**  
-  Phát triển ứng dụng **Windows (WinUI)** dành cho **chủ cửa hàng nhỏ** để quản lý sản phẩm, doanh thu và các báo cáo bán hàng.  
-  Ứng dụng hướng đến người dùng đơn lẻ (1 user – chủ cửa hàng), giúp họ quản lý dữ liệu bán hàng trực tiếp trên máy tính mà không cần kết nối internet.
+### **Ý tưởng ban đầu**
 
-- **Phạm vi dự kiến:**
+Phát triển **ứng dụng bán hàng đa nền tảng cho Windows** mang tên **TechHaven**, hướng tới **chủ cửa hàng công nghệ nhỏ và vừa**.
+Ứng dụng cho phép quản lý sản phẩm, đơn hàng, khách hàng, doanh thu và báo cáo bán hàng, với **giao diện hiện đại, trực quan** và **kết nối cơ sở dữ liệu qua Web API**.
 
-  - Quản lý danh sách sản phẩm (thêm, sửa, xóa, tìm kiếm).
-  - Ghi nhận và quản lý hóa đơn bán hàng.
-  - Quản lý doanh thu, báo cáo theo ngày/tháng.
-  - Lưu trữ dữ liệu cục bộ (local database hoặc file).
-  - Giao diện thân thiện, dễ thao tác với người dùng phổ thông.
+Dự án áp dụng mô hình **Clean Architecture** cùng **MVVM, CQRS, Dependency Injection**, nhằm đảm bảo mã nguồn dễ mở rộng và bảo trì.
+Cơ sở dữ liệu sử dụng **PostgreSQL**, giao tiếp thông qua **ASP.NET WebAPI (RESTful)** giữa **WinUI (Frontend)** và **Backend**.
 
-- **Thời gian dự kiến thực hiện:**
+### **Phạm vi dự kiến**
 
-  - Tổng thời gian đồ án: **8–10 tuần** (tùy theo kế hoạch của môn học).
-  - Hiện tại đang trong giai đoạn **Proposal 1** với **deadline còn 2 tuần**.
+* **Chức năng chính:**
 
-- **Mốc tiến độ chính (dự kiến):**
+  * Quản lý sản phẩm: thêm, sửa, xóa, tìm kiếm, lọc theo danh mục.
+  * Quản lý đơn hàng và khách hàng.
+  * Theo dõi doanh thu, xuất báo cáo thống kê.
+  * Quản lý người dùng, đăng nhập, phân quyền (Admin / Staff).
+  * Lưu trữ dữ liệu trên **PostgreSQL** thông qua API.
+  * Giao diện WinUI hiện đại, hỗ trợ **Dark / Light Mode**.
+  * Hỗ trợ **chế độ dùng thử (Trial)** trong 15 ngày (sau đó yêu cầu kích hoạt).
 
-  - **Tuần 1:**
+### **Thời gian dự kiến thực hiện**
 
-    - Họp nhóm lần đầu: xác định đề tài, phân chia vai trò (Lead, 2 FE, 2 BE).
-    - Thống nhất yêu cầu hệ thống và chuẩn bị nội dung **Proposal 1**.
+* **Tổng thời gian:** 8 tuần
+* **Hiện tại:** Giai đoạn hoàn thiện **Proposal 1**
 
-  - **Tuần 2:**
+### **Mốc tiến độ chính (dự kiến)**
 
-    - Hoàn thiện tài liệu **Proposal 1** (chức năng, giao diện mẫu, kiến trúc tổng quan).
-    - Lead tổng hợp và nộp proposal.
-
-  - **Tuần 3:**
-
-    - Bắt đầu thiết kế **UI chi tiết** (Figma).
-    - Thiết kế cấu trúc thư mục và khởi tạo **repository mã nguồn**.
-    - Backend bắt đầu tạo các model và service cơ bản.
-
-  - **Tuần 4:**
-
-    - FE triển khai các màn hình cơ bản (Dashboard, Product List).
-    - BE hoàn thiện xử lý CRUD sản phẩm.
-
-  - **Tuần 5:**
-
-    - Kết nối FE – BE, hoàn thiện chức năng thêm/sửa/xóa sản phẩm.
-    - Bắt đầu phần quản lý hóa đơn.
-
-  - **Tuần 6:**
-
-    - Hoàn thiện module báo cáo, doanh thu.
-    - Bổ sung xử lý ngoại lệ và validation dữ liệu.
-
-  - **Tuần 7:**
-
-    - Viết Unit Test cho các chức năng chính.
-    - Tinh chỉnh UI, fix bug.
-
-  - **Tuần 8:**
-    - Chuẩn bị demo và tài liệu báo cáo.
-    - Lead tổng hợp, kiểm tra toàn bộ trước khi nộp.
+| **Tuần**   | **Nội dung công việc chính**                                                                                                                                                                                                                                  |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Tuần 1** | - Họp nhóm lần đầu: xác định đề tài, đặt tên dự án (Window Shop / TechHaven).<br>- Phân vai: Lead, 2 FE (WinUI), 2 BE (WebAPI).<br>- Xây dựng sơ bộ yêu cầu chức năng và kiến trúc tổng quan.<br>- Tạo **repository chính** trên GitHub (gồm 2 phần: `window-shop-docs` và `window-shop-app`).<br>- Bắt đầu soạn **Proposal 1**.                               |
+| **Tuần 2** | - Hoàn thiện **Proposal 1**.<br>- Lead tổng hợp và nộp.                                                                                                                                                               |
+| **Tuần 3** | - Thiết kế chi tiết UI bằng **Figma**.<br>- Khởi tạo solution .NET với cấu trúc **Clean Architecture** (Domain, Application, Infrastructure, WebAPI, WinUI). |
+| **Tuần 4** | - Backend: Xây dựng Entity, DbContext, Repository, Service cơ bản cho Product & Category.<br>- Frontend: Tạo các màn hình chính (Dashboard, Product List, Product Detail).                                                                                    |
+| **Tuần 5** | - Kết nối **Frontend ↔ Backend** qua REST API.<br>- Hoàn thiện chức năng CRUD sản phẩm.<br>- Bắt đầu module **Order & Customer**.                                                                                                                             |
+| **Tuần 6** | - Phát triển module **Report / Analytics (Doanh thu theo ngày, tháng)**.<br>- Bổ sung **Dark / Light Mode** và **Trial Mode**.<br>- Thực hiện **validation**, xử lý lỗi và ngoại lệ.                                                                          |
+| **Tuần 7** | - Viết **Unit Test & Integration Test** cho các module chính.<br>- Tinh chỉnh UI theo UX feedback, fix bug và tối ưu hiệu năng.                                                                                                                               |
+| **Tuần 8** | - Chuẩn bị **demo, báo cáo, video minh họa**.<br>- Lead tổng hợp và kiểm tra toàn bộ hệ thống.<br>- Nộp **MVP / Final Report**.                                                                     |
