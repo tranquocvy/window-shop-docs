@@ -453,12 +453,16 @@ TechHaven.sln
 
 ## 5. Design Patterns
 
-Liệt kê các **Design Pattern** nhóm áp dụng (mỗi thành viên ít nhất 1 pattern, không tính Builder & Singleton).
+Dự án **TechHaven** áp dụng các mẫu thiết kế để đảm bảo mã nguồn dễ bảo trì, mở rộng và tuân thủ các nguyên tắc SOLID trong kiến trúc Clean Architecture.  
+Nhóm lựa chọn 5 Design Pattern phù hợp với chức năng và đặc điểm từng layer của hệ thống như sau:
 
-| Pattern | Mục đích | Vị trí áp dụng trong dự án | Người thực hiện |
-| ------- | -------- | -------------------------- | --------------- |
-|         |          |                            |                 |
-|         |          |                            |                 |
+| STT | Design Pattern | Layer áp dụng | Mục đích và vai trò trong hệ thống |
+|-----|----------------|---------------|------------------------------------|
+| 1 | **Repository Pattern** | Infrastructure | Đóng vai trò trung gian giữa ứng dụng và cơ sở dữ liệu. Repository cung cấp các phương thức trừu tượng để truy cập dữ liệu mà không phụ thuộc vào công nghệ lưu trữ (PostgreSQL). Nhờ đó, các tầng Application và Domain có thể xử lý dữ liệu mà không cần quan tâm đến chi tiết truy vấn SQL. |
+| 2 | **Factory Pattern** | Infrastructure | Giúp tách biệt logic khởi tạo đối tượng khỏi phần sử dụng. Trong dự án, Factory được dùng để tạo các đối tượng như `Service`, `ViewModel` hoặc `Entity` thông qua Dependency Injection, giúp mã nguồn gọn gàng, giảm sự phụ thuộc giữa các lớp. |
+| 3 | **Command Pattern** | WinUI (Presentation) | Được áp dụng trong mô hình MVVM của WinUI để đóng gói hành động người dùng (ví dụ: nhấn nút, gửi form) thành đối tượng `ICommand`. Pattern này giúp tách biệt logic xử lý sự kiện khỏi giao diện, đồng thời tăng khả năng tái sử dụng và kiểm thử. |
+| 4 | **Strategy Pattern** | Application | Cho phép thay đổi thuật toán xử lý tại runtime mà không cần chỉnh sửa cấu trúc lớp hiện có. Pattern này được nhóm áp dụng trong các chức năng như tính phí vận chuyển, sắp xếp hoặc lọc sản phẩm – giúp mở rộng hệ thống dễ dàng khi thêm quy tắc mới. |
+| 5 | **Facade Pattern** | Application | Cung cấp một giao diện đơn giản cho các thao tác phức tạp trong hệ thống. Ví dụ: `OrderFacade` có thể gọi nhiều repository và service khác nhau (Product, Payment, Shipping) nhưng chỉ cung cấp một phương thức thống nhất cho tầng Presentation. Pattern này giúp giảm sự phụ thuộc giữa các module. |
 
 ---
 
