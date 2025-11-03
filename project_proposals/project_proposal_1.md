@@ -77,8 +77,16 @@
 
 ## 2. Giao diện (Prototype)
 
-- Link Figma: [Figma Prototype](#)
-- Mô tả ngắn gọn các luồng chức năng chính (VD: Màn hình đăng nhập → Trang chủ → Quản lý sản phẩm → Báo cáo doanh thu).
+- Link Figma: [Figma Prototype](https://www.figma.com/design/dXJkjMVILzLimbmUssJVL3/Prototype_MyShop?t=6kmokQABMjlGmcbk-1)
+- Mô tả ngắn gọn các luồng chức năng chính
+- Xem tổng quan app
+- Quản lí sản phẩm
+- Quản lí khách hàng
+- Tạo đơn hàng
+- Thay đổi cài đặt
+- Xem báo cáo kinh doanh
+- Đăng xuất
+
 
 ---
 
