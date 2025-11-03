@@ -70,8 +70,8 @@
 
 #### Kết luận
 
-> Ứng dụng **Window Shop** đáp ứng **hầu hết các chuẩn đầu ra từ G1 → G5** và **một phần G6.1**
-> Mức độ bao phủ ước tính: **~90–95% chuẩn đầu ra môn học.**
+Ứng dụng **Window Shop** đáp ứng **hầu hết các chuẩn đầu ra từ G1 → G5** và **một phần G6.1** <br>
+Mức độ bao phủ ước tính: **~90–95% chuẩn đầu ra môn học.**
 
 ---
 
@@ -86,7 +86,6 @@
 - Thay đổi cài đặt
 - Xem báo cáo kinh doanh
 - Đăng xuất
-
 
 ---
 
@@ -274,7 +273,6 @@ graph TD
 8. **OrderRepository (Infrastructure):** Sử dụng EF Core DbContext để chuyển Entity `Order` thành lệnh SQL và lưu vào CSDL **PostgreSQL**.
 9. **(Hoàn tất):** Kết quả được trả ngược về `WebAPI`, sau đó trả về `WinUI` (ví dụ: trả về `OrderID` vừa tạo).
 
-
 ### 4.4. Phân tích chi tiết từng layer
 
 #### 1. `TechHaven.Domain`
@@ -459,16 +457,17 @@ TechHaven.sln
 
 ## 5. Design Patterns
 
-Dự án **TechHaven** áp dụng các mẫu thiết kế để đảm bảo mã nguồn dễ bảo trì, mở rộng và tuân thủ các nguyên tắc SOLID trong kiến trúc Clean Architecture.  
-Nhóm lựa chọn 5 Design Pattern phù hợp với chức năng và đặc điểm từng layer của hệ thống như sau:
+Dự án **TechHaven** áp dụng các mẫu thiết kế (Design Patterns) nhằm đảm bảo mã nguồn dễ bảo trì, mở rộng và tuân thủ các nguyên tắc **SOLID** (Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion) trong kiến trúc **Clean Architecture**.  
+Nhóm lựa chọn 6 Design Pattern phù hợp với chức năng và đặc điểm từng layer của hệ thống như sau:
 
 | STT | Design Pattern | Layer áp dụng | Mục đích và vai trò trong hệ thống |
 |-----|----------------|---------------|------------------------------------|
-| 1 | **Repository Pattern** | Infrastructure | Đóng vai trò trung gian giữa ứng dụng và cơ sở dữ liệu. Repository cung cấp các phương thức trừu tượng để truy cập dữ liệu mà không phụ thuộc vào công nghệ lưu trữ (PostgreSQL). Nhờ đó, các tầng Application và Domain có thể xử lý dữ liệu mà không cần quan tâm đến chi tiết truy vấn SQL. |
-| 2 | **Factory Pattern** | Infrastructure | Giúp tách biệt logic khởi tạo đối tượng khỏi phần sử dụng. Trong dự án, Factory được dùng để tạo các đối tượng như `Service`, `ViewModel` hoặc `Entity` thông qua Dependency Injection, giúp mã nguồn gọn gàng, giảm sự phụ thuộc giữa các lớp. |
-| 3 | **Command Pattern** | WinUI (Presentation) | Được áp dụng trong mô hình MVVM của WinUI để đóng gói hành động người dùng (ví dụ: nhấn nút, gửi form) thành đối tượng `ICommand`. Pattern này giúp tách biệt logic xử lý sự kiện khỏi giao diện, đồng thời tăng khả năng tái sử dụng và kiểm thử. |
-| 4 | **Strategy Pattern** | Application | Cho phép thay đổi thuật toán xử lý tại runtime mà không cần chỉnh sửa cấu trúc lớp hiện có. Pattern này được nhóm áp dụng trong các chức năng như tính phí vận chuyển, sắp xếp hoặc lọc sản phẩm – giúp mở rộng hệ thống dễ dàng khi thêm quy tắc mới. |
-| 5 | **Facade Pattern** | Application | Cung cấp một giao diện đơn giản cho các thao tác phức tạp trong hệ thống. Ví dụ: `OrderFacade` có thể gọi nhiều repository và service khác nhau (Product, Payment, Shipping) nhưng chỉ cung cấp một phương thức thống nhất cho tầng Presentation. Pattern này giúp giảm sự phụ thuộc giữa các module. |
+| 1 | **Factory Pattern** | Infrastructure | Giúp tách biệt logic khởi tạo đối tượng khỏi phần sử dụng. Trong dự án, Factory được dùng để tạo các đối tượng như `Service`, `ViewModel` hoặc `Entity` thông qua Dependency Injection, giúp mã nguồn gọn gàng và giảm sự phụ thuộc giữa các lớp. |
+| 2 | **Command Pattern** | WinUI (Presentation) | Áp dụng trong mô hình MVVM để đóng gói hành động người dùng (nhấn nút, gửi form) thành đối tượng `ICommand`. Pattern này tách biệt logic xử lý sự kiện khỏi giao diện, giúp tăng khả năng tái sử dụng và kiểm thử. |
+| 3 | **Strategy Pattern** | Application | Cho phép thay đổi thuật toán xử lý tại runtime mà không cần chỉnh sửa cấu trúc lớp hiện có. Pattern này được nhóm áp dụng trong các chức năng như tính phí, sắp xếp hoặc lọc sản phẩm, giúp mở rộng hệ thống dễ dàng khi bổ sung quy tắc mới. |
+| 4 | **Facade Pattern** | Application | Cung cấp giao diện đơn giản cho các thao tác phức tạp. Ví dụ: `OrderFacade` gọi nhiều repository và service (Product, Payment, Shipping) nhưng chỉ cung cấp một API thống nhất cho tầng Presentation, giúp giảm sự phụ thuộc giữa các module. |
+| 5 | **Adapter Pattern** | Infrastructure | Chuyển đổi giao diện của một lớp thành dạng khác mà hệ thống mong đợi. Trong dự án, Adapter giúp tích hợp các API hoặc service bên ngoài (ví dụ: hệ thống thanh toán, quản lý vận chuyển) mà không cần thay đổi mã nguồn hiện có. |
+| 6 | **Mediator Pattern** | Application | Giúp giảm sự phụ thuộc trực tiếp giữa các lớp bằng cách sử dụng một đối tượng trung gian để điều phối giao tiếp. Trong WinUI, Mediator có thể quản lý việc gửi thông điệp hoặc cập nhật giữa các ViewModel mà không cần liên kết trực tiếp. |
 
 ---
 
@@ -953,7 +952,9 @@ public void CreateNewOrder_HappyPath()
 | 1 | **Onboarding – hướng dẫn sử dụng lần đầu** | Khi người dùng mở ứng dụng lần đầu, hiển thị hướng dẫn trực quan (tooltip, overlay hoặc slide giới thiệu) giúp họ làm quen nhanh. | 0.5        |
 | 2 | **Chế độ dùng thử 15 ngày (Trial Mode)**   | Cho phép dùng full tính năng trong 15 ngày đầu. Sau đó yêu cầu đăng ký/kích hoạt để tiếp tục sử dụng (mô phỏng cơ chế bản quyền). | 0.5        |
 | 3 | **Dark / Light Mode (Theme Switching)**    | Cho phép người dùng chuyển đổi giữa giao diện sáng và tối. Lưu lại lựa chọn trong user settings (database hoặc local storage).    | 0.5        |
-| | | | |
+| 4 | **MFA – Xác thực hai yếu tố (Multi-Factor Authentication)** | Khi đăng nhập, ngoài mật khẩu, yêu cầu nhập mã OTP gửi qua email (hoặc mô phỏng). BE sinh mã ngẫu nhiên, lưu tạm, FE hiển thị giao diện xác thực OTP.                   | 0.5        |
+| 5 | **AI Chatbot & Phân tích biểu đồ (nếu có thời gian)**       | Tích hợp chatbot đơn giản hỗ trợ tra cứu sản phẩm, doanh thu hoặc thống kê nhanh; kết hợp biểu đồ trực quan (chart) để phân tích dữ liệu cơ bản.                        | 0.5        |
+
 
 ---
 
