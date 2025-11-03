@@ -1,97 +1,121 @@
-**Note: order_detail  --belong_to--> order**
 ```mermaid
 ---
 config:
   layout: elk
 ---
 erDiagram
-    user {
-        INT user_id PK
-        NVARCHAR user_full_name
-        VARCHAR username
-        VARCHAR password_hash
-        INT role_id FK
-        BIT is_active
-        BIT has_seen_guide
-    }
-    role {
-        INT role_id PK
-        VARCHAR role_name
-        NVARCHAR description
-    }
-    category {
-        INT category_id PK
-        NVARCHAR category_name
-        NVARCHAR description
-    }
-    product {
-        INT product_id PK
-        NVARCHAR product_name
-        INT category_id FK
-        NVARCHAR brand_name
-        FLOAT cost_price
-        FLOAT sell_price
-        INT stock_quantity
-        NVARCHAR description
-        BIT is_draft
-        DATETIME created_at
-        DATETIME updated_at
-    }
-    customer {
-        INT customer_id PK
-        NVARCHAR customer_full_name
-        VARCHAR phone
-        VARCHAR email
-        NVARCHAR address
-        DATETIME created_at
-    }
-    order {
-        BIGINT order_id PK
-        INT customer_id FK
-        INT user_id FK
-        DATETIME order_date
-        FLOAT total_amount
-        VARCHAR status
-        BIT is_draft
-        NVARCHAR note
-    }
-    order_detail {
-        INT order_detail_id PK
-        BIGINT order_id FK
-        INT product_id FK
-        INT quantity
-        FLOAT unit_price
-        FLOAT sub_total
-    }
-    payment {
-        INT payment_id PK
-        BIGINT order_id FK
-        VARCHAR payment_method
-        FLOAT amount
-        DATETIME payment_date
-    }
     app_setting {
-        VARCHAR key PK
-        NVARCHAR value
-        NVARCHAR description
+        int app_setting_id PK
+        string key
+        string value
+        int value_type
+        string category
+        string description
+        bool is_system
+        datetime updated_at
     }
+
+    role {
+        int role_id PK
+        string role_name
+        string description
+    }
+
+    user {
+        int user_id PK
+        string user_full_name
+        string user_name
+        string password_hash
+        int role_id FK
+        bool is_active
+        bool has_seen_guide
+    }
+
+    category {
+        int category_id PK
+        string category_name
+        string description
+    }
+
+    product {
+        int product_id PK
+        string product_name
+        int category_id FK
+        string brand_name
+        string color
+        int storage_capacity
+        string processor
+        decimal screen_size
+        int battery_capacity
+        string image_url
+        string image_gallery_json
+        decimal cost_price
+        decimal sell_price
+        int stock_quantity
+        string description
+        bool is_draft
+        datetime created_at
+        datetime updated_at
+    }
+
+    customer {
+        int customer_id PK
+        string customer_name
+        string phone_number
+        string email
+        string address
+        int type
+        decimal total_purchased
+        datetime created_at
+        datetime updated_at
+    }
+
+    order {
+        int order_id PK
+        int customer_id FK
+        int user_id FK
+        datetime order_date
+        int status
+        decimal subtotal_amount
+        decimal discount
+        decimal total_amount
+        string notes
+    }
+
+    order_detail {
+        int order_detail_id PK
+        int order_id FK
+        int product_id FK
+        int quantity
+        decimal unit_price
+    }
+
+    payment {
+        int payment_id PK
+        int order_id FK
+        int payment_method
+        decimal amount
+        datetime payment_date
+    }
+
     commission {
-        INT commission_id PK
-        INT user_id FK
-        INT month
-        INT year
-        FLOAT total_sales
-        FLOAT commission_rate
-        FLOAT commission_amount
+        int commission_id PK
+        int user_id FK
+        int month
+        int year
+        decimal total_sales
+        decimal comission_rate
+        string note
+        datetime created_at
     }
 
     %% Relationships
-    user }o--|| role : belongs_to
-    product }o--|| category : belongs_to
-    order }o--|| customer : placed_by
-    order }o--|| user : created_by
-    order_detail }o--|| order : belongs_to
-    order_detail }o--|| product : contains
-    payment ||--o{ order : paid_via
-    commission }o--|| user : belongs_to
+    role ||--o{ user : has
+    user ||--o{ order : creates
+    customer ||--o{ order : places
+    category ||--o{ product : categorizes
+    product ||--o{ order_detail : appears_in
+    order ||--o{ order_detail : contains
+    order ||--o{ payment : paid_by
+    user ||--o{ commission : earns
 ```
