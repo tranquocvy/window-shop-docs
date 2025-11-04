@@ -269,7 +269,7 @@ graph TD
 4. **OrdersController (WebAPI):** Nhận request, chuyển đổi DTO thành `CreateOrderCommand`.
 5. **MediatR (WebAPI):** Gửi `CreateOrderCommand` đi.
 6. **CreateOrderCommandHandler (Application):** Nhận Command, thực thi logic nghiệp vụ (kiểm tra tồn kho, tính tổng tiền), tạo Entity `Order`.
-7. **IOrderRepository (Application):** Gọi hàm `AddAsync(order)`.
+7. **IOrderRepository (Domain):** Gọi hàm `AddAsync(order)`.
 8. **OrderRepository (Infrastructure):** Sử dụng EF Core DbContext để chuyển Entity `Order` thành lệnh SQL và lưu vào CSDL **PostgreSQL**.
 9. **(Hoàn tất):** Kết quả được trả ngược về `WebAPI`, sau đó trả về `WinUI` (ví dụ: trả về `OrderID` vừa tạo).
 
@@ -359,6 +359,7 @@ graph TD
     WebAPI --> Contracts
 
     Infra --> App
+    Infra --> Domain
     App --> Domain
     App --> Contracts
 
@@ -379,7 +380,7 @@ Hệ thống sẽ được triển khai như sau:
 - **Database:** PostgreSQL
 - **ORM:** Entity Framework Core (EF Core)
 - **Frontend:** WinUI 3, .NET (chạy trên Windows App SDK)
-- **Kiến trúc:** Clean Architecture + MVVM
+- **Kiến trúc:** 3-Layer + Clean Architecture + MVVM
 - **Thư viện (Backend):**
 *(Dự kiến có thể thay đổi trong lúc thực hiện đồ án)*
     - `MediatR`: Triển khai CQRS.
@@ -767,7 +768,7 @@ TechHaven.sln
 | --------------------- | ----------- | ---------------------------------------------- |
 | **ViewModels**        | Có           | Kiểm tra Command, Validation, Property Binding |
 | **Business Services** | Có           | Tính toán, điều kiện nghiệp vụ                 |
-| **Models / Entities** | Không           | Chỉ là POCO chứa dữ liệu                       |
+| **Entities** | Không           | Chỉ là POCO chứa dữ liệu                       |
 | **Repositories (EF)** | Không           | Tin cậy vào EF Core                            |
 
 **Công cụ sử dụng:**
