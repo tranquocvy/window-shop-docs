@@ -1,4 +1,4 @@
-# Project Report Template
+# Project Proposal
 
 ## 0. Thông tin các thành viên
 
@@ -77,7 +77,7 @@ Mức độ bao phủ ước tính: **~90–95% chuẩn đầu ra môn học.**
 
 ## 2. Giao diện (Prototype)
 
-- Link Figma: [Figma Prototype](https://www.figma.com/design/dXJkjMVILzLimbmUssJVL3/Prototype_MyShop?t=6kmokQABMjlGmcbk-1)
+Link Figma: [Figma Prototype](https://www.figma.com/design/dXJkjMVILzLimbmUssJVL3/Prototype_MyShop?t=6kmokQABMjlGmcbk-1)
 - Mô tả ngắn gọn các luồng chức năng chính
 - Xem tổng quan app
 - Quản lí sản phẩm
@@ -739,6 +739,7 @@ TechHaven.sln
 * **IntegrationTests/**: test thật giữa Application + Infrastructure (dùng in-memory database).
 
 #### Nguồn tham khảo Coding Convention:
+
 1. Common C# code conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
 2. C# identifier naming rules and conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names
 3. .NET code-style rule options: https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
@@ -956,7 +957,6 @@ public void CreateNewOrder_HappyPath()
 | 4 | **MFA – Xác thực hai yếu tố (Multi-Factor Authentication)** | Khi đăng nhập, ngoài mật khẩu, yêu cầu nhập mã OTP gửi qua email (hoặc mô phỏng). BE sinh mã ngẫu nhiên, lưu tạm, FE hiển thị giao diện xác thực OTP.                   | 0.5        |
 | 5 | **AI Chatbot & Phân tích biểu đồ (nếu có thời gian)**       | Tích hợp chatbot đơn giản hỗ trợ tra cứu sản phẩm, doanh thu hoặc thống kê nhanh; kết hợp biểu đồ trực quan (chart) để phân tích dữ liệu cơ bản.                        | 0.5        |
 
-
 ---
 
 ## 8. Kế hoạch nháp ban đầu
@@ -988,7 +988,7 @@ Cơ sở dữ liệu sử dụng **PostgreSQL**, giao tiếp thông qua **ASP.NE
 
 ### **Mốc tiến độ chính (dự kiến)**
 
-| **Tuần**   | **Nội dung công việc chính**                                                                                                                                                                                                                                  |
+| **Tuần**   | **Nội dung công việc chính**       |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Tuần 1** | - Họp nhóm lần đầu: xác định đề tài, đặt tên dự án (Window Shop / TechHaven).<br>- Phân vai: Lead, 2 FE (WinUI), 2 BE (WebAPI).<br>- Xây dựng sơ bộ yêu cầu chức năng và kiến trúc tổng quan.<br>- Tạo **repository chính** trên GitHub (gồm 2 phần: `window-shop-docs` và `window-shop-app`).<br>- Bắt đầu soạn **Proposal 1**.                               |
 | **Tuần 2** | - Hoàn thiện **Proposal 1**.<br>- Lead tổng hợp và nộp.                                                                                                                                                               |
