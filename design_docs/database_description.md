@@ -53,6 +53,8 @@
 | role_id | int | FK -> roles.role_id, Not null | Vai trò |
 | is_active | bit | Not null, Default 1 | Trạng thái |
 | has_seen_guide | bit | Not null, Default 0 | Đã xem hướng dẫn |
+| created_at | datetime2 | Not null, Default GETDATE() | Ngày tạo |
+| activated_at | datetime2 | null | Null nếu user chưa mua. Có giá trị nếu user đã kích hoạt |
 
 
 ## Bảng: order_detail

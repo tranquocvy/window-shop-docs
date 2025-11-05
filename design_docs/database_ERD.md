@@ -29,6 +29,8 @@ erDiagram
         int role_id FK
         bool is_active
         bool has_seen_guide
+        datetime created_at
+        datetime activated_at
     }
 
     category {
@@ -68,6 +70,7 @@ erDiagram
         decimal total_purchased
         datetime created_at
         datetime updated_at
+        string note
     }
 
     order {
