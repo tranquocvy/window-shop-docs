@@ -33,12 +33,6 @@ erDiagram
         datetime activated_at
     }
 
-    category {
-        int category_id PK
-        string category_name
-        string description
-    }
-
     product {
         int product_id PK
         string product_name
@@ -116,7 +110,6 @@ erDiagram
     role ||--o{ user : has
     user ||--o{ order : creates
     customer ||--o{ order : places
-    category ||--o{ product : categorizes
     product ||--o{ order_detail : appears_in
     order ||--o{ order_detail : contains
     order ||--o{ payment : paid_by

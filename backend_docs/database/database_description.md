@@ -25,7 +25,6 @@
 |---|---|---|---|
 | product_id | int | PK, Identity, Not null | Khóa chính |
 | product_name | nvarchar(200) | Not null | Tên sản phẩm |
-| category_id | int | FK -> categories.category_id, Not null | Nhóm sản phẩm |
 | brand_name | nvarchar(100) | Not null | Thương hiệu |
 | color | nvarchar(50) | Null | Màu |
 | storage_capacity | int | Null, CHECK >= 0 | Dung lượng GB |
@@ -48,6 +47,7 @@
 |---|---|---|---|
 | user_id | int | PK, Identity, Not null | Khóa chính |
 | user_full_name | nvarchar(150) | Not null | Họ tên Chính |
+| email | nvarchar(150) | not null | Email để nhận OPT |
 | user_name | varchar(50) | Not null, UNIQUE | username đăng nhập |
 | password_hash | nvarchar(256) | Not null | Mật khẩu băm |
 | role_id | int | FK -> roles.role_id, Not null | Vai trò |
@@ -75,13 +75,6 @@
 | payment_method | nvarchar(50) | Not null | Phương thức thanh toán (Cash, BankTransfer, CreditCard) |
 | amount | decimal(18,2) | Not null, CHECK > 0 | Số tiền thanh toán |
 | payment_date | datetime2 | Not null, Default GETDATE() | Ngày thanh toán |
-
-## Bảng: category
-| Tên thuộc tính | Kiểu dữ liệu | Ràng buộc | Ghi chú |
-|---|---|---|---|
-| category_id | int | PK, Identity, Not null | Khóa chính |
-| category_name | nvarchar(100) | Not null, UNIQUE | Tên danh mục |
-| description | nvarchar(255) | Null | Mô tả |
 
 ## Bảng: customer
 | Tên thuộc tính | Kiểu dữ liệu | Ràng buộc | Ghi chú |
